@@ -1,0 +1,51 @@
+{
+  "_만든이": "scripts/build-site-editions.py — 손으로 고치지 않는다",
+  "_출처": "docs/records/publish-log.jsonl (결과.상태=올림)",
+  "편": [
+    {
+      "날짜": "2026-09-11",
+      "인스타_카드": "https://www.instagram.com/p/DdKYg43Ek-b/",
+      "유튜브": "https://youtube.com/watch?v=c-uiBQKFP5U",
+      "인스타_릴스": "https://www.instagram.com/reel/DdKZlk2iIA7/",
+      "이슈": [
+        "윤석열 전 대통령, 하루 두 재판",
+        "김수현, 미도 계약금 소송 최종 승소",
+        "완주 고속도로 터널 추돌, 9명 부상",
+        "조희대 대법원장 발언과 청와대 반응"
+      ],
+      "카드수": 6,
+      "요일색": "#70D4FF",
+      "표지": "/assets/cover/2026-09-11.jpg"
+    },
+    {
+      "날짜": "2026-09-10",
+      "유튜브": "https://youtube.com/watch?v=_ccVpJCycj4",
+      "인스타_카드": "https://www.instagram.com/p/DdJT4ZymnGI/",
+      "인스타_릴스": "https://www.instagram.com/reel/DdJXHuSgG5h/",
+      "이슈": [
+        "아이유 「이 별로부터」 음원차트 1위",
+        "텔레그램 성착취 총책 무기징역 확정",
+        "용혜인 장관후보자 겸직 논란",
+        "승리, 특수폭행 혐의로 고소"
+      ],
+      "카드수": 6,
+      "요일색": "#70FF9B",
+      "표지": "/assets/cover/2026-09-10.jpg"
+    },
+    {
+      "날짜": "2026-09-09",
+      "유튜브": "https://youtube.com/watch?v=l2fiycxdPzY",
+      "인스타_카드": "https://www.instagram.com/p/DdF-RQOGsuS/",
+      "이슈": [
+        "임영웅 「또또」 멜론 핫100 1~10위 석권",
+        "파주 카페 냉동창고 사건 — 수사 진행",
+        "포스코 창사 58년 만 첫 파업",
+        "애플 「아이폰 듀오」 폴더블 공개",
+        "경찰 보디캠 194억 중국산 납품 의혹"
+      ],
+      "카드수": 7,
+      "요일색": "#FFEC70",
+      "표지": "/assets/cover/2026-09-09.jpg"
+    }
+  ]
+}
