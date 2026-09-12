@@ -55,34 +55,85 @@ def pretty(d):
 #    → 첫 화면의 단추 둘만 남긴다. 편 카드 안의 단추는 «그 편 게시물»로 가는 것이라 겹치지 않아 그대로 둔다.
 #    되살리려면 이 자리에 cta_band() 를 다시 만들고 화면 함수에서 부르면 된다.
 
+def showcase(editions):
+    """첫 화면 — 가만히 두면 «일정 시간마다» 장이 바뀐다 (유진님 2026-09-12 09:26).
+
+    장은 data/showcase.json 에서 온다. 「보임: true」인 것만 나오고, 하나를 더하면
+    점 표시·자동 넘김·손가락 넘김이 «저절로» 따라온다 — 나중에 CV·자동화 매매를 한 장씩 붙이려고
+    이렇게 짰다. 한 장에는 그 계정 «하나»의 단추만 둔다(한 화면에 계정 단추가 겹치지 않게 · 09:09).
+    """
+    sc = json.load(open(os.path.join(HERE, 'data/showcase.json'), encoding='utf-8'))
+    장 = [c for c in sc['장'] if c.get('보임')]
+    if not 장:
+        raise SystemExit('data/showcase.json 에 보임:true 인 장이 없다.')
+    최근표지 = editions['편'][0]['표지'] if editions.get('편') else None
+
+    단추종류 = {
+        'youtube': ('btn-yt', IC['yt'], 'YouTube 보러가기', YT_CHANNEL),
+        'instagram': ('btn-ig', IC['ig'], 'Instagram 보러가기', IG_ACCOUNT),
+    }
+
+    패널 = []
+    for i, c in enumerate(장):
+        cls, icon, 글, 주소 = 단추종류[c['단추']]
+        머리 = ''
+        if c.get('칩'):
+            머리 = ('<p class="name-chip"><img src="/assets/brand/logo-256.png" alt="">'
+                    '<span>%s</span></p>' % e(c['칩']).replace(e(CHARACTER), '<b>%s</b>' % e(CHARACTER)))
+        elif c.get('눈금'):
+            머리 = '<p class="eyebrow">%s</p>' % e(c['눈금'])
+
+        줄 = []
+        for n, t in enumerate(c['제목줄']):
+            if not t:
+                continue
+            줄.append('<span class="accent">%s</span>' % e(t) if n == c.get('강조줄') else e(t))
+        제목 = '<br>'.join(줄)
+
+        if c['그림'] == '캐릭터':
+            # 정지 PNG 가 기본. home.js 가 움직임을 마다하지 않는 환경에서만 GIF 로 바꾼다.
+            그림 = ('<img id="hero-char" src="/assets/brand/character-wave.png" '
+                    'data-motion="/assets/brand/character-wave.gif" '
+                    'width="780" height="780" alt="손을 흔드는 %s">' % e(CHARACTER))
+            그림칸 = 'hero-art'
+        else:
+            # 첫 그림이 늦지 않게, 이 장이 «처음 보일 때» home.js 가 붙인다
+            그림 = ('<img data-src="%s" width="720" height="900" alt="가장 최근 편 카드뉴스 표지">'
+                    '<noscript><img src="%s" width="720" height="900" alt="가장 최근 편 카드뉴스 표지"></noscript>'
+                    % (최근표지, 최근표지)) if 최근표지 else ''
+            그림칸 = 'hero-art hero-art-cover'
+
+        패널.append("""          <article class="sc-panel%(on)s" id="sc-%(id)s" data-sc="%(id)s"%(hidden)s>
+            <div class="hero-inner">
+              <div>
+                %(머리)s
+                <h1>%(제목)s</h1>
+                <p class="hero-lead">%(설명)s</p>
+                <div class="hero-actions">
+                  <a class="btn %(cls)s btn-xl" href="%(주소)s" target="_blank" rel="noopener">%(icon)s %(글)s %(go)s</a>
+                </div>
+              </div>
+              <div class="%(그림칸)s">%(그림)s</div>
+            </div>
+          </article>""" % dict(on=' is-on' if i == 0 else '', id=e(c['id']),
+                                hidden='' if i == 0 else ' aria-hidden="true"',
+                                머리=머리, 제목=제목, 설명=e(c['설명']),
+                                cls=cls, 주소=주소, icon=icon, 글=e(글), go=IC['go'],
+                                그림칸=그림칸, 그림=그림))
+
+    return """      <section class="hero showcase" data-interval="%(초d)d" aria-roledescription="carousel" aria-label="어제한입 소개">
+        <div class="sc-stack">
+%(패널)s
+        </div>
+        <div class="sc-dots" role="tablist" aria-label="소개 화면 고르기"></div>
+        <p class="hero-sub"><a href="#editions" data-view="editions">지난 편 훑어보기 →</a></p>
+      </section>""" % dict(초d=int(sc.get('넘김초', 7)) * 1000, 패널='\n'.join(패널))
+
+
 # ── 화면(칸) ───────────────────────────────────────────────────────
 def view_yesterdigest(cfg, data):
     """들어오면 처음 보이는 화면 — 손 흔드는 한입이가 맞이하고, 바로 계정 버튼."""
-    return """      <section class="hero" aria-labelledby="hero-title">
-        <div class="hero-inner">
-          <div>
-            <p class="name-chip"><img src="/assets/brand/logo-256.png" alt=""><span>안녕하세요, <b>%(CH)s</b>예요</span></p>
-            <h1 id="hero-title">어제의 이슈를<br><span class="accent">한입에.</span></h1>
-            <p class="hero-lead">
-              놓치기 쉬운 어제의 뉴스를 골라, 사실을 확인하고, 한입 크기로 만듭니다.
-              <b>매일 아침 7시</b> Instagram과 YouTube에 올라가요.
-            </p>
-            <div class="hero-actions">
-              <a class="btn btn-ig btn-xl" href="%(IG)s" target="_blank" rel="noopener">%(icig)s Instagram 보러가기 %(icgo)s</a>
-              <a class="btn btn-yt btn-xl" href="%(YT)s" target="_blank" rel="noopener">%(icyt)s YouTube 보러가기 %(icgo)s</a>
-            </div>
-            <p class="hero-sub"><a href="#editions" data-view="editions">지난 편 훑어보기 →</a></p>
-          </div>
-          <div class="hero-art">
-            <!-- 정지 PNG 가 기본. 움직임을 마다하지 않는 환경에서만 home.js 가 GIF 로 바꾼다.
-                 GIF 가 안 뜨면 PNG 로 되돌린다. 브랜드 캐릭터라 「AI 생성 참고 이미지」 표기는 붙이지 않는다
-                 (2026-09-11 22:05 유진님 「안붙임.」) -->
-            <img id="hero-char" src="/assets/brand/character-wave.png"
-                 data-motion="/assets/brand/character-wave.gif"
-                 width="780" height="780" alt="손을 흔드는 %(CH)s">
-          </div>
-        </div>
-      </section>
+    return showcase(data['editions']) + """
 
       <section class="section" aria-labelledby="about-title">
         <div class="section-heading reveal">
@@ -138,7 +189,7 @@ def view_editions(cfg, data):
         더보기 = ('카드 %d장 전체와 릴스 1편은 계정에서 봅니다.' if 릴스있음
                   else '카드 %d장 전체는 계정에서 봅니다.') % ed.get('카드수', 0)
 
-        slides.append("""          <article class="ed" style="--accent: %(color)s">
+        slides.append("""          <article class="ed reveal" style="--accent: %(color)s">
             <a class="ed-cover" href="%(ig)s" target="_blank" rel="noopener"
                aria-label="%(title)s 카드뉴스를 Instagram에서 보기">
               <!-- 이 화면은 처음엔 숨어 있다. display:none 이어도 브라우저는 src 를 받아버리므로
@@ -169,7 +220,7 @@ def view_editions(cfg, data):
           <p>어제의 이슈 네댓 개를 카드뉴스 한 벌과 세로 영상 한 편으로 만듭니다.
              여기서는 <b>표지 한 장</b>만 보여드려요 — 전체는 Instagram과 YouTube에 있습니다.</p>
         </div>
-        <div class="carousel reveal">
+        <div class="carousel">
           <button class="nav-arrow prev" type="button" aria-label="이전 편">%(prev)s</button>
           <div class="track" aria-label="지난 편">
 %(slides)s
@@ -223,7 +274,7 @@ def oauth_note():
     🔴 «작게»이지 «흐리게»가 아니다 — 글자 14px 이상, 어두운 바탕에 밝은 글자로 대비를 지킨다.
     """
     return """  <section class="oauth-note" aria-labelledby="oauth-title">
-    <div class="oauth-inner">
+    <div class="oauth-inner reveal">
       <p class="oauth-eyebrow">Google OAuth</p>
       <h2 id="oauth-title">Google 권한은 채널 운영에만 사용합니다.</h2>
       <p class="oauth-lead">YesterDigest는 운영자가 소유한 YouTube 채널에 영상을 업로드하고,

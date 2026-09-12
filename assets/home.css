@@ -97,10 +97,40 @@ h1, h2, h3,
 .btn-xl { min-height: 60px; padding: 17px 30px; font-size: 1.08rem; }
 
 /* ── 헤더 ─────────────────────────────────────────── */
-.site-header {
-  background: rgba(251, 247, 239, .85);
-  border-bottom: 1px solid rgba(12, 48, 84, .08);
+/* ── 상단 바 ────────────────────────────────────────
+   유진님 2026-09-12 09:24 「가만히 있을때는 이게 바로 아래의 색상과 이어지게 하고,
+   스크롤해서 내리면 지금처럼 딱 나눠지게」.
+   맨 위 = 투명 + 밝은 글자(첫 화면이 남색이라). 내리면 = 살구색이 차오르고 경계가 생긴다.
+   임계값은 home.js 가 «상단 바 높이의 40%»로 잡는다(실측 약 27px). */
+/* 🔴 상단 바가 첫 화면 «위에 얹히게» 한다.
+   sticky 는 제 자리를 차지하므로, 투명하게 만들어도 뒤에 보이는 것은 첫 화면이 아니라
+   페이지 바탕(살구색)이었다 — 그래서 「분리되어 보인다」. 첫 화면을 상단 바 높이만큼
+   끌어올려 그 밑으로 들어가게 하고, 같은 만큼 안쪽 여백을 준다. */
+.showcase {
+  margin-top: calc(-1 * var(--header-h, 69px));
+  padding-top: var(--header-h, 69px);
 }
+
+.site-header {
+  background: transparent;
+  border-bottom: 1px solid transparent;
+  transition: background .26s var(--ease), border-color .26s var(--ease),
+              box-shadow .26s var(--ease), backdrop-filter .26s var(--ease);
+}
+
+.site-header.is-stuck {
+  background: rgba(251, 247, 239, .92);
+  border-bottom-color: rgba(12, 48, 84, .1);
+  box-shadow: 0 6px 22px rgba(12, 48, 84, .07);
+  backdrop-filter: blur(14px);
+}
+
+/* 맨 위(투명)일 때는 첫 화면의 남색 위라 글자를 밝게 — 안 그러면 안 보인다 */
+.site-header:not(.is-stuck) .brand-link { color: #fff; }
+.site-header:not(.is-stuck) .brand-link small { color: #cfe0ef; }
+.site-header:not(.is-stuck) .menu-btn { color: #fff; border-color: rgba(255, 255, 255, .34); }
+.site-header:not(.is-stuck) .menu-btn:hover { background: rgba(255, 255, 255, .14); }
+.site-header:not(.is-stuck) .nav-links a { color: #eaf3fb; }
 
 .nav { justify-content: space-between; }
 .brand-link img { width: 40px; height: 40px; box-shadow: 0 4px 14px rgba(12, 48, 84, .18); }
@@ -208,18 +238,85 @@ h1, h2, h3,
 @keyframes halo { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.035); } }
 @keyframes bob { 0%, 100% { transform: translateY(0) rotate(0deg); } 50% { transform: translateY(-12px) rotate(-1.1deg); } }
 
+
+/* ── 첫 화면 쇼케이스 — 가만히 두면 저절로 바뀐다 ────
+   유진님 2026-09-12 09:26. 장은 data/showcase.json 이 정한다.
+   장을 «겹쳐» 두고 투명도로 바꾼다 — 그래야 바뀔 때 높이가 안 튄다. */
+.showcase { position: relative; }
+
+.sc-stack { display: grid; }
+
+.sc-panel {
+  grid-area: 1 / 1;                 /* 모두 같은 칸에 겹친다 */
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(10px);
+  transition: opacity .6s var(--ease), transform .6s var(--ease), visibility 0s linear .6s;
+}
+
+.sc-panel.is-on {
+  opacity: 1;
+  visibility: visible;
+  transform: none;
+  transition: opacity .6s var(--ease), transform .6s var(--ease), visibility 0s;
+}
+
+/* JS 가 없으면 장을 겹치지 않고 위아래로 다 보여준다 (내용이 사라지지 않게) */
+html:not(.js) .sc-stack { display: block; }
+html:not(.js) .sc-panel { opacity: 1; visibility: visible; transform: none; }
+
+.sc-dots {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  justify-content: center;
+  gap: 9px;
+  padding: 0 0 6px;
+}
+
+.sc-dots button {
+  width: 9px;
+  height: 9px;
+  padding: 0;
+  border: 0;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, .32);
+  cursor: pointer;
+  transition: width .3s var(--ease), background .3s;
+}
+
+.sc-dots button.is-on { width: 26px; background: var(--amber); }
+
+/* 표지를 그림으로 쓰는 장 (인스타) */
+.hero-art-cover { display: grid; place-items: center; }
+.hero-art-cover::before { display: none; }
+
+.hero-art-cover img {
+  width: auto;
+  height: min(380px, 48vh);
+  max-width: 84vw;
+  border-radius: 18px;
+  box-shadow: 0 26px 60px rgba(0, 0, 0, .42);
+  animation: none;
+}
+
+.showcase .hero-sub { position: relative; z-index: 2; text-align: center; padding-bottom: 22px; margin: 0; }
+
 /* ── 섹션 공통 ─────────────────────────────────────── */
 .section { padding: 84px 0; }
 .section-heading h2 { font-size: clamp(1.85rem, 3.4vw, 2.7rem); }
 .section-heading p b { color: var(--navy); }
 
-.reveal {
+/* 🔴 «기본은 보이는 쪽»이다. `.js` 는 home.js 가 붙이므로, JS 가 안 돌거나 관찰자가 없으면
+   아무것도 숨지 않는다 — 안 나타나서 글이 사라지는 사고를 구조로 막는다. */
+.js .reveal {
   opacity: 0;
-  transform: translateY(26px);
-  transition: opacity .7s var(--ease), transform .7s var(--ease);
+  transform: translateY(22px);
+  transition: opacity .62s var(--ease), transform .62s var(--ease);
+  transition-delay: var(--d, 0ms);      /* 덩어리마다 조금씩 시차 (home.js 가 넣는다) */
 }
 
-.reveal.is-in { opacity: 1; transform: none; }
+.js .reveal.is-in { opacity: 1; transform: none; }
 
 /* ── 편 캐러셀 — «편 사이»를 스르륵 넘긴다 ─────────── */
 .carousel { position: relative; }
@@ -598,7 +695,9 @@ h1, h2, h3,
 
 @media (prefers-reduced-motion: reduce) {
   .hero-art img, .hero-art::before { animation: none; }
-  .reveal { opacity: 1; transform: none; }
+  /* 🔴 `.js .reveal` 보다 세게 써야 이긴다 — 안 그러면 움직임을 마다한 사람에게 글이 안 보인다 */
+  .js .reveal, .reveal { opacity: 1; transform: none; transition: none; }
+  .sc-panel { transition: none; }
   .track { scroll-behavior: auto; }
   .ed:hover, .ed-cover:hover img { transform: none; }
 }

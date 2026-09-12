@@ -9,6 +9,7 @@
   root.classList.add('js');                 /* 이 클래스가 있어야 한 화면만 보인다 */
 
   var 캐러셀들 = [];   /* 아래 3번에서 채운다. show() 가 먼저 부르므로 여기서 만든다 */
+  var 상단바 = function () {};   /* 4번에서 채운다. show() 가 먼저 부르므로 여기서 만든다 */
 
   /* ── 1. 화면 전환 ───────────────────────────── */
   var views = [].slice.call(document.querySelectorAll('.view'));
@@ -34,6 +35,7 @@
     target.setAttribute('tabindex', '-1');
     target.focus({ preventScroll: true });
     sync캐러셀();
+    상단바();
   }
 
   /* data-view 가 붙은 것은 «페이지 이동»이 아니라 «화면 전환» */
@@ -183,7 +185,104 @@
 
   function sync캐러셀() { 캐러셀들.forEach(function (f) { f(); }); }
 
-  /* ── 4. 맞이하는 캐릭터 ─────────────────────── */
+
+  /* ── 4. 상단 바 — 맨 위에서는 배경과 이어지고, 내리면 드러난다 ──
+     유진님 2026-09-12 09:24. 임계값은 «상단 바 높이의 40%»로 재서 잡는다(고정 숫자를 안 박는다). */
+  var header = document.querySelector('.site-header');
+  if (header) {
+    var 문턱 = function () { return Math.max(12, header.offsetHeight * 0.4); };
+    상단바 = function () {
+      document.documentElement.style.setProperty('--header-h', header.offsetHeight + 'px');
+      /* 🔴 투명 + 밝은 글자는 «어두운 첫 화면 위에 있을 때»만 쓴다.
+         지난 편 화면은 위가 살구색이라, 거기서 투명하게 두면 흰 글자가 안 보인다. */
+      var 어두운첫화면 = !!document.querySelector('.view.is-active .showcase');
+      header.classList.toggle('is-stuck', window.scrollY > 문턱() || !어두운첫화면);
+    };
+    window.addEventListener('scroll', 상단바, { passive: true });
+    window.addEventListener('resize', 상단바);
+    상단바();
+  }
+
+  /* ── 5. 첫 화면 쇼케이스 — 가만히 두면 저절로 바뀐다 ──
+     유진님 2026-09-12 09:26. 장 수는 data/showcase.json 이 정하므로 여기서는 «세어서» 쓴다. */
+  var sc = document.querySelector('.showcase');
+  if (sc) {
+    var 장 = [].slice.call(sc.querySelectorAll('.sc-panel'));
+    var dotBox = sc.querySelector('.sc-dots');
+    var 간격 = parseInt(sc.getAttribute('data-interval'), 10) || 7000;
+    var 지금 = 0, 타이머 = null, 멈춤 = false;
+
+    var scDots = 장.map(function (p, i) {
+      var b = document.createElement('button');
+      b.type = 'button';
+      b.setAttribute('role', 'tab');
+      b.setAttribute('aria-label', (i + 1) + '번째 소개 화면');
+      b.addEventListener('click', function () { 보이기(i); 세우기(); 돌리기(); });
+      dotBox.appendChild(b);
+      return b;
+    });
+
+    function 보이기(i) {
+      지금 = (i + 장.length) % 장.length;
+      장.forEach(function (p, k) {
+        var on = k === 지금;
+        p.classList.toggle('is-on', on);
+        p.setAttribute('aria-hidden', on ? 'false' : 'true');
+        if (on) {
+          /* 이 장의 그림은 «처음 보일 때» 받는다 — 첫 그림이 늦지 않게 */
+          p.querySelectorAll('img[data-src]').forEach(function (im) {
+            im.src = im.getAttribute('data-src');
+            im.removeAttribute('data-src');
+          });
+        }
+      });
+      scDots.forEach(function (d, k) {
+        d.classList.toggle('is-on', k === 지금);
+        d.setAttribute('aria-selected', k === 지금 ? 'true' : 'false');
+      });
+    }
+
+    function 돌리기() {
+      if (타이머 || 멈춤 || reduce || 장.length < 2) return;
+      타이머 = setInterval(function () { 보이기(지금 + 1); }, 간격);
+    }
+
+    function 세우기() {
+      if (타이머) { clearInterval(타이머); 타이머 = null; }
+    }
+
+    /* 마우스를 올리거나 초점이 들어오면 멈춘다 — 읽는 중에 넘어가지 않게.
+       🔴 pointerenter 가 아니라 mouseenter 를 쓴다. 손가락은 pointerenter 는 일으키고
+          pointerleave 는 «안 일으킬 때»가 있어, 폰에서 한 번 만지면 영영 멈춰버린다. */
+    ['mouseenter', 'focusin'].forEach(function (ev) {
+      sc.addEventListener(ev, function () { 멈춤 = true; 세우기(); });
+    });
+    ['mouseleave', 'focusout'].forEach(function (ev) {
+      sc.addEventListener(ev, function () { 멈춤 = false; 돌리기(); });
+    });
+    document.addEventListener('visibilitychange', function () {
+      if (document.hidden) 세우기(); else 돌리기();
+    });
+
+    /* 손가락으로 넘기기 */
+    var sx = 0, sy = 0, 끌기 = false;
+    sc.addEventListener('touchstart', function (ev) {
+      sx = ev.touches[0].clientX; sy = ev.touches[0].clientY; 끌기 = true; 세우기();
+    }, { passive: true });
+    sc.addEventListener('touchend', function (ev) {
+      if (!끌기) return;
+      끌기 = false;
+      var dx = ev.changedTouches[0].clientX - sx;
+      var dy = ev.changedTouches[0].clientY - sy;
+      if (Math.abs(dx) > 45 && Math.abs(dx) > Math.abs(dy)) 보이기(지금 + (dx < 0 ? 1 : -1));
+      돌리기();
+    }, { passive: true });
+
+    보이기(0);
+    돌리기();     /* prefers-reduced-motion 이면 돌리기()가 스스로 아무것도 안 한다 */
+  }
+
+  /* ── 6. 맞이하는 캐릭터 ─────────────────────── */
   /* 정지 PNG(105KB)가 먼저 뜨고, 그 위에 GIF(350KB)를 «따로 받아» 다 받은 뒤에만 바꾼다.
      첫 그림이 늦어지지 않고, 못 받으면 PNG 그대로 남는다.
      움직임을 마다하는 설정이면 아예 받지 않는다. */
@@ -197,15 +296,26 @@
     }
   }
 
-  /* ── 5. 스크롤 등장 ─────────────────────────── */
+  /* ── 7. 스크롤 등장 ─────────────────────────── */
+  var 나타날것 = [].slice.call(document.querySelectorAll('.reveal'));
   if (!reduce && 'IntersectionObserver' in window) {
     var io = new IntersectionObserver(function (entries) {
+      /* 한 번에 여러 개가 걸리면 조금씩 시차를 둔다 — 한꺼번에 튀어나오지 않게 */
+      var n = 0;
       entries.forEach(function (en) {
-        if (en.isIntersecting) { en.target.classList.add('is-in'); io.unobserve(en.target); }
+        if (!en.isIntersecting) return;
+        en.target.style.setProperty('--d', (n++ * 90) + 'ms');
+        en.target.classList.add('is-in');
+        io.unobserve(en.target);
       });
     }, { rootMargin: '0px 0px -8% 0px', threshold: 0.06 });
-    document.querySelectorAll('.reveal').forEach(function (el) { io.observe(el); });
+    나타날것.forEach(function (el) { io.observe(el); });
+    /* 🔴 안전망: 3초 뒤에도 안 나타난 것이 있으면 그냥 보여준다.
+       (관찰자가 안 걸리는 환경에서 글이 사라지는 사고를 막는다) */
+    setTimeout(function () {
+      나타날것.forEach(function (el) { el.classList.add('is-in'); });
+    }, 3000);
   } else {
-    document.querySelectorAll('.reveal').forEach(function (el) { el.classList.add('is-in'); });
+    나타날것.forEach(function (el) { el.classList.add('is-in'); });
   }
 })();
