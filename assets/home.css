@@ -769,21 +769,37 @@ html:not(.js) .sc-panel { opacity: 1; visibility: visible; transform: none; }
 
 .dv-bar i { display: block; width: 34%; height: 100%; background: var(--amber); }
 
+/* 🔴 2026-09-12 유진님 15:17 — 「유튜브 소개 페이지에서 재생버튼을 누르면 이 웹에서
+   소개영상을 띄워야지 유튜브 채널로 가는거 아니야. 기억해.」
+   → 보이기만 하던 span 을 «진짜 단추»로 바꿨다. 폰 전체를 덮는 링크 «위»에 있어야
+     눌리므로 z-index 를 준다. 이동을 막는 것은 home.js §7 이 한다. */
 .dv-play {
   position: absolute;
   left: 50%;
   top: 44%;
+  z-index: 3;
   display: grid;
   place-items: center;
   width: 15cqw;
   height: 15cqw;
+  padding: 0;
   transform: translate(-50%, -50%);
   color: #fff;
   background: rgba(10, 14, 20, .42);
   border: 2px solid rgba(255, 255, 255, .85);
   border-radius: 50%;
+  cursor: pointer;
   backdrop-filter: blur(2px);
+  transition: background .2s var(--ease), color .2s, transform .2s var(--ease);
 }
+
+.dv-play:hover, .dv-play:focus-visible {
+  background: rgba(252, 180, 36, .9);
+  color: #0b0f16;
+  transform: translate(-50%, -50%) scale(1.08);
+}
+
+.dv-play:focus-visible { outline: 2px solid var(--amber); outline-offset: 3px; }
 
 .dv-play svg { width: 7cqw; height: 7cqw; margin-left: .6cqw; }
 
@@ -1556,37 +1572,6 @@ html:not(.js) .ed-nav { display: none; }
    유진님 2026-09-12 11:19 「짧은 어제한입 소개 영상」. 영상은 아직 없다 —
    🔴 오늘 만든 것은 «누르면 커졌다가 끝나면 줄어드는» 움직임과 «자리»다.
    영상이 생기면 .intro-slot 안만 <video> 로 바꾸면 된다. */
-.intro-btn {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  padding: 7px 16px 7px 12px;
-  border: 1px solid rgba(255, 255, 255, .16);
-  border-radius: 999px;
-  background: rgba(255, 255, 255, .04);
-  color: #b9d2e8;
-  font-family: var(--en-font);
-  font-size: .74rem;
-  font-weight: 700;
-  letter-spacing: .2em;
-  cursor: pointer;
-  transition: background .2s var(--ease), color .2s, transform .2s var(--ease);
-}
-
-.intro-btn:hover, .intro-btn:focus-visible {
-  color: #fff;
-  background: rgba(255, 255, 255, .12);
-  transform: translateY(-2px);
-}
-
-.intro-play {
-  width: 0;
-  height: 0;
-  border-left: 8px solid var(--amber);
-  border-top: 5px solid transparent;
-  border-bottom: 5px solid transparent;
-}
-
 .hero-sub { display: flex; justify-content: center; align-items: center; gap: 10px; flex-wrap: wrap; }
 
 /* 🔴 2026-09-12 12:32 «고장 수리» — 유진님 12:24 「웹 클릭이 아무곳도 안돼」

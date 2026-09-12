@@ -359,9 +359,9 @@
   /* ── 7. 소개 영상 «틀» — 커졌다 줄어든다 ────────
      영상은 아직 없다. 움직임과 자리만 미리 만들어 둔다 (유진님 11:19 · 팀장 판단으로 영상은 오늘 안 만든다).
      영상이 생기면 .intro-slot 안만 <video> 로 바꾸면 되고, 이 코드는 그대로 쓴다. */
-  var introBtn = document.getElementById('intro-open');
+  var introBtn = document.getElementById('intro-open');   /* = 유튜브 장 폰 안의 «재생 단추» */
   var introBox = document.getElementById('intro-modal');
-  if (introBtn && introBox) {
+  if (introBox) {
     var introClose = document.getElementById('intro-close');
     var 되돌릴곳 = null;
 
@@ -381,7 +381,21 @@
       if (되돌릴곳 && 되돌릴곳.focus) 되돌릴곳.focus();
     }
 
-    introBtn.addEventListener('click', 열기);
+    /* 🔴 2026-09-12 유진님 15:17 — 「유튜브 소개 페이지에서 재생버튼을 누르면 이 웹에서
+       소개영상을 띄워야지 유튜브 채널로 가는거 아니야. 기억해.」
+
+       재생 단추는 «폰 전체를 감싼 링크(.device-link)» 안에 있다. 그래서 그냥 두면
+       단추를 눌러도 링크가 따라 열려 유튜브로 가버린다.
+       → preventDefault 로 «감싼 링크의 이동»을 막고, stopPropagation 으로
+         폰 다른 곳을 눌렀을 때의 처리와도 갈라놓는다.
+       🔴 폰의 «다른 곳»은 그대로 그 편 게시물로 이동한다 (유진님 지시). */
+    if (introBtn) {
+      introBtn.addEventListener('click', function (ev) {
+        ev.preventDefault();
+        ev.stopPropagation();
+        열기();
+      });
+    }
     introClose.addEventListener('click', 닫기);
     introBox.addEventListener('click', function (ev) { if (ev.target === introBox) 닫기(); });
     document.addEventListener('keydown', function (ev) { if (ev.key === 'Escape') 닫기(); });

@@ -107,9 +107,10 @@ def 기기목업(그림, alt, 재생=False, 주소=None, 설명=None, 윗줄='',
                       </div>
                       <span class="dv-bar"><i></i></span>
                     </div>
-                    <span class="dv-play" aria-hidden="true">
-                      <svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
-                    </span>""" % dict(
+                    <button class="dv-play" type="button" id="intro-open" aria-haspopup="dialog"
+                            aria-label="어제한입 소개 영상 보기">
+                      <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>
+                    </button>""" % dict(
             그림=그림, alt=e(alt), 윗줄=e(윗줄), 아랫줄=e(아랫줄),
             줄=''.join(기호(n, g) for n, g in
                        (('heart', '좋아요'), ('bubble', '댓글'), ('share', '공유'))))
@@ -270,14 +271,12 @@ def showcase(editions):
         </div>
         <div class="sc-foot">
           <div class="sc-dots" role="tablist" aria-label="소개 화면 고르기"></div>
+          <!-- 🔴 2026-09-12 유진님 15:17 — 「아래에 intro는 없애줘.
+                 재생버튼을 누를때만 소개영상을 띄울거야」
+               소개 영상으로 들어가는 문은 «유튜브 장 폰 안의 재생 단추» 하나뿐이다.
+               창(.intro-modal)은 그대로 둔다 — 그 재생 단추가 이 창을 연다. -->
           <p class="hero-sub">
             <a href="#editions" data-view="editions">Latest drops <span aria-hidden="true">&#8595;</span></a>
-            <!-- 🔴 소개 영상 «자리»다. 영상 파일은 아직 없다 (팀장 2026-09-12: 오늘은 렌더를 안 돌린다).
-                 여기서 만들어 두는 것은 «움직임»이다 — 누르면 커지고, 닫으면 줄어든다.
-                 영상이 생기면 intro_modal() 안의 .intro-slot 에 <video> 를 넣기만 하면 된다. -->
-            <button class="intro-btn" type="button" id="intro-open" aria-haspopup="dialog">
-              <span class="intro-play" aria-hidden="true"></span>INTRO
-            </button>
           </p>
         </div>
 %(띠)s
