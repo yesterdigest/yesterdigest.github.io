@@ -6,12 +6,35 @@
   <title>한입이 | YesterDigest</title>
   <meta name="description" content="캐릭터 한입이가 전하는 이야기. 어제의 뉴스를 한입 크기로 — 매일 아침 7시 Instagram과 YouTube에 올라갑니다.">
   <meta name="theme-color" content="#0C3054">
+  <link rel="canonical" href="https://yesterdigest.com/">
+
+  <!-- 카톡·트위터·페북에 «주소를 붙였을 때» 뜨는 것.
+       🔴 그림은 1200x630 이어야 «큰 카드»로 뜬다 — 2026-09-12 전까지 256x256 로고를 가리키고 있었고,
+          그 크기로는 어느 곳에서도 큰 카드가 안 나온다 (트위터 요구 300x157↑ · 카카오 권장 800x400↑).
+          그림 원본은 tools/og-card.html · 다시 만들기는 `python3 tools/make-assets.py`.
+       🔴 주소 뒤 ?v= 는 build.py 가 «파일 내용 해시»로 붙인다. 카카오·페북은 og 그림을 오래 캐시해서,
+          그림을 바꿔도 주소가 그대로면 «옛 그림»이 계속 뜬다. -->
   <meta property="og:type" content="website">
+  <meta property="og:site_name" content="YesterDigest">
+  <meta property="og:locale" content="ko_KR">
   <meta property="og:title" content="한입이 | YesterDigest">
   <meta property="og:description" content="어제의 뉴스를 한입 크기로. 매일 아침 7시.">
-  <meta property="og:image" content="https://yesterdigest.com/assets/brand/logo-256.png">
   <meta property="og:url" content="https://yesterdigest.com/">
-  <link rel="icon" href="/assets/logo.png">
+  <meta property="og:image" content="https://yesterdigest.com/assets/og/home.png?v=24328b83">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="어제의 뉴스를 한입 크기로 — 매일 아침 7시">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="한입이 | YesterDigest">
+  <meta name="twitter:description" content="어제의 뉴스를 한입 크기로. 매일 아침 7시.">
+  <meta name="twitter:image" content="https://yesterdigest.com/assets/og/home.png?v=24328b83">
+
+  <!-- 🔴 /favicon.ico 는 «선언과 상관없이» 브라우저·크롤러가 알아서 받아 간다. 없으면 404 가 난다.
+       그 전까지는 460x460 짜리 /assets/logo.png(72KB)를 탭 아이콘으로 받고 있었다 — 아이콘 하나에 72KB.
+       셋 다 tools/make-assets.py 가 같은 로고에서 만든다. -->
+  <link rel="icon" href="/favicon.ico" sizes="32x32">
+  <link rel="icon" href="/assets/brand/logo-256.png" type="image/png" sizes="256x256">
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <!-- 글씨체 — 유진님 2026-09-12 09:01 「배달의 민족 주아로 가자」
@@ -29,7 +52,26 @@
        숫자·년월일·요일 일곱 자는 날마다 바뀌므로 «반드시» 바탕 묶음으로 넣는다. -->
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Jua&display=swap&text=%20%21%28%29%2C-.0123456789%3A%3FABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz~%C2%B7%EA%B0%84%EA%B2%80%EA%B2%8C%EA%B3%A0%EA%B6%8C%EA%B7%BC%EA%B8%88%EA%B8%B0%EA%B8%B8%EB%82%9C%EB%84%90%EB%85%84%EB%89%B4%EB%8B%88%EB%8B%A4%EB%8D%B0%EB%93%9C%EB%94%B0%EB%9D%BC%EB%A1%9C%EB%A5%B4%EB%A5%BC%EB%A7%8C%EB%AA%A9%EB%AC%B8%EB%B0%8F%EB%B2%8C%EB%B3%84%EC%82%AC%EC%82%AD%EC%84%A0%EC%88%98%EC%8A%88%EC%8A%A4%EC%8B%9C%EC%94%A9%EC%96%B4%EC%97%90%EC%98%81%EC%9A%94%EC%9A%A9%EC%9A%B4%EC%9B%94%EC%9D%80%EC%9D%98%EC%9D%B4%EC%9D%B8%EC%9D%BC%EC%9E%85%EC%9E%91%EC%9E%A1%EC%9E%A5%EC%A0%9C%EC%A3%BC%EC%A7%80%EC%B1%84%EC%B2%AD%EC%B6%9C%EC%B8%A0%EC%B9%B4%EC%BD%98%ED%81%AC%ED%84%B0%ED%85%90%ED%86%A0%ED%8E%B8%ED%95%98%ED%95%9C%ED%95%A9%ED%99%94%ED%99%95%ED%9B%84">
   <link rel="stylesheet" href="/assets/styles.css?v=ae861d05">
-  <link rel="stylesheet" href="/assets/home.css?v=37a42f49">
+  <link rel="stylesheet" href="/assets/home.css?v=893ae8b6">
+
+  <!-- 검색엔진에게 «우리가 누구이고 계정이 어디인지»를 그대로 알려준다 (schema.org).
+       🔴 이 홈페이지의 뜻이 «인스타·유튜브로 보내는 대문»이라 sameAs 가 핵심이다 (유진님 07:54).
+          구글이 이걸 읽고 검색 결과에 계정을 함께 붙인다.
+       🔴 화면에 없는 것을 지어내지 않는다 — 여기 적힌 것은 전부 페이지에 실제로 있는 것이다. -->
+  <script type="application/ld+json">
+  {"@context":"https://schema.org","@graph":[
+    {"@type":"Organization","@id":"https://yesterdigest.com/#org",
+     "name":"YesterDigest","alternateName":"어제한입",
+     "url":"https://yesterdigest.com/",
+     "email":"yesterdigest@gmail.com",
+     "logo":{"@type":"ImageObject","url":"https://yesterdigest.com/assets/brand/logo-256.png","width":256,"height":256},
+     "description":"어제의 뉴스를 한입 크기로. 매일 아침 7시 Instagram과 YouTube에 올라갑니다.",
+     "sameAs":["https://www.instagram.com/yesterdigest/","https://www.youtube.com/@yesterdigest"]},
+    {"@type":"WebSite","@id":"https://yesterdigest.com/#site",
+     "name":"한입이 | YesterDigest","url":"https://yesterdigest.com/",
+     "inLanguage":"ko-KR","publisher":{"@id":"https://yesterdigest.com/#org"}}
+  ]}
+  </script>
 </head>
 <body data-default-view="yesterdigest">
   <a class="skip-link" href="#main">본문으로 건너뛰기</a>
@@ -38,7 +80,10 @@
     <nav class="nav" aria-label="주요 메뉴">
       <button class="menu-btn" type="button" id="menu-open"
               aria-label="메뉴 열기" aria-expanded="false" aria-controls="drawer"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button>
-      <a class="brand-link" href="#yesterdigest" data-view="yesterdigest" aria-label="처음 화면으로">
+      <!-- 🔴 aria-label 을 «안» 붙인다. 보이는 글씨가 「한입이 YesterDigest」인데 이름표를
+           「처음 화면으로」로 덮으면, 음성으로 조작하는 사람이 «보이는 대로» 말했을 때 안 눌린다
+           (WCAG 2.5.3 Label in Name · Lighthouse label-content-name-mismatch 로 실제로 걸렸다). -->
+      <a class="brand-link" href="#yesterdigest" data-view="yesterdigest">
         <img src="/assets/brand/logo-256.png" alt="">
         <span>한입이<small>YesterDigest</small></span>
       </a>

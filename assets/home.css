@@ -553,6 +553,7 @@ html:not(.js) .sc-panel { opacity: 1; visibility: visible; transform: none; }
 }
 
 .sc-dots button {
+  position: relative;
   width: 9px;
   height: 9px;
   padding: 0;
@@ -561,6 +562,22 @@ html:not(.js) .sc-panel { opacity: 1; visibility: visible; transform: none; }
   background: rgba(255, 255, 255, .3);
   cursor: pointer;
   transition: width .3s var(--ease), background .3s;
+}
+
+/* 🔴 «누르는 자리»만 넓힌다 — 보이는 점은 그대로 9px 다 (모양은 안 건드린다).
+   점이 9px, 사이가 9px 이라 손가락으로는 사실상 못 누른다 (WCAG 2.5.8 은 24px 를 본다).
+   가로는 점(9) + 사이(9) = 18px 까지만 늘린다 — 더 늘리면 옆 점의 자리를 «뺏어»
+   엉뚱한 장이 열린다. 세로는 뺏을 것이 없어 24px 를 준다.
+   ⚠️ 24x24 에는 여전히 못 미친다. 그러려면 점 사이를 벌려야 하는데
+      그건 유진님이 보고 합격 주신 «모양»이라 안 건드렸다. */
+.sc-dots button::after {
+  content: '';
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 18px;
+  height: 24px;
+  transform: translate(-50%, -50%);
 }
 
 .sc-dots button.is-on { width: 28px; background: var(--amber); }

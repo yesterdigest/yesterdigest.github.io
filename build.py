@@ -4,7 +4,7 @@
   python3 build.py
 
 읽는 것 : data/sections.json (칸 목록 = 메뉴 + 화면) · data/editions.json (편별 링크표)
-쓰는 것 : index.html
+쓰는 것 : index.html · sitemap.xml
 
 🔴 index.html 을 손으로 고치지 않는다. 여기를 고치고 다시 돌린다.
 🔴 편별 주소도 손으로 적지 않는다 — data/editions.json 은 작업 저장소의
@@ -19,7 +19,7 @@
   ② 종류가 "화면"이면 아래 SECTION_BUILDERS 에 같은 id 로 함수를 등록
   ③ python3 build.py
 """
-import datetime, html, json, os, re, urllib.parse
+import datetime, html, json, os, re, subprocess, urllib.parse
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 YT_CHANNEL = 'https://www.youtube.com/@yesterdigest'
@@ -525,16 +525,48 @@ def 자산판번호(page):
     """
     import hashlib
     붙인것 = []
-    for 주소 in ('/assets/styles.css', '/assets/home.css', '/assets/home.js'):
+    for 주소 in ('/assets/styles.css', '/assets/home.css', '/assets/home.js',
+               '/assets/og/home.png'):
         f = os.path.join(HERE, 주소.lstrip('/'))
         if not os.path.exists(f):
             print('  \u26a0\ufe0f 자산 없음 — 판번호 못 붙임: %s' % 주소)
             continue
         h = hashlib.md5(open(f, 'rb').read()).hexdigest()[:8]
-        page = page.replace('"%s"' % 주소, '"%s?v=%s"' % (주소, h))
+        # 끝따옴표로만 맞춘다 — og 그림은 "https://yesterdigest.com/assets/og/home.png" 처럼
+        # 앞에 도메인이 붙어 있어서 «따옴표-주소-따옴표» 로는 안 잡힌다
+        page = page.replace('%s"' % 주소, '%s?v=%s"' % (주소, h))
         붙인것.append('%s?v=%s' % (주소.rsplit('/', 1)[-1], h))
     print('  자산 판번호 — ' + ' \u00b7 '.join(붙인것))
     return page
+
+
+def sitemap():
+    """sitemap.xml 을 «손으로 안 고쳐도» 맞게 유지한다.
+
+    🔴 lastmod 는 파일 시각이 아니라 «git 이 아는 마지막 고친 날»이다.
+       파일 시각을 쓰면 build.py 를 돌릴 때마다 내용은 그대로인데 날짜만 바뀌어
+       git 에 매일 의미 없는 변경이 쌓인다.
+    🔴 주소는 «실제로 있는 주소»만 넣는다. 이 홈페이지는 화면을 #해시로 바꾸므로
+       어제한입·EDITIONS 는 따로 주소가 없다 — 넣으면 구글이 404 취급한다.
+    """
+    쪽 = [('/', 'index.html'), ('/privacy/', 'privacy/index.html'), ('/terms/', 'terms/index.html')]
+    줄 = []
+    for 주소, 파일 in 쪽:
+        if not os.path.exists(os.path.join(HERE, 파일)):
+            print('  ⚠️ sitemap 건너뜀 — 파일이 없다: %s' % 파일)
+            continue
+        try:
+            날 = subprocess.run(['git', 'log', '-1', '--format=%cs', '--', 파일],
+                               cwd=HERE, capture_output=True, text=True, timeout=10).stdout.strip()
+        except Exception:
+            날 = ''
+        날 = 날 or datetime.date.today().isoformat()
+        줄.append('  <url>\n    <loc>https://yesterdigest.com%s</loc>\n    <lastmod>%s</lastmod>\n  </url>'
+                  % (주소, 날))
+    out = ('<?xml version="1.0" encoding="UTF-8"?>\n'
+           '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n%s\n</urlset>\n' % '\n'.join(줄))
+    open(os.path.join(HERE, 'sitemap.xml'), 'w', encoding='utf-8').write(out)
+    print('  sitemap.xml — 주소 %d개' % len(줄))
 
 
 def build():
@@ -581,6 +613,7 @@ def build():
     print('index.html — 화면 %d개 · 메뉴 %d줄 · 자리만 %d개 (기본 화면: %s)'
           % (len(views), len(menu), len(자리), 기본))
     print('  Jua 는 글자 %d자만 받는다 (text=)' % len(글자))
+    sitemap()
 
 
 PAGE = """<!doctype html>
@@ -591,12 +624,35 @@ PAGE = """<!doctype html>
   <title>%(CH)s | YesterDigest</title>
   <meta name="description" content="캐릭터 %(CH)s가 전하는 이야기. 어제의 뉴스를 한입 크기로 — 매일 아침 7시 Instagram과 YouTube에 올라갑니다.">
   <meta name="theme-color" content="#0C3054">
+  <link rel="canonical" href="https://yesterdigest.com/">
+
+  <!-- 카톡·트위터·페북에 «주소를 붙였을 때» 뜨는 것.
+       🔴 그림은 1200x630 이어야 «큰 카드»로 뜬다 — 2026-09-12 전까지 256x256 로고를 가리키고 있었고,
+          그 크기로는 어느 곳에서도 큰 카드가 안 나온다 (트위터 요구 300x157↑ · 카카오 권장 800x400↑).
+          그림 원본은 tools/og-card.html · 다시 만들기는 `python3 tools/make-assets.py`.
+       🔴 주소 뒤 ?v= 는 build.py 가 «파일 내용 해시»로 붙인다. 카카오·페북은 og 그림을 오래 캐시해서,
+          그림을 바꿔도 주소가 그대로면 «옛 그림»이 계속 뜬다. -->
   <meta property="og:type" content="website">
+  <meta property="og:site_name" content="YesterDigest">
+  <meta property="og:locale" content="ko_KR">
   <meta property="og:title" content="%(CH)s | YesterDigest">
   <meta property="og:description" content="어제의 뉴스를 한입 크기로. 매일 아침 7시.">
-  <meta property="og:image" content="https://yesterdigest.com/assets/brand/logo-256.png">
   <meta property="og:url" content="https://yesterdigest.com/">
-  <link rel="icon" href="/assets/logo.png">
+  <meta property="og:image" content="https://yesterdigest.com/assets/og/home.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="어제의 뉴스를 한입 크기로 — 매일 아침 7시">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="%(CH)s | YesterDigest">
+  <meta name="twitter:description" content="어제의 뉴스를 한입 크기로. 매일 아침 7시.">
+  <meta name="twitter:image" content="https://yesterdigest.com/assets/og/home.png">
+
+  <!-- 🔴 /favicon.ico 는 «선언과 상관없이» 브라우저·크롤러가 알아서 받아 간다. 없으면 404 가 난다.
+       그 전까지는 460x460 짜리 /assets/logo.png(72KB)를 탭 아이콘으로 받고 있었다 — 아이콘 하나에 72KB.
+       셋 다 tools/make-assets.py 가 같은 로고에서 만든다. -->
+  <link rel="icon" href="/favicon.ico" sizes="32x32">
+  <link rel="icon" href="/assets/brand/logo-256.png" type="image/png" sizes="256x256">
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <!-- 글씨체 — 유진님 2026-09-12 09:01 「배달의 민족 주아로 가자」
@@ -615,6 +671,25 @@ PAGE = """<!doctype html>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Jua&display=swap&text=__JUA_TEXT__">
   <link rel="stylesheet" href="/assets/styles.css">
   <link rel="stylesheet" href="/assets/home.css">
+
+  <!-- 검색엔진에게 «우리가 누구이고 계정이 어디인지»를 그대로 알려준다 (schema.org).
+       🔴 이 홈페이지의 뜻이 «인스타·유튜브로 보내는 대문»이라 sameAs 가 핵심이다 (유진님 07:54).
+          구글이 이걸 읽고 검색 결과에 계정을 함께 붙인다.
+       🔴 화면에 없는 것을 지어내지 않는다 — 여기 적힌 것은 전부 페이지에 실제로 있는 것이다. -->
+  <script type="application/ld+json">
+  {"@context":"https://schema.org","@graph":[
+    {"@type":"Organization","@id":"https://yesterdigest.com/#org",
+     "name":"YesterDigest","alternateName":"어제한입",
+     "url":"https://yesterdigest.com/",
+     "email":"yesterdigest@gmail.com",
+     "logo":{"@type":"ImageObject","url":"https://yesterdigest.com/assets/brand/logo-256.png","width":256,"height":256},
+     "description":"어제의 뉴스를 한입 크기로. 매일 아침 7시 Instagram과 YouTube에 올라갑니다.",
+     "sameAs":["%(IG)s","%(YT)s"]},
+    {"@type":"WebSite","@id":"https://yesterdigest.com/#site",
+     "name":"%(CH)s | YesterDigest","url":"https://yesterdigest.com/",
+     "inLanguage":"ko-KR","publisher":{"@id":"https://yesterdigest.com/#org"}}
+  ]}
+  </script>
 </head>
 <body data-default-view="%(기본)s">
   <a class="skip-link" href="#main">본문으로 건너뛰기</a>
@@ -623,7 +698,10 @@ PAGE = """<!doctype html>
     <nav class="nav" aria-label="주요 메뉴">
       <button class="menu-btn" type="button" id="menu-open"
               aria-label="메뉴 열기" aria-expanded="false" aria-controls="drawer">%(icmenu)s</button>
-      <a class="brand-link" href="#%(기본)s" data-view="%(기본)s" aria-label="처음 화면으로">
+      <!-- 🔴 aria-label 을 «안» 붙인다. 보이는 글씨가 「한입이 YesterDigest」인데 이름표를
+           「처음 화면으로」로 덮으면, 음성으로 조작하는 사람이 «보이는 대로» 말했을 때 안 눌린다
+           (WCAG 2.5.3 Label in Name · Lighthouse label-content-name-mismatch 로 실제로 걸렸다). -->
+      <a class="brand-link" href="#%(기본)s" data-view="%(기본)s">
         <img src="/assets/brand/logo-256.png" alt="">
         <span>%(CH)s<small>YesterDigest</small></span>
       </a>

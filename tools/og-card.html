@@ -1,0 +1,42 @@
+<!doctype html>
+<!-- 공유했을 때 뜨는 «그림» 한 장의 원본. 1200×630.
+     고치면 `python3 tools/make-assets.py` 를 다시 돌린다 — 내보내는 곳은 /assets/og/home.png.
+     🔴 남의 그림·남의 앱 화면을 넣지 않는다. 여기 있는 것은 전부 우리 자산이다. -->
+<meta charset="utf-8">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Jua&family=Gothic+A1:wght@400;700&family=Inter:wght@600;800&display=swap">
+<style>
+  * { margin:0; box-sizing:border-box; }
+  body { width:1200px; height:630px; overflow:hidden;
+         background:#0c3054; color:#fff;
+         font-family:'Gothic A1','Apple SD Gothic Neo',sans-serif;
+         display:flex; align-items:center; gap:64px; padding:0 86px; }
+  /* 바탕의 은은한 빛 — 그림 파일 하나로 끝나도록 CSS 로만 그린다 */
+  body::before { content:''; position:absolute; inset:0;
+    background:radial-gradient(900px 620px at 78% 18%, rgba(252,180,36,.22), transparent 62%),
+               radial-gradient(700px 520px at 6% 96%, rgba(127,212,255,.14), transparent 60%); }
+  .txt, .art { position:relative; }
+  .txt { flex:1; }
+  .kicker { font-family:'Inter',sans-serif; font-weight:800; font-size:27px; letter-spacing:.16em;
+            color:#fcb424; margin-bottom:20px; }
+  h1 { font-family:'Jua',sans-serif; font-weight:400; font-size:92px; line-height:1.16; letter-spacing:-.01em; }
+  h1 b { color:#fcb424; font-weight:400; }
+  p { font-size:33px; line-height:1.5; color:#cfe0ee; margin-top:24px; }
+  .chips { display:flex; gap:12px; margin-top:38px; }
+  .chip { font-family:'Inter',sans-serif; font-weight:600; font-size:23px; letter-spacing:.04em;
+          padding:11px 22px; border-radius:999px;
+          border:2px solid rgba(255,255,255,.28); color:#eaf3fb; }
+  .chip.on { background:#fcb424; border-color:#fcb424; color:#0c3054; font-weight:800; }
+  .art img { width:368px; height:368px; display:block;
+             filter:drop-shadow(0 26px 54px rgba(0,0,0,.4)); }
+</style>
+<div class="txt">
+  <div class="kicker">DAILY 07:00</div>
+  <h1>어제의 뉴스를<br><b>한입</b> 크기로.</h1>
+  <p>빠르게, 그러나 확인한 것만.</p>
+  <div class="chips">
+    <span class="chip on">YESTERDIGEST</span>
+    <span class="chip">Instagram</span>
+    <span class="chip">YouTube</span>
+  </div>
+</div>
+<div class="art"><img src="../assets/logo.png" alt=""></div>
