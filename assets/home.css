@@ -1054,43 +1054,51 @@ html:not(.js) .sc-panel { opacity: 1; visibility: visible; transform: none; }
 .oauth-inner {
   max-width: var(--content);
   margin-inline: auto;
-  padding-block: 26px 24px;
+  padding-block: 22px 20px;
+  /* 🔴 14px 은 «바닥»이다. 더 줄이지 않는다 — CLAUDE.md §3 「작게이지 흐리게가 아니다.
+     글자 14px 이상, 어두운 바탕에 밝은 글자로 대비를 지킨다」.
+     그래서 «크기»가 아니라 «무게»를 낮춘다 — 강조색을 빼고, 굵기를 풀고, 줄을 좁힌다. */
   font-size: .875rem;          /* 14px — 아래 문턱 */
-  line-height: 1.62;
+  line-height: 1.55;
 }
 
 .oauth-eyebrow {
-  margin: 0 0 4px;
-  color: #a9c6de;
+  margin: 0 0 3px;
+  color: #7e97ad;              /* 브랜드색·밝은색을 여기 쓰지 않는다 */
   font-size: .875rem;          /* 14px — 라벨도 문턱 위로 */
-  font-weight: 800;
+  font-weight: 700;
   letter-spacing: .1em;
   text-transform: uppercase;
 }
 
 .oauth-note h2 {
   margin: 0 0 7px;
-  color: #eef5fb;
-  font-size: .98rem;
-  font-weight: 800;
+  color: #c6d6e4;              /* 본문과 같은 밝기 — 여기만 튀지 않게 */
+  font-size: .875rem;          /* 14px */
+  font-weight: 700;
   letter-spacing: -.02em;
 }
 
-.oauth-lead { margin: 0 0 12px; max-width: 62ch; }
+.oauth-lead { margin: 0 0 10px; max-width: 62ch; color: #9fb8cc; }
 
 .oauth-list {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 8px 20px;
-  margin: 0 0 12px;
+  gap: 7px 20px;
+  margin: 0 0 10px;
   padding: 0;
   list-style: none;
+  color: #9fb8cc;
 }
 
-.oauth-list li { padding-left: 11px; border-left: 2px solid rgba(252, 180, 36, .5); }
-.oauth-list strong { display: block; color: var(--amber); font-weight: 700; }
+/* 🔴 왼쪽 막대도 브랜드색을 빼고 흐리게 */
+.oauth-list li { padding-left: 10px; border-left: 1px solid rgba(255, 255, 255, .14); }
 
-.oauth-strong { margin: 0 0 14px; color: #eef5fb; font-weight: 700; }
+/* 🔴 제목 셋에 «앰버»를 쓰면 페이지에서 여기가 제일 먼저 눈에 든다 (팀장 2026-09-12 지적).
+   강조색을 빼고, 줄도 나누지 않는다 — 한 줄로 흘려 덩어리 높이를 줄인다. */
+.oauth-list strong { display: inline; margin-right: 4px; color: #c6d6e4; font-weight: 700; }
+
+.oauth-strong { margin: 0 0 12px; color: #9fb8cc; font-weight: 400; }
 
 /* 본문 한가운데 있던 「문의 및 데이터 삭제 요청」이 내려온 자리 (유진님 08:53 · 09:48).
    🔴 작게 두되 «누를 수 있어야» 한다 — 메일·개인정보처리방침·이용약관 셋 다 여기서 간다. */
@@ -1100,17 +1108,17 @@ html:not(.js) .sc-panel { opacity: 1; visibility: visible; transform: none; }
   align-items: center;
   justify-content: space-between;
   gap: 12px 24px;
-  padding-top: 14px;
-  border-top: 1px solid rgba(255, 255, 255, .09);
+  padding-top: 12px;
+  border-top: 1px solid rgba(255, 255, 255, .08);
 }
 
 .oauth-contact h3 {
   margin: 0 0 3px;
   font-family: var(--body-font);
-  font-size: .9rem;
-  font-weight: 800;
+  font-size: .875rem;          /* 14px */
+  font-weight: 700;
   letter-spacing: -.02em;
-  color: #eef5fb;
+  color: #c6d6e4;
 }
 
 .oauth-contact p { margin: 0; color: #9fb8cc; }
@@ -1133,16 +1141,16 @@ html:not(.js) .sc-panel { opacity: 1; visibility: visible; transform: none; }
 
 .oauth-mail {
   padding: 8px 16px;
-  border: 1px solid rgba(252, 180, 36, .4);
+  border: 1px solid rgba(255, 255, 255, .18);
   border-radius: 999px;
-  background: rgba(252, 180, 36, .1);
-  color: var(--amber) !important;
-  font-weight: 800;
+  background: rgba(255, 255, 255, .05);
+  color: #cfe2f2 !important;
+  font-weight: 700;
   text-decoration: none;
   transition: background .2s var(--ease);
 }
 
-.oauth-mail:hover { background: rgba(252, 180, 36, .2); }
+.oauth-mail:hover { background: rgba(255, 255, 255, .12); }
 
 /* ── 바닥 ──────────────────────────────────────────── */
 .site-footer { background: #030d18; border-top: 1px solid var(--line); }
