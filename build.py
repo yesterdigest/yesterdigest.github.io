@@ -65,51 +65,71 @@ def en_date(d):
 #    → 첫 화면의 단추 둘만 남긴다. 편 카드 안의 단추는 «그 편 게시물»로 가는 것이라 겹치지 않아 그대로 둔다.
 #    되살리려면 이 자리에 cta_band() 를 다시 만들고 화면 함수에서 부르면 된다.
 
-def 기기목업(그림, alt, 재생=False):
+def 기기목업(그림, alt, 재생=False, 주소=None, 설명=None):
     """스마트폰 «그림» 안에 우리 화면을 넣는다.
 
-    🔴 테두리는 CSS 로 직접 그린다(.device). 남의 기기 사진·남의 앱 화면 캡처를 쓰지 않고,
-       Instagram·YouTube 의 UI 도 흉내내지 않는다 — 상표·저작권 때문이다 (§3.6 · 팀장 09:48).
-       화면 안에 들어가는 것은 «우리 카드/릴스»와 «우리 계정 이름»뿐이다.
+    🔴 테두리는 CSS 로 직접 그린다(.device). 남의 기기 사진·남의 앱 화면 캡처를 쓰지 않는다 (§3.6).
+    🔴 2026-09-12 개편 — 유진님 11:19 「실제 shorts표현과 릴스표현을 사실화하면 좋겠어」.
+       «진짜 폰처럼» 보이게 하는 것이지 «그 앱을 똑같이 그리는» 것이 아니다.
+         해도 되는 것 : 세로 비율 · 둥근 모서리 · 재생 삼각형 · 진행 막대 · 위아래 어두운 그라데이션
+                        · 오른쪽 세로 아이콘 «자리» · 아래 캡션 «자리» 같은 일반적인 형태
+         🔴 하면 안 되는 것 : Instagram·YouTube 의 고유 UI·아이콘·글꼴·색 체계를 복제하는 것
+       그래서 오른쪽 줄과 캡션은 «알아볼 수 있는 그림»이 아니라 «빈 동그라미와 막대»다.
+    🔴 유진님 11:19 「누르면 각 디테일한 페이지로 이동하도록」 — 기기 전체가 링크다.
+       키보드로도 닿아야 해서 <a> 로 감싼다.
     """
     재생표 = ('<span class="device-play" aria-hidden="true">'
-              '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></span>') if 재생 else ''
-    return """<div class="device%s" aria-hidden="false">
+              '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></span>'
+              '<span class="device-bar" aria-hidden="true"><i></i></span>') if 재생 else ''
+    겉 = ('<a class="device-link" href="%s" target="_blank" rel="noopener" aria-label="%s">'
+          % (e(주소), e(설명 or alt))) if 주소 else '<div class="device-link">'
+    겉닫 = '</a>' if 주소 else '</div>'
+    return """%(겉)s
+                <div class="device%(릴)s">
                   <span class="device-slit" aria-hidden="true"></span>
                   <div class="device-screen">
                     <div class="device-top">
                       <img src="/assets/brand/logo-256.png" alt="" width="40" height="40">
                       <span>@yesterdigest</span>
+                      <i class="device-dots" aria-hidden="true"></i>
                     </div>
                     <div class="device-media">
-                      <img data-src="%s" alt="%s">
-                      %s
+                      <img data-src="%(그림)s" alt="%(alt)s">
+                      <span class="device-scrim" aria-hidden="true"></span>
+                      <span class="device-rail" aria-hidden="true"><i></i><i></i><i></i></span>
+                      %(재생표)s
                     </div>
+                    <span class="device-cap" aria-hidden="true"><i></i><i></i></span>
                   </div>
-                </div>""" % (' device--reel' if 재생 else '', 그림, e(alt), 재생표)
+                </div>
+              %(겉닫)s""" % dict(겉=겉, 겉닫=겉닫, 릴=' device--reel' if 재생 else '',
+                                 그림=그림, alt=e(alt), 재생표=재생표)
 
 
 def hero_deco():
-    """첫 화면 «가장자리»를 채우는 도형들 — 전부 장식이라 읽는 기계에는 안 보인다.
+    """첫 화면 «가장자리»를 채우는 것들 — 전부 장식이라 읽는 기계에는 안 보인다.
 
-    유진님 2026-09-12 10:16 「처음 들어갔을때 화면이 너무 빈것처럼 느껴져」
-                          · 「투명도, 그라데이션, 여러 효과 등을 넣어서」.
-    🔴 가운데는 비운다. 채우는 것은 «가장자리»다 — 글과 단추가 가려지면 안 된다.
-    🔴 도형뿐이다. 남의 그림·남의 글자를 여기에 넣지 않는다 (§3.6).
-    🔴 우리 «유튜브 채널 아트»의 결도 가져오지 않는다 (유진님 10:21 「저 디자인도 내가 전면 개편을
-       원해. 너무 촌스러워..」). 그쪽은 납작한 벡터다 — 꽉 찬 동그라미 · 짧은 막대 · 점 무리 · 도시 실루엣.
-       여기서 쓰는 것은 그 반대다: «흐린» 큰 원 · 빛 번짐 · 머리카락처럼 가는 호 · 반투명 유리 · 아주 옅은 알갱이.
+    🔴 2026-09-12 두 번째 판. 유진님 11:19 「뒷배경이 너무 아재같아」.
+       첫 판은 «흐린 큰 원 · 격자선 · 빛 번짐»이었다. 그게 «아재»로 읽힌 어휘다 —
+       2010년대 SaaS 첫 화면의 결이다. **그 셋을 다시 쓰지 않는다.**
+
+    이번 어휘는 «부드럽게 번지는 것»이 아니라 «또렷한 구조»다.
+      · 속이 빈 거대한 글자(테두리만) — 가장자리를 넘어 걸친다
+      · 비스듬히 가로지르는 «날이 선» 띠 (앰버 실선 한 줄)
+      · 등고선 — 1px 동심원. 흐린 원과 정반대다
+      · 모서리를 잡아주는 «ㄱ자» 선과 작은 네모
+      · 옅은 알갱이 (평평한 색이 싸 보이는 것만 막는다)
+    🔴 우리 유튜브 채널 아트의 결(꽉 찬 동그라미·짧은 막대·점 무리)도 그대로 금지다 (10:21).
+    🔴 색은 남색 + 앰버 둘뿐. 늘리지 않는다.
     """
     return """        <div class="hero-deco" aria-hidden="true">
-          <span class="orb orb-a"></span>
-          <span class="orb orb-b"></span>
-          <span class="orb orb-c"></span>
-          <span class="beam"></span>
-          <span class="grid-lines"></span>
-          <span class="arc arc-a"></span>
-          <span class="arc arc-b"></span>
-          <span class="glass glass-a"></span>
-          <span class="glass glass-b"></span>
+          <span class="band"></span>
+          <span class="contour"></span>
+          <span class="wordmark">YESTERDIGEST</span>
+          <span class="corner corner-tl"></span>
+          <span class="corner corner-br"></span>
+          <span class="node node-a"></span>
+          <span class="node node-b"></span>
           <span class="grain"></span>
         </div>"""
 
@@ -182,9 +202,16 @@ def showcase(editions):
                     'data-motion="/assets/brand/character-wave.gif" width="780" height="780" '
                     'alt="손을 흔드는 %s"></div>' % e(CHARACTER))
         elif c['그림'] == '카드목업' and 표지:
-            그림 = '<div class="hero-art hero-art-device">%s</div>' % 기기목업(표지, '가장 최근 편 카드뉴스 표지')
+            # 🔴 누르면 «그 편» 게시물로 (유진님 11:19). 편별 주소가 없으면 계정으로 떨어진다.
+            그림 = ('<div class="hero-art hero-art-device">%s</div>'
+                    % 기기목업(표지, '가장 최근 편 카드뉴스 표지',
+                               주소=최신.get('인스타_카드') or IG_ACCOUNT,
+                               설명='가장 최근 편 카드뉴스를 Instagram에서 보기'))
         elif c['그림'] == '릴스목업' and 릴스:
-            그림 = '<div class="hero-art hero-art-device">%s</div>' % 기기목업(릴스, '가장 최근 편 릴스 표지', 재생=True)
+            그림 = ('<div class="hero-art hero-art-device">%s</div>'
+                    % 기기목업(릴스, '가장 최근 편 릴스 표지', 재생=True,
+                               주소=최신.get('유튜브') or YT_CHANNEL,
+                               설명='가장 최근 편 영상을 YouTube에서 보기'))
         else:
             그림 = ''
 
@@ -211,7 +238,15 @@ def showcase(editions):
         </div>
         <div class="sc-foot">
           <div class="sc-dots" role="tablist" aria-label="소개 화면 고르기"></div>
-          <p class="hero-sub"><a href="#editions" data-view="editions">Latest drops <span aria-hidden="true">&#8595;</span></a></p>
+          <p class="hero-sub">
+            <a href="#editions" data-view="editions">Latest drops <span aria-hidden="true">&#8595;</span></a>
+            <!-- 🔴 소개 영상 «자리»다. 영상 파일은 아직 없다 (팀장 2026-09-12: 오늘은 렌더를 안 돌린다).
+                 여기서 만들어 두는 것은 «움직임»이다 — 누르면 커지고, 닫으면 줄어든다.
+                 영상이 생기면 intro_modal() 안의 .intro-slot 에 <video> 를 넣기만 하면 된다. -->
+            <button class="intro-btn" type="button" id="intro-open" aria-haspopup="dialog">
+              <span class="intro-play" aria-hidden="true"></span>INTRO
+            </button>
+          </p>
         </div>
 %(띠)s
       </section>""" % dict(초d=int(sc.get('넘김초', 4)) * 1000, 패널='\n'.join(패널),
@@ -257,76 +292,73 @@ def view_yesterdigest(cfg, data):
 
 
 def view_editions(cfg, data):
-    """지난 편 — 편마다 «가로로 꽉 찬 띠» 한 줄. 나머지는 계정에서 본다.
+    """지난 편 — «아래로 내리면 옆으로 넘어간다».
 
-    🔴 2026-09-12 두 번째 개편: 3열 격자를 걷어냈다 (유진님 10:19
-       「저런식으로 분리된 패널형식을 참고하라는게 아니야」). 홈페이지를 칸으로 나누지 않는다.
-       참고 그림에서 가져올 것은 «칸 안의» 결이다 — 큰 글자와 작은 글자의 대비 ·
-       그림이 자리를 꽉 채움 · 경계를 넘어 걸치기 · 영문 딱지.
-    🔴 그래서 표지는 창 «끝»까지 흘러나가고(왼·오른쪽 번갈아), 글은 그 옆에 선다.
-       표지를 자르지 않는다 — 4:5 원본 그대로다.
-    🔴 관문 성격은 그대로다 — 카드 전체와 릴스는 이 페이지에서 보여주지 않는다 (유진님 07:54).
+    🔴 2026-09-12 유진님 11:19 ⑦ 「아래로 드래그하면 옆으로 넘어가면서 각 이슈를 간략하게
+       제목만 행별로 적어서 지금 처럼 인스타 유튜브페이지를 누르면 딱 그 해당하는 날짜로 가도록」
+       → 세로 스크롤이 «가로 이동»을 민다 (sticky + translateX). 가로 스크롤 막대는 생기지 않는다.
+         폰에서도 손가락 «세로» 스크롤로 넘어간다.
+    🔴 이슈 제목을 «다시» 적는다 — 앞서 「표지에 있는 것을 또 쓰지 말라」고 정리했는데,
+       유진님이 11:19 에 «제목만 행별로 적어라»고 직접 말씀하셨다. 유진님 말씀이 나중이고 위다.
+    🔴 인스타·유튜브 단추는 «그 날짜» 게시물로 간다 (지금도 그렇다. 그대로 둔다).
     """
-    bands = []
-    for ed in data['editions']['편']:
+    panels = []
+    for i, ed in enumerate(data['editions']['편']):
         d = ed['날짜']
         title, wd = pretty(d)
         엔날짜, 엔요일 = en_date(d)
         color = ed.get('요일색') or '#FCB424'
         이슈 = ed.get('이슈', [])
-        머리기사 = 이슈[0] if 이슈 else title
-        나머지 = ''.join('<li>%s</li>' % e(t) for t in 이슈[1:])
+        줄 = ''.join('<li><span>%02d</span>%s</li>' % (n + 1, e(t)) for n, t in enumerate(이슈))
         ig = ed.get('인스타_카드') or ed.get('인스타_릴스') or IG_ACCOUNT
         yt = ed.get('유튜브') or YT_CHANNEL
         릴스있음 = bool(ed.get('인스타_릴스'))
         더보기 = ('카드 %d장 전체와 릴스 1편은 계정에서 봅니다.' if 릴스있음
                   else '카드 %d장 전체는 계정에서 봅니다.') % ed.get('카드수', 0)
 
-        bands.append("""          <article class="ed reveal" style="--accent: %(color)s">
-            <a class="ed-cover" href="%(ig)s" target="_blank" rel="noopener"
-               aria-label="%(title)s 카드뉴스를 Instagram에서 보기">
-              <!-- 이 화면은 처음엔 숨어 있다. display:none 이어도 브라우저는 src 를 받아버리므로
-                   (실측: 표지 3장 317KB 가 첫 화면에서 받아졌다) 화면이 열릴 때 home.js 가 붙인다.
-                   JS 가 없으면 아래 noscript 로 그대로 보인다. -->
-              <img data-src="%(cover)s" width="720" height="900" decoding="async"
-                   alt="%(title)s 어제한입 카드뉴스 표지">
-              <noscript><img src="%(cover)s" width="720" height="900" alt="%(title)s 어제한입 카드뉴스 표지"></noscript>
-            </a>
-            <div class="ed-text">
-              <!-- 🔴 표지 그림 «안»에 이미 날짜와 이슈 네 줄이 있다. 그래서 화면에 또 쓰지 않는다
-                   (팀장 2026-09-12 「표지 안에 이미 있는 날짜·이슈를 화면에 또 쓰지 않을 것」).
-                   큰 글자 자리는 «영문 날짜 표기»가 맡는다 — 표지의 한글 날짜와 겹치지 않고,
-                   유진님 10:30 「영어를 적절히 활용해줘」의 «날짜 표기» 쓰임에 맞는다.
-                   한글 날짜와 이슈 제목은 아래 .sr-only 로 남겨 검색엔진·읽는 기계에는 그대로 간다. -->
-              <p class="ed-day"><span class="ed-dot" aria-hidden="true"></span>%(엔날짜)s<i>%(엔요일)s</i></p>
-              <p class="ed-more">%(more)s</p>
-              <div class="ed-cta">
-                <a class="btn btn-ig" href="%(ig)s" target="_blank" rel="noopener"
-                   aria-label="%(title)s 카드뉴스를 Instagram에서 보기">%(icig)s <span>INSTAGRAM</span></a>
-                <a class="btn btn-yt" href="%(yt)s" target="_blank" rel="noopener"
-                   aria-label="%(title)s 영상을 YouTube에서 보기">%(icyt)s <span>YOUTUBE</span></a>
+        panels.append("""            <article class="ed" style="--accent: %(color)s">
+              <a class="ed-cover" href="%(ig)s" target="_blank" rel="noopener"
+                 aria-label="%(title)s 카드뉴스를 Instagram에서 보기">
+                <!-- 이 화면은 처음엔 숨어 있다. display:none 이어도 브라우저는 src 를 받아버리므로
+                     (실측: 표지 3장 317KB 가 첫 화면에서 받아졌다) 화면이 열릴 때 home.js 가 붙인다. -->
+                <img data-src="%(cover)s" width="720" height="900" decoding="async"
+                     alt="%(title)s 어제한입 카드뉴스 표지">
+                <noscript><img src="%(cover)s" width="720" height="900" alt="%(title)s 어제한입 카드뉴스 표지"></noscript>
+              </a>
+              <div class="ed-text">
+                <p class="ed-day"><span class="ed-dot" aria-hidden="true"></span>%(엔날짜)s<i>%(엔요일)s</i></p>
+                <ol class="ed-topics">%(줄)s</ol>
+                <p class="ed-more">%(more)s</p>
+                <div class="ed-cta">
+                  <a class="btn btn-ig" href="%(ig)s" target="_blank" rel="noopener"
+                     aria-label="%(title)s 카드뉴스를 Instagram에서 보기">%(icig)s <span>INSTAGRAM</span></a>
+                  <a class="btn btn-yt" href="%(yt)s" target="_blank" rel="noopener"
+                     aria-label="%(title)s 영상을 YouTube에서 보기">%(icyt)s <span>YOUTUBE</span></a>
+                </div>
+                <p class="sr-only">%(title)s (%(wd)s)</p>
               </div>
-              <ul class="ed-topics sr-only">%(나머지)s</ul>
-              <p class="sr-only">%(title)s (%(wd)s) — %(머리기사)s</p>
-            </div>
-          </article>""" % dict(color=color, ig=ig, yt=yt, cover=ed['표지'], title=title, wd=wd,
-                               엔날짜=엔날짜, 엔요일=엔요일, 머리기사=e(머리기사),
-                               나머지=나머지, more=더보기,
-                               icig=IC['ig'], icyt=IC['yt']))
+            </article>""" % dict(color=color, ig=ig, yt=yt, cover=ed['표지'], title=title, wd=wd,
+                                 엔날짜=엔날짜, 엔요일=엔요일, 줄=줄, more=더보기,
+                                 icig=IC['ig'], icyt=IC['yt']))
 
-    return """      <section class="section">
+    return """      <section class="section section--rail">
         <div class="section-inner">
           <div class="section-heading reveal">
             <p class="eyebrow">Latest drops</p>
             <h2>%(제목)s</h2>
             <p>어제의 이슈 네댓 개를 카드뉴스 한 벌과 세로 영상 한 편으로 만듭니다.
-               여기서는 <b>표지 한 장</b>만 보여드려요 — 전체는 Instagram과 YouTube에 있습니다.</p>
+               아래로 내리면 <b>편이 옆으로</b> 넘어가요 — 전체는 Instagram과 YouTube에 있습니다.</p>
           </div>
         </div>
-        <div class="ed-list">
-%(bands)s
+        <div class="ed-rail" style="--n: %(n)d">
+          <div class="ed-stage">
+            <div class="ed-track">
+%(panels)s
+            </div>
+            <div class="ed-progress" aria-hidden="true"><i></i></div>
+          </div>
         </div>
-      </section>""" % dict(제목=e(cfg['제목']), bands='\n'.join(bands))
+      </section>""" % dict(제목=e(cfg['제목']), panels='\n'.join(panels), n=len(panels))
 
 
 SECTION_BUILDERS = {
@@ -357,6 +389,30 @@ def jua_글자(page):
             글자 |= set(re.sub(r'<[^>]+>', '', m))
     글자 -= set('\n\r\t')
     return ''.join(sorted(글자))
+
+
+def intro_modal():
+    """소개 영상 «틀» — 영상은 아직 없다. 움직임만 미리 만들어 둔다.
+
+    유진님 2026-09-12 11:19 「짧은 어제한입 소개 영상을 만들어줘」 →
+    팀장 판단으로 «영상 만들기»는 오늘 안 한다(렌더가 이 기계의 메모리를 크게 쓴다).
+    🔴 대신 «누르면 커졌다가 끝나면 줄어드는» 움직임과 자리를 오늘 만들어 둔다.
+       영상이 생기면 .intro-slot 안의 내용만 <video src=... playsinline> 로 바꾸면 된다.
+    🔴 자리를 비워 두되 «빈 네모»를 보여주지 않는다 — 우리 캐릭터가 대신 서 있는다.
+    """
+    return """  <div class="intro-modal" id="intro-modal" hidden>
+    <div class="intro-box" role="dialog" aria-modal="true" aria-labelledby="intro-title">
+      <button class="intro-close" type="button" id="intro-close" aria-label="닫기">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>
+      </button>
+      <div class="intro-slot">
+        <img src="/assets/brand/character-wave.png" alt="" width="380" height="380">
+        <p id="intro-title">소개 영상은 준비 중이에요</p>
+        <p class="intro-sub">10초 안에 어제한입이 어떤 곳인지 보여드릴게요.</p>
+      </div>
+    </div>
+  </div>
+"""
 
 
 def oauth_note():
@@ -438,7 +494,7 @@ def build():
         YT=YT_CHANNEL, IG=IG_ACCOUNT, CH=CHARACTER, 기본=기본,
         icyt=IC['yt'], icig=IC['ig'], icmenu=IC['menu'], icx=IC['x'],
         menu='\n'.join(menu), views='\n\n'.join(views), 자리='\n'.join(자리),
-        oauth=oauth_note())
+        intro=intro_modal(), oauth=oauth_note())
     글자 = jua_글자(page)
     page = page.replace('__JUA_TEXT__', urllib.parse.quote(글자, safe=''))
     open(os.path.join(HERE, 'index.html'), 'w', encoding='utf-8').write(page)
@@ -520,6 +576,7 @@ PAGE = """<!doctype html>
 
 %(자리)s
 
+%(intro)s
 %(oauth)s
   <footer class="site-footer">
     <div class="footer-inner">

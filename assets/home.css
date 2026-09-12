@@ -246,22 +246,20 @@ h1, h2, h3,
 
 .hero {
   color: #fff;
-  background:
-    radial-gradient(110% 80% at 82% 4%, rgba(127, 212, 255, .2), transparent 58%),
-    radial-gradient(90% 70% at 6% 104%, rgba(252, 180, 36, .17), transparent 62%),
-    linear-gradient(165deg, #04121f 0%, var(--navy-deep) 42%, #0d3a63 100%);
+  /* 🔴 방사형 «번짐» 둘을 뺐다 (유진님 11:19 「아재같아»). 각진 그러데이션 한 벌만 남긴다. */
+  background: linear-gradient(152deg, #04121f 0%, #07203a 44%, #0c3760 100%);
 }
 
 .hero::after { display: none; }
 
-/* ── 첫 화면 «가장자리» 채우기 ──────────────────────
-   유진님 10:16 「처음 들어갔을때 화면이 너무 빈것처럼 느껴져」 · 「투명도, 그라데이션, 여러 효과」.
-   가운데는 비우고 «가장자리»를 채운다. 전부 장식이라 읽는 기계에는 안 보인다.
+/* ── 첫 화면 «가장자리» ─────────────────────────────
+   유진님 10:16 「처음 들어갔을때 화면이 너무 빈것처럼」 · 11:19 「뒷배경이 너무 아재같아」.
 
-   🔴 우리 유튜브 채널 아트의 결을 «가져오지 않는다» (유진님 10:21 「저 디자인도 내가 전면 개편을
-      원해. 너무 촌스러워..」). 그쪽은 납작한 벡터다 — 꽉 찬 동그라미 · 짧은 막대 · 점 무리.
-      여기 있는 것은 전부 그 반대다: 흐린 원 · 빛 번짐 · 머리카락 굵기의 호 · 반투명 유리 · 옅은 알갱이.
-      🔴 «또렷한 도형»을 여기에 더하지 마라. 그 순간 채널 아트로 돌아간다. */
+   🔴 첫 판은 «흐린 큰 원 · 격자선 · 빛 번짐»이었고 그게 «아재»로 읽혔다 — 2010년대 첫 화면의 결이다.
+      **그 셋을 다시 쓰지 않는다.** 이번 어휘는 «또렷한 구조»다:
+      속 빈 거대한 글자 · 날 선 띠 · 등고선 · ㄱ자 모서리 · 작은 네모 · 옅은 알갱이.
+   🔴 채널 아트의 결(꽉 찬 동그라미·짧은 막대·점 무리)도 그대로 금지다 (유진님 10:21).
+   🔴 색은 남색 + 앰버 둘뿐. */
 .hero-deco {
   position: absolute;
   inset: 0;
@@ -270,114 +268,91 @@ h1, h2, h3,
   pointer-events: none;
 }
 
-/* 흐린 큰 원 셋 — 가장자리에서 번진다 */
-.hero-deco .orb {
+/* 비스듬히 가로지르는 «날이 선» 띠 — 번지지 않는다. 위 모서리에 앰버 실선 한 줄 */
+.hero-deco .band {
   position: absolute;
+  top: -32%;
+  left: -18%;
+  width: 150%;
+  height: 78%;
+  transform: rotate(-13deg);
+  background: linear-gradient(180deg, rgba(255, 255, 255, .045), rgba(255, 255, 255, .012));
+  border-top: 1px solid rgba(252, 180, 36, .3);
+}
+
+/* 등고선 — 1px 동심원. «흐린 원»과 정반대다 */
+.hero-deco .contour {
+  position: absolute;
+  right: -26vw;
+  bottom: -34vh;
+  width: min(120vw, 1000px);
+  height: min(120vw, 1000px);
   border-radius: 50%;
-  filter: blur(70px);
+  background: repeating-radial-gradient(circle at 50% 50%,
+              rgba(255, 255, 255, .085) 0 1px, transparent 1px 46px);
+  mask-image: radial-gradient(circle at 50% 50%, #000 34%, transparent 72%);
+  -webkit-mask-image: radial-gradient(circle at 50% 50%, #000 34%, transparent 72%);
+  animation: contour-turn 90s linear infinite;
 }
 
-.hero-deco .orb-a {
-  top: -16vh; right: -10vw;
-  width: min(56vw, 620px); height: min(56vw, 620px);
-  background: radial-gradient(circle at 42% 40%, rgba(252, 180, 36, .5), transparent 68%);
-  opacity: .55;
-  animation: drift 21s ease-in-out infinite;
-}
+@keyframes contour-turn { to { transform: rotate(360deg); } }
 
-.hero-deco .orb-b {
-  bottom: -24vh; left: -14vw;
-  width: min(62vw, 700px); height: min(62vw, 700px);
-  background: radial-gradient(circle at 58% 42%, rgba(86, 170, 240, .44), transparent 68%);
-  opacity: .5;
-  animation: drift 27s ease-in-out infinite reverse;
-}
-
-.hero-deco .orb-c {
-  top: 44%; left: 38%;
-  width: min(34vw, 380px); height: min(34vw, 380px);
-  background: radial-gradient(circle, rgba(252, 180, 36, .22), transparent 66%);
-  opacity: .4;
-  animation: drift 33s ease-in-out infinite;
-}
-
-/* 비스듬히 지나가는 빛 — 가운데를 «채우지» 않고 스치기만 한다 */
-.hero-deco .beam {
+/* 속이 빈 거대한 글자 — 화면 «밖»으로 걸쳐 나간다 */
+.hero-deco .wordmark {
   position: absolute;
-  top: -40%; left: 18%;
-  width: 46%;
-  height: 190%;
-  transform: rotate(17deg);
-  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, .05) 45%, transparent);
-  filter: blur(26px);
+  left: 50%;
+  bottom: -2.5vh;
+  transform: translateX(-50%);
+  white-space: nowrap;
+  font-family: var(--en-font);
+  font-size: clamp(5rem, 15vw, 16rem);
+  font-weight: 800;
+  letter-spacing: -.045em;
+  line-height: .8;
+  color: transparent;
+  -webkit-text-stroke: 1px rgba(255, 255, 255, .075);
+  text-stroke: 1px rgba(255, 255, 255, .075);
 }
 
-/* 아주 옅은 격자선 — 가장자리에서만 보이고 가운데로 갈수록 사라진다 */
-.hero-deco .grid-lines {
+/* 모서리를 잡아주는 ㄱ자 선 — 화면에 «틀»이 있다는 느낌만 준다 */
+.hero-deco .corner {
   position: absolute;
-  inset: -2px;
-  background-image:
-    linear-gradient(rgba(255, 255, 255, .038) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(255, 255, 255, .038) 1px, transparent 1px);
-  background-size: clamp(70px, 10vw, 140px) clamp(70px, 10vw, 140px);
-  mask-image: radial-gradient(115% 88% at 50% 42%, transparent 34%, #000 88%);
-  -webkit-mask-image: radial-gradient(115% 88% at 50% 42%, transparent 34%, #000 88%);
+  width: clamp(52px, 7vw, 110px);
+  height: clamp(52px, 7vw, 110px);
 }
 
-/* 머리카락 굵기의 큰 호 — «점선»도 «두꺼운 테»도 아니다 */
-.hero-deco .arc {
+.hero-deco .corner-tl {
+  top: calc(var(--header-h, 68px) + clamp(14px, 2.4vw, 34px));
+  left: clamp(14px, 3vw, 54px);
+  border-top: 1px solid rgba(252, 180, 36, .34);
+  border-left: 1px solid rgba(252, 180, 36, .34);
+}
+
+.hero-deco .corner-br {
+  right: clamp(14px, 3vw, 54px);
+  bottom: clamp(70px, 12vh, 130px);
+  border-right: 1px solid rgba(255, 255, 255, .16);
+  border-bottom: 1px solid rgba(255, 255, 255, .16);
+}
+
+/* 작은 네모 둘 — 구석의 «점»이 아니라 «표식»이다 */
+.hero-deco .node {
   position: absolute;
-  border-radius: 50%;
-  border: 1px solid transparent;
+  width: 7px;
+  height: 7px;
+  border: 1px solid rgba(252, 180, 36, .55);
 }
 
-.hero-deco .arc-a {
-  right: -14vw; bottom: -18vh;
-  width: min(70vw, 820px); height: min(70vw, 820px);
-  border-color: rgba(255, 255, 255, .08);
-}
+.hero-deco .node-a { top: 31vh; left: clamp(12px, 2.6vw, 46px); }
+.hero-deco .node-b { right: clamp(12px, 2.6vw, 46px); top: 22vh; transform: rotate(45deg); }
 
-.hero-deco .arc-b {
-  left: -20vw; top: -22vh;
-  width: min(62vw, 720px); height: min(62vw, 720px);
-  border-color: rgba(252, 180, 36, .11);
-}
-
-/* 반투명 유리 판 둘 — 모서리에 «걸쳐» 둔다 */
-.hero-deco .glass {
-  position: absolute;
-  border-radius: 26px;
-  border: 1px solid rgba(255, 255, 255, .1);
-  background: linear-gradient(150deg, rgba(255, 255, 255, .075), rgba(255, 255, 255, .012));
-  backdrop-filter: blur(7px);
-  -webkit-backdrop-filter: blur(7px);
-}
-
-.hero-deco .glass-a {
-  left: -4vw; bottom: 18vh;
-  width: clamp(130px, 17vw, 250px); height: clamp(86px, 11vw, 160px);
-  transform: rotate(-8deg);
-}
-
-.hero-deco .glass-b {
-  right: -3vw; top: 9vh;
-  width: clamp(100px, 13vw, 190px); height: clamp(100px, 13vw, 190px);
-  border-radius: 32px;
-  transform: rotate(10deg);
-}
-
-/* 아주 옅은 알갱이 — 평평한 색이 «싸 보이는» 것을 막는다 */
+/* 아주 옅은 알갱이 — 평평한 색이 «싸 보이는» 것만 막는다 */
 .hero-deco .grain {
   position: absolute;
   inset: 0;
-  opacity: .16;          /* 알갱이는 «보이면» 지저분하다. 평평함만 깨질 만큼만 */
+  opacity: .16;
   mix-blend-mode: overlay;
   background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='140' height='140'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3'/></filter><rect width='140' height='140' filter='url(%23n)' opacity='.5'/></svg>");
-}
-
-@keyframes drift {
-  0%, 100% { transform: translate3d(0, 0, 0) scale(1); }
-  50%      { transform: translate3d(2.4vw, 2.6vh, 0) scale(1.07); }
 }
 
 /* ── 첫 화면 속 내용 ────────────────────────────────── */
@@ -637,30 +612,56 @@ html:not(.js) .sc-panel { opacity: 1; visibility: visible; transform: none; }
 .sc-dots button.is-on { width: 28px; background: var(--amber); }
 
 /* ── 스마트폰 «그림» — CSS 로 직접 그린다 ────────────
-   🔴 남의 기기 사진·남의 앱 화면을 쓰지 않는다. 안에 넣는 것은 우리 카드/릴스뿐이고
-      Instagram·YouTube 의 UI 는 흉내내지 않는다 (§3.6 · 팀장 2026-09-12 09:48). */
+   🔴 남의 기기 사진·남의 앱 화면 캡처를 쓰지 않는다 (§3.6).
+   🔴 2026-09-12 — 유진님 11:19 ④ 「인스타 장에서 폰 비율이 깨짐」 · ② 「사실화하면 좋겠어」.
+
+   ④ 무엇이 깨졌나 — 기기 크기를 «안쪽 그림»이 정하게 뒀더니, 4:5 카드가 들어간 장에서
+      기기가 320×420(비 0.761) «태블릿 모양»이 됐다. 릴스 장은 260×463(0.561)이었다. 실측이다.
+      → 기기 «틀»을 9/19.5 로 못박는다. 안쪽 그림은 틀에 맞춰 들어간다.
+        · 릴스(9:16)   : 화면을 꽉 채운다 (cover)
+        · 카드(4:5)    : 진짜 폰에서 «피드 한 장»이 그렇듯 가운데 놓이고 위아래가 남는다 (contain)
+
+   ② 어디까지 «사실화»하나 — 팀장이 그은 선 그대로다.
+      해도 되는 것 : 세로 비율 · 둥근 모서리 · 재생 삼각형 · 진행 막대 · 위아래 어두운 그라데이션
+                     · 오른쪽 세로 아이콘 «자리» · 아래 캡션 «자리» 같은 «일반적인 형태»
+      🔴 하면 안 되는 것 : Instagram·YouTube 의 고유 UI·아이콘·글꼴·색 체계를 복제하는 것
+      → 그래서 오른쪽 줄은 «빈 동그라미 셋»이고 캡션은 «빈 막대 둘»이다.
+        알아볼 수 있는 그림(하트·말풍선·화살표)을 여기에 그리지 않는다. */
 .hero-art-device { display: grid; place-items: center; }
 .hero-art-device::before { display: none; }
 
+/* 🔴 기기 전체가 링크다 (유진님 11:19 ③ 「누르면 각 디테일한 페이지로 이동하도록」) */
+.device-link {
+  display: block;
+  border-radius: 34px;
+  text-decoration: none;
+  outline-offset: 6px;
+}
+
 .device {
   position: relative;
-  /* 🔴 기기 크기는 «안쪽 그림»이 정한다. 예전엔 9/18.5 로 못박아 4:5 카드 위아래가 검게 남았다. */
-  width: max-content;
-  padding: 9px;
+  /* 🔴 폰 «틀»을 못박는다 — 안쪽 그림이 틀을 정하게 두면 비율이 깨진다(위 ④) */
+  aspect-ratio: 9 / 19.5;
+  height: min(430px, 52vh);
+  padding: 8px;
   border-radius: 30px;
   background: linear-gradient(150deg, #3a4557 0%, #171d27 46%, #0b0f16 100%);
   box-shadow: 0 0 0 1px rgba(255, 255, 255, .09), 0 34px 70px rgba(0, 0, 0, .55);
   transform: rotate(-1.6deg);
-  transition: transform .5s var(--ease);
+  transition: transform .5s var(--ease), box-shadow .5s var(--ease);
 }
 
-.device:hover { transform: rotate(0deg) translateY(-4px); }
+.device-link:hover .device,
+.device-link:focus-visible .device {
+  transform: rotate(0deg) translateY(-6px) scale(1.02);
+  box-shadow: 0 0 0 1px rgba(252, 180, 36, .4), 0 44px 88px rgba(0, 0, 0, .6);
+}
 
 .device-slit {
   position: absolute;
   top: 4px;
   left: 50%;
-  width: 34%;
+  width: 30%;
   height: 4px;
   transform: translateX(-50%);
   border-radius: 999px;
@@ -669,19 +670,19 @@ html:not(.js) .sc-panel { opacity: 1; visibility: visible; transform: none; }
 
 .device-screen {
   display: grid;
-  grid-template-rows: auto 1fr;
+  grid-template-rows: auto 1fr auto;
   width: 100%;
   height: 100%;
   overflow: hidden;
   border-radius: 23px;
-  background: #0d1117;
+  background: #0a0d13;
 }
 
 .device-top {
   display: flex;
   align-items: center;
   gap: 6px;
-  padding: 7px 9px;
+  padding: 8px 10px;
   color: #d7e4f0;
   font-size: .62rem;
   font-weight: 700;
@@ -690,34 +691,130 @@ html:not(.js) .sc-panel { opacity: 1; visibility: visible; transform: none; }
 
 .device-top img { width: 17px; height: 17px; border-radius: 50%; }
 
-/* 카드 한 장(4:5)이 기본. 릴스 장은 .device--reel 로 9:16 */
+/* 「…」 자리 — 점 셋을 «그림»이 아니라 배경으로 찍는다 */
+.device-dots {
+  width: 14px;
+  height: 3px;
+  margin-left: auto;
+  background-image: radial-gradient(circle, rgba(255, 255, 255, .45) 1.4px, transparent 1.5px);
+  background-size: 5px 3px;
+}
+
 .device-media {
   position: relative;
   display: grid;
   place-items: center;
   overflow: hidden;
-  background: #0d1117;
-  height: min(380px, 46vh);
-  aspect-ratio: 4 / 5;
+  background: #05070b;
 }
 
-.device--reel .device-media { height: min(420px, 51vh); aspect-ratio: 9 / 16; }
-.device-media img { width: 100%; height: 100%; object-fit: cover; }
+.device-media img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;       /* 카드(4:5)는 피드 한 장처럼 가운데 놓인다 */
+}
+
+.device--reel .device-media img { object-fit: cover; }   /* 릴스(9:16)는 화면을 꽉 채운다 */
+
+/* 위아래 어두운 그라데이션 — 진짜 세로 영상 화면의 결 */
+.device-scrim {
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(to bottom, rgba(0, 0, 0, .42), transparent 18%),
+    linear-gradient(to top, rgba(0, 0, 0, .62), transparent 26%);
+}
+
+/* 오른쪽 세로 «아이콘 자리» — 빈 동그라미 셋. 알아볼 수 있는 그림을 그리지 않는다 */
+.device-rail {
+  position: absolute;
+  right: 7px;
+  bottom: 42px;
+  display: grid;
+  gap: 11px;
+  justify-items: center;
+}
+
+.device-rail i {
+  display: block;
+  width: 15px;
+  height: 15px;
+  border: 1.5px solid rgba(255, 255, 255, .5);
+  border-radius: 50%;
+}
+
+.device-rail i:nth-child(2) { border-radius: 5px; }
+.device-rail i:nth-child(3) { width: 13px; height: 13px; opacity: .8; }
+
+/* 아래 «캡션 자리» — 빈 막대 둘.
+   릴스는 화면 «위에» 얹히고(세로 영상의 결), 카드는 그림 «아래»에 놓인다(피드 한 장의 결). */
+.device-cap {
+  grid-row: 3;
+  display: grid;
+  gap: 5px;
+  padding: 10px 10px 12px;
+}
+
+.device--reel .device-media { grid-row: 2 / 4; }
+
+.device--reel .device-cap {
+  grid-row: 3;
+  z-index: 1;
+  align-self: end;
+  padding: 0 34px 20px 10px;
+}
+
+.device-cap i {
+  display: block;
+  height: 4px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, .42);
+}
+
+.device-cap i:last-child { width: 58%; background: rgba(255, 255, 255, .26); }
+
+/* 카드 장에는 오른쪽 줄을 두지 않는다 — 세로 영상의 결이라서 */
+/* 🔴 카드 장은 «피드 한 장»의 결이다 — 그림이 화면 너비를 꽉 채우고(4:5), 그 아래가 캡션이다.
+   contain 으로 위아래를 다 비워두면 그림이 작아 보이고 화면이 휑하다. 실측으로 잡았다. */
+.device:not(.device--reel) .device-media { align-self: start; aspect-ratio: 4 / 5; }
+.device:not(.device--reel) .device-media img { object-fit: cover; }
+.device:not(.device--reel) .device-rail { display: none; }
+.device:not(.device--reel) .device-scrim { display: none; }
 
 .device-play {
   position: absolute;
   display: grid;
   place-items: center;
-  width: 44px;
-  height: 44px;
+  width: 42px;
+  height: 42px;
   color: #fff;
-  background: rgba(10, 14, 20, .5);
+  background: rgba(10, 14, 20, .42);
   border: 2px solid rgba(255, 255, 255, .85);
   border-radius: 50%;
   backdrop-filter: blur(2px);
 }
 
-.device-play svg { width: 20px; height: 20px; margin-left: 2px; }
+.device-play svg { width: 19px; height: 19px; margin-left: 2px; }
+
+/* 진행 막대 — 맨 아래 한 줄 */
+.device-bar {
+  position: absolute;
+  left: 8px;
+  right: 8px;
+  bottom: 8px;
+  height: 2.5px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, .2);
+  overflow: hidden;
+}
+
+.device-bar i {
+  display: block;
+  width: 34%;
+  height: 100%;
+  border-radius: 999px;
+  background: var(--amber);
+}
 
 /* ── 섹션 공통 ─────────────────────────────────────── */
 .section { padding-block: clamp(52px, 7.5vh, 96px); }
@@ -821,84 +918,87 @@ html:not(.js) .sc-panel { opacity: 1; visibility: visible; transform: none; }
   line-height: 1.72;
 }
 
-/* ── 지난 편 — 편마다 «가로로 꽉 찬 띠» 한 줄 ────────
-   🔴 격자가 아니다 (유진님 10:19). 칸으로 나누지 않는다.
-      표지는 창 «끝»까지 흘러나가고(왼·오른쪽 번갈아) 글이 그 옆에 선다. */
-.ed-list {
+/* ── 지난 편 — «아래로 내리면 옆으로» ────────────────
+   유진님 2026-09-12 11:19 ⑦ 「아래로 드래그하면 옆으로 넘어가면서」.
+   세로 스크롤이 가로 이동을 «민다» — 그래서 🔴 가로 스크롤 막대가 생기지 않고,
+   폰에서도 손가락 세로 스크롤로 넘어간다.
+   🔴 JS 가 없거나 움직임을 마다한 설정이면 «그냥 위아래로 쌓인다» (아래 되돌림 블록). */
+.section--rail { padding-bottom: 0; }
+
+.ed-rail {
+  height: calc(var(--n, 3) * 100vh);
+  /* 🔴 절(.section)의 가장자리 여백을 «빠져나온다». 안 그러면 무대가 창보다 좁아
+     표지가 창 끝까지 못 가고, 칸 너비도 창 너비와 어긋난다 (실측: 무대 358 ↔ 창 390). */
+  margin-inline: calc(-1 * var(--shell));
+}
+
+.ed-stage {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  height: 100svh;
   display: grid;
-  gap: clamp(44px, 7vh, 104px);
+  /* 🔴 칸 너비를 못박는다. `auto` 로 두면 격자 칸이 «트랙의 최대 너비»(칸 셋 합)로 부풀어
+     .ed-track 의 width:100% 가 창 너비가 아니게 된다 — 실측: 트랙 912 ↔ 무대 358. */
+  grid-template-columns: minmax(0, 1fr);
+  align-content: center;
+  overflow: hidden;
+  padding-top: var(--header-h, 68px);
+  box-sizing: border-box;
+}
+
+.ed-track {
+  display: flex;
+  width: 100%;
+  will-change: transform;
+  transition: transform .12s linear;
 }
 
 .ed {
+  flex: 0 0 100%;
   display: grid;
-  --cover-w: clamp(260px, 32vw, 430px);
+  --cover-w: clamp(210px, 26vw, 360px);
   grid-template-columns: minmax(0, var(--cover-w)) minmax(0, 1fr);
   align-items: center;
-  gap: clamp(22px, 4.5vw, 72px);
-  /* 아주 넓은 창에서 글과 그림이 양 끝으로 벌어지지 않게 — 첫 화면과 같은 이유 */
-  width: 100%;
-  max-width: 1440px;
-  margin-inline: auto;   /* 🔴 width:100% 없이 auto 만 주면 격자 칸에서 «글자 폭»으로 쪼그라든다 */
+  gap: clamp(20px, 4vw, 64px);
+  padding-inline: var(--shell);
+  box-sizing: border-box;
 }
 
-/* 그림이 자리를 «꽉» 채운다 — 창 끝까지 흘러나간다 */
+/* 그림이 자리를 «꽉» 채우고 창 끝까지 흘러나간다 */
 .ed-cover {
   position: relative;
   display: block;
   margin-left: calc(-1 * var(--shell));
-  border-radius: 0 24px 24px 0;
+  border-radius: 0 22px 22px 0;
   overflow: hidden;
   background: #0d1520;
-  box-shadow: 0 26px 70px rgba(0, 0, 0, .5);
+  box-shadow: 0 24px 64px rgba(0, 0, 0, .5);
 }
 
-/* 홀·짝을 번갈아 — 한 번은 왼쪽, 한 번은 오른쪽.
-   🔴 order 만 바꾸면 «칸 너비»는 안 바뀐다 — 그림이 넓은 칸(1fr)으로 가서 짝수 줄만 표지가 거대해졌다.
-      실측으로 잡았다(1번 줄 456px ↔ 2번 줄 752px). 그래서 칸 차례 자체를 뒤집는다. */
-.ed:nth-child(even) { grid-template-columns: minmax(0, 1fr) minmax(0, var(--cover-w)); }
-
-.ed:nth-child(even) .ed-cover {
-  grid-column: 2;
-  grid-row: 1;
-  margin-left: 0;
-  margin-right: calc(-1 * var(--shell));
-  border-radius: 24px 0 0 24px;
-}
-
-/* 🔴 `grid-row: 1` 을 «둘 다»에 준다. 칸 번호만 주면 짝수 줄에서 글이 «둘째 줄»로 떨어진다 —
-   격자의 자동 배치는 앞선 칸으로 되돌아가지 않기 때문이다(sparse). 그래서 표지가 끝난 «뒤»에
-   글이 시작되어, 표지 왼쪽과 글 오른쪽이 통째로 비었다. 실측으로 잡았다:
-     1번 줄 표지 y325~890 / 글 y460~740  (나란히)
-     2번 줄 표지 y940~1495 / 글 y1560~1865 (❌ 안 겹침)
-   이건 앞서 잡은 함정 ⓑ(order 만 바꾸면 칸 너비는 안 바뀐다)와 같은 뿌리다 —
-   «칸을 옮길 때는 가로·세로를 «둘 다» 지정한다». */
-.ed:nth-child(even) .ed-text { grid-column: 1; grid-row: 1; justify-self: end; }
-
-/* 🔴 표지를 «자르지 않는다» — 720×900(4:5) 원본 그대로다.
-   그 안에 날짜와 이슈 네 줄이 이미 들어 있어서 위에 글을 겹치지도 않는다. */
+/* 🔴 표지는 720×900(4:5) 원본 그대로. 한 점도 자르지 않는다 */
 .ed-cover img {
   display: block;
   width: 100%;
   height: auto;
   aspect-ratio: 4 / 5;
   object-fit: cover;
-  transition: transform .7s var(--ease);
+  transition: transform .6s var(--ease);
 }
 
-.ed:hover .ed-cover img { transform: scale(1.035); }
+.ed-cover:hover img { transform: scale(1.035); }
 
 .ed-text { max-width: 620px; }
 
-/* 🔴 이 자리의 «아주 크게» — 영문 날짜 표기.
-   표지 안의 한글 날짜(「2026년 9월 11일」)와 겹치지 않는 표기라서 같은 말을 두 번 하지 않는다. */
+/* 영문 날짜 표기 — 이 자리의 «아주 크게» */
 .ed-day {
   display: flex;
   align-items: center;
   flex-wrap: wrap;
   gap: 12px;
-  margin: 0 0 18px;
+  margin: 0 0 16px;
   color: #fff;
-  font-size: clamp(1.5rem, 2.8vw, 2.7rem);
+  font-size: clamp(1.35rem, 2.5vw, 2.4rem);
   font-weight: 800;
   letter-spacing: .04em;
   line-height: 1.1;
@@ -923,18 +1023,71 @@ html:not(.js) .sc-panel { opacity: 1; visibility: visible; transform: none; }
   box-shadow: 0 0 0 5px color-mix(in srgb, var(--accent) 24%, transparent);
 }
 
-.ed-more {
-  margin: 0 0 18px;
-  padding-top: 13px;
-  border-top: 1px solid var(--line);
-  color: #7d94a9;
-  font-size: .8rem;
+/* 🔴 이슈는 «제목만 행별로» (유진님 11:19 ⑦). 요약문을 붙이지 않는다 */
+.ed-topics {
+  margin: 0 0 16px;
+  padding: 0;
+  list-style: none;
+  counter-reset: none;
 }
 
-.ed-cta { display: flex; flex-wrap: wrap; gap: 10px; }
+.ed-topics li {
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+  padding: 9px 0;
+  border-top: 1px solid var(--line);
+  color: #e2ecf5;
+  font-size: clamp(.92rem, 1.25vw, 1.1rem);
+  line-height: 1.4;
+}
 
+.ed-topics li:last-child { border-bottom: 1px solid var(--line); }
+
+.ed-topics li span {
+  flex: none;
+  font-family: var(--en-font);
+  font-size: .7rem;
+  font-weight: 700;
+  letter-spacing: .1em;
+  color: var(--accent);
+}
+
+.ed-more { margin: 0 0 16px; color: #7d94a9; font-size: .8rem; }
+
+.ed-cta { display: flex; flex-wrap: wrap; gap: 10px; }
 .ed-cta .btn { min-height: 46px; padding: 12px 20px; }
 .ed-cta .btn span { font-size: .76rem; letter-spacing: .16em; }
+
+/* 어디쯤 왔는지 — 바닥에 얇게 */
+.ed-progress {
+  position: absolute;
+  left: var(--shell);
+  right: var(--shell);
+  bottom: clamp(16px, 4vh, 40px);
+  height: 2px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, .12);
+  overflow: hidden;
+}
+
+.ed-progress i {
+  display: block;
+  width: calc(100% / var(--n, 3));
+  height: 100%;
+  border-radius: 999px;
+  background: var(--amber);
+  transform: translateX(var(--p, 0));
+  transition: transform .12s linear;
+}
+
+/* 🔴 되돌림 — JS 가 없거나 움직임을 마다하면 «그냥 위아래로 쌓인다».
+   옆으로 미는 장치가 안 돌 때 글이 갇히는 일이 없어야 한다. */
+html:not(.js) .ed-rail,
+html:not(.js) .ed-stage { height: auto; position: static; overflow: visible; padding-top: 0; }
+html:not(.js) .ed-track { flex-direction: column; gap: 56px; }
+html:not(.js) .ed { flex: none; }
+html:not(.js) .ed-progress { display: none; }
 
 /* ── 스크롤 등장 ────────────────────────────────────
    🔴 «기본은 보이는 쪽»이다. `.js` 는 home.js 가 붙이므로, JS 가 안 돌면 아무것도 숨지 않는다
@@ -1174,7 +1327,7 @@ html:not(.js) .sc-panel { opacity: 1; visibility: visible; transform: none; }
 @media (max-width: 1040px) {
   .steps { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: clamp(22px, 3vw, 40px); }
   .steps .card:last-child { grid-column: 1 / -1; }
-  .ed { --cover-w: clamp(220px, 34vw, 320px); }
+  .ed { --cover-w: clamp(190px, 30vw, 300px); }
 }
 
 /* ── 폰 ────────────────────────────────────────────── */
@@ -1183,8 +1336,7 @@ html:not(.js) .sc-panel { opacity: 1; visibility: visible; transform: none; }
   .hero-art { order: -1; }
   .hero-art::before { width: min(180px, 21vh); height: min(180px, 21vh); }
   .hero-art > img { height: min(218px, 23vh); max-width: 60vw; }
-  .device-media { height: min(258px, 28vh); }
-  .device--reel .device-media { height: min(284px, 31vh); }
+  .device { height: min(300px, 33vh); }
   .when-chip, .hero .eyebrow { margin-inline: auto; }
   .hero-text { display: grid; justify-items: center; }
   .name-chip, .hero-actions, .hero-lead { margin-inline: auto; }
@@ -1199,22 +1351,40 @@ html:not(.js) .sc-panel { opacity: 1; visibility: visible; transform: none; }
 }
 
 @media (max-width: 760px) {
-  /* 🔴 좁으면 표지를 «위로» 올리고 창 너비를 그대로 채운다 (양쪽 모두 흘러나간다) */
-  /* 🔴 `.ed:nth-child(even)` 이 «더 센» 선택자(0,2,0)라, `.ed` 만 1칸으로 바꾸면 짝수 줄은
-     두 칸 그대로 남는다. 미디어 쿼리는 세기를 올려주지 않는다 — 짝수 줄도 «같이» 되돌린다.
-     실측(폰 390): 되돌리기 전 2번 줄 표지가 x0~152 로 쪼그라들고 글과 겹쳤다. */
-  .ed, .ed:nth-child(even) { grid-template-columns: 1fr; gap: 18px; }
-  /* 🔴 위에서 준 칸 번호(grid-column/row)를 여기서 «푼다». 한 줄 격자에 2번 칸을 남겨두면
-     없는 칸이 새로 생겨 배치가 깨진다. 글의 차례는 원래 HTML 순서(표지 → 글)가 맞다. */
-  .ed-cover, .ed:nth-child(even) .ed-cover {
+  /* 폰에서도 «옆으로 넘어가는» 것은 그대로다 (세로 스크롤이 민다). 한 칸으로 쌓기만 한다.
+     🔴 표지를 «끝까지 흘려보내기»는 포기하고 «다 보이게» 한다 — 한 화면(100svh) 안에
+        표지 + 제목 넉 줄 + 단추가 다 들어가야 한다. 자르지 않고 «비율 그대로 줄이기»만 한다.
+        실측 390×844: 표지 320px + 글 236px = 창 안에 들어간다. */
+  .ed {
+    grid-template-columns: 1fr;
+    grid-template-rows: auto auto;
+    align-content: center;
+    justify-items: center;
+    gap: 14px;
+  }
+  .ed-cover {
     grid-column: auto;
     grid-row: auto;
-    margin-inline: calc(-1 * var(--shell));
-    border-radius: 0;
+    margin-inline: 0;
+    width: auto;
+    max-width: 100%;
+    border-radius: 16px;
   }
-  .ed:nth-child(even) .ed-text { grid-column: auto; grid-row: auto; justify-self: stretch; }
-  .ed-text { max-width: none; }
-  .ed-cta .btn { flex: 1 1 auto; }
+  .ed-cover img {
+    width: auto;
+    height: min(38vh, 380px);
+    max-width: 100%;
+    aspect-ratio: 4 / 5;
+    object-fit: contain;
+  }
+  .ed-text { grid-column: auto; grid-row: auto; width: 100%; max-width: none; }
+  .ed-day { margin-bottom: 10px; font-size: clamp(1.15rem, 5.4vw, 1.5rem); }
+  .ed-topics { margin-bottom: 12px; }
+  .ed-topics li { padding: 7px 0; font-size: .88rem; gap: 9px; }
+  .ed-more { display: none; }          /* 관문 안내는 절 머리글에 이미 있다 */
+  .ed-cta { flex-wrap: nowrap; }
+  .ed-cta .btn { flex: 1 1 0; width: auto; min-height: 44px; padding: 11px 10px; }
+  .ed-progress { bottom: 10px; }
 }
 
 @media (max-width: 640px) {
@@ -1234,8 +1404,7 @@ html:not(.js) .sc-panel { opacity: 1; visibility: visible; transform: none; }
    🔴 실측으로 잡았다: 360×640 에서 첫 화면이 747px 이 되어 단추가 잘렸다.
       그림 → 글씨 → 여백 순으로 줄인다. */
 @media (max-width: 900px) and (max-height: 720px) {
-  .device-media { height: min(200px, 23vh); }
-  .device--reel .device-media { height: min(222px, 26vh); }
+  .device { height: min(236px, 27vh); }
   .hero-art > img { height: min(172px, 19vh); }
   .hero-art::before { width: min(146px, 17vh); height: min(146px, 17vh); }
   .hero h1 { font-size: clamp(1.5rem, 2.6vw + 1.7vh, 2.3rem); }
@@ -1253,8 +1422,7 @@ html:not(.js) .sc-panel { opacity: 1; visibility: visible; transform: none; }
       실측으로 잡았다: 853×533(=1280 확대 150%) 에서 인스타 장의 단추가 4px 잘렸다. */
 @media (max-height: 620px) {
   /* 🔴 실측(640×400 = 1280 확대 200%): 릴스 장의 기기가 점 표시와 11px 겹쳤다 → 비율을 낮춘다 */
-  .device-media { height: min(240px, 34vh); }
-  .device--reel .device-media { height: min(268px, 38vh); }
+  .device { height: min(290px, 46vh); }
   .hero-art > img { height: min(232px, 34vh); }
   .hero-art::before { width: min(210px, 34vh); height: min(210px, 34vh); }
   .hero h1 { font-size: clamp(1.55rem, 2.2vw + 1.9vh, 2.6rem); }
@@ -1266,7 +1434,7 @@ html:not(.js) .sc-panel { opacity: 1; visibility: visible; transform: none; }
 
 @media (prefers-reduced-motion: reduce) {
   .hero-art > img, .hero-art::before,
-  .hero-deco .orb, .hero-deco .ring, .ticker-run, .hero-sub a span { animation: none; }
+  .hero-deco .contour, .ticker-run, .hero-sub a span { animation: none; }
   /* 🔴 `.js .reveal` 보다 세게 써야 이긴다 — 안 그러면 움직임을 마다한 사람에게 글이 안 보인다 */
   .js .reveal, .reveal { opacity: 1; transform: none; transition: none; }
   .sc-panel { transition: none; }
@@ -1287,4 +1455,103 @@ html:not(.js) .sc-panel { opacity: 1; visibility: visible; transform: none; }
 .ed-date,
 .step-number {
   font-weight: 400;
+}
+
+/* ── 소개 영상 «틀» ─────────────────────────────────
+   유진님 2026-09-12 11:19 「짧은 어제한입 소개 영상」. 영상은 아직 없다 —
+   🔴 오늘 만든 것은 «누르면 커졌다가 끝나면 줄어드는» 움직임과 «자리»다.
+   영상이 생기면 .intro-slot 안만 <video> 로 바꾸면 된다. */
+.intro-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 7px 16px 7px 12px;
+  border: 1px solid rgba(255, 255, 255, .16);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, .04);
+  color: #b9d2e8;
+  font-family: var(--en-font);
+  font-size: .74rem;
+  font-weight: 700;
+  letter-spacing: .2em;
+  cursor: pointer;
+  transition: background .2s var(--ease), color .2s, transform .2s var(--ease);
+}
+
+.intro-btn:hover, .intro-btn:focus-visible {
+  color: #fff;
+  background: rgba(255, 255, 255, .12);
+  transform: translateY(-2px);
+}
+
+.intro-play {
+  width: 0;
+  height: 0;
+  border-left: 8px solid var(--amber);
+  border-top: 5px solid transparent;
+  border-bottom: 5px solid transparent;
+}
+
+.hero-sub { display: flex; justify-content: center; align-items: center; gap: 10px; flex-wrap: wrap; }
+
+.intro-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 60;
+  display: grid;
+  place-items: center;
+  padding: var(--shell);
+  background: rgba(3, 12, 22, .78);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  opacity: 0;
+  transition: opacity .28s var(--ease);
+}
+
+.intro-modal.is-open { opacity: 1; }
+
+/* 🔴 «커졌다 줄어든다» — 여는 순간 작게 시작해 제자리를 찾고, 닫으면 다시 작아진다 */
+.intro-box {
+  position: relative;
+  width: min(560px, 100%);
+  padding: clamp(26px, 4vw, 44px);
+  border: 1px solid rgba(255, 255, 255, .12);
+  border-radius: 26px;
+  background: linear-gradient(155deg, #0a2540 0%, var(--ground) 70%);
+  box-shadow: 0 40px 90px rgba(0, 0, 0, .6);
+  transform: scale(.82);
+  opacity: 0;
+  transition: transform .34s var(--ease), opacity .28s var(--ease);
+}
+
+.intro-modal.is-open .intro-box { transform: scale(1); opacity: 1; }
+
+.intro-slot { display: grid; justify-items: center; text-align: center; gap: 6px; }
+.intro-slot img { width: min(190px, 44vw); height: auto; }
+.intro-slot p { margin: 0; color: #fff; font-size: 1.05rem; font-weight: 700; }
+.intro-slot .intro-sub { color: var(--dim); font-size: .88rem; font-weight: 400; }
+
+.intro-close {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  display: grid;
+  width: 40px;
+  height: 40px;
+  place-items: center;
+  padding: 0;
+  color: #cfe2f2;
+  background: rgba(255, 255, 255, .06);
+  border: 1px solid rgba(255, 255, 255, .14);
+  border-radius: 50%;
+  cursor: pointer;
+  transition: background .2s var(--ease);
+}
+
+.intro-close:hover { background: rgba(255, 255, 255, .16); }
+.intro-close svg { width: 18px; height: 18px; }
+
+@media (prefers-reduced-motion: reduce) {
+  .intro-box { transition: opacity .2s; transform: none; }
+  .intro-modal.is-open .intro-box { transform: none; }
 }

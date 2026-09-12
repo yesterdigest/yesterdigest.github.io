@@ -194,7 +194,99 @@
     }
   }
 
-  /* ── 6. 스크롤 등장 — «스르륵» ─────────────────
+  /* ── 6. 지난 편 — «아래로 내리면 옆으로» ────────
+     유진님 2026-09-12 11:19 ⑦ 「아래로 드래그하면 옆으로 넘어가면서」.
+     세로 스크롤 자리를 «가로 이동»으로 바꾼다. 🔴 가로 스크롤 막대는 만들지 않는다 —
+     넘치는 것은 .ed-stage 가 숨기고, 미는 것은 transform 이다. 폰에서도 손가락 세로 스크롤로 넘어간다.
+     🔴 움직임을 마다한 설정이면 «아무것도 안 한다» — CSS 가 그냥 위아래로 쌓아준다. */
+  document.querySelectorAll('.ed-rail').forEach(function (rail) {
+    var track = rail.querySelector('.ed-track');
+    var stage = rail.querySelector('.ed-stage');
+    var fill = rail.querySelector('.ed-progress i');
+    var n = track.children.length;
+    if (!track || n < 2) return;
+
+    if (reduce) {                       /* 옆으로 밀지 않는다. 위아래로 쌓아 보여준다 */
+      rail.style.height = 'auto';
+      stage.style.position = 'static';
+      stage.style.height = 'auto';
+      stage.style.overflow = 'visible';
+      stage.style.paddingTop = '0';
+      track.style.flexDirection = 'column';
+      track.style.gap = '56px';
+      [].slice.call(track.children).forEach(function (p) { p.style.flex = 'none'; });
+      if (fill) fill.parentElement.style.display = 'none';
+      return;
+    }
+
+    rail.style.setProperty('--n', n);
+    var 예약 = false;
+
+    function 밀기() {
+      예약 = false;
+      var r = rail.getBoundingClientRect();
+      if (r.height === 0) return;                  /* 아직 안 열린 화면 */
+      var 달릴거리 = r.height - stage.offsetHeight;
+      var p = 달릴거리 > 0 ? (-r.top) / 달릴거리 : 0;
+      p = Math.max(0, Math.min(1, p));
+      track.style.transform = 'translate3d(' + (-p * (n - 1) * 100) + '%, 0, 0)';
+      if (fill) fill.style.transform = 'translateX(' + (p * (n - 1) * 100) + '%)';
+      /* 이 장의 그림은 «가까이 왔을 때» 받는다 */
+      var 지금 = Math.round(p * (n - 1));
+      [지금, 지금 + 1].forEach(function (k) {
+        var el = track.children[k];
+        if (!el) return;
+        el.querySelectorAll('img[data-src]').forEach(function (im) {
+          im.src = im.getAttribute('data-src');
+          im.removeAttribute('data-src');
+        });
+      });
+    }
+
+    function 예약하기() {
+      if (예약) return;
+      예약 = true;
+      requestAnimationFrame(밀기);
+    }
+
+    window.addEventListener('scroll', 예약하기, { passive: true });
+    window.addEventListener('resize', 예약하기);
+    setInterval(밀기, 600);           /* 화면(칸)을 바꿔 열렸을 때도 맞춰준다 */
+    밀기();
+  });
+
+  /* ── 7. 소개 영상 «틀» — 커졌다 줄어든다 ────────
+     영상은 아직 없다. 움직임과 자리만 미리 만들어 둔다 (유진님 11:19 · 팀장 판단으로 영상은 오늘 안 만든다).
+     영상이 생기면 .intro-slot 안만 <video> 로 바꾸면 되고, 이 코드는 그대로 쓴다. */
+  var introBtn = document.getElementById('intro-open');
+  var introBox = document.getElementById('intro-modal');
+  if (introBtn && introBox) {
+    var introClose = document.getElementById('intro-close');
+    var 되돌릴곳 = null;
+
+    function 열기() {
+      되돌릴곳 = document.activeElement;
+      introBox.hidden = false;
+      requestAnimationFrame(function () { introBox.classList.add('is-open'); });
+      document.body.style.overflow = 'hidden';
+      introClose.focus();
+    }
+
+    function 닫기() {
+      if (introBox.hidden) return;
+      introBox.classList.remove('is-open');          /* 줄어든다 */
+      document.body.style.overflow = '';
+      setTimeout(function () { introBox.hidden = true; }, 340);
+      if (되돌릴곳 && 되돌릴곳.focus) 되돌릴곳.focus();
+    }
+
+    introBtn.addEventListener('click', 열기);
+    introClose.addEventListener('click', 닫기);
+    introBox.addEventListener('click', function (ev) { if (ev.target === introBox) 닫기(); });
+    document.addEventListener('keydown', function (ev) { if (ev.key === 'Escape') 닫기(); });
+  }
+
+  /* ── 8. 스크롤 등장 — «스르륵» ─────────────────
      유진님 2026-09-12 10:16 「스르륵 나타나도록 해달라고 했는데 지금은 그냥 뚝 나눠져서 보여」.
 
      🔴 왜 안 보였나 — 예전 코드는 «3초 뒤에 남은 것을 전부» 보이게 하는 안전망을 뒀다.
@@ -207,22 +299,34 @@
   if (reduce) {
     나타날것.forEach(function (el) { el.classList.add('is-in'); });
   } else {
-    var 예약 = false, 시계 = null;
+    var 예약 = false;
 
+    /* 🔴 «켜고 끝»이 아니라 «오르내릴 때마다» 다시 켠다 (유진님 2026-09-12 11:19
+       「한번 내렸다가 다시 올리고 내리면 또 스르륵이 되어야하는데 지금은 그게 안되네」).
+       예전 코드는 한 번 켠 것을 목록에서 «빼버려서» 두 번째부터는 아무 일도 안 일어났다.
+
+       켜는 선과 끄는 선을 «다르게» 둔다(히스테리시스) —
+         켠다: 창 아래에서 12% 올라온 선에 닿을 때
+         끈다: 창 «아래»로 완전히 내려갔을 때만
+       두 선이 같으면 그 언저리에서 깜빡인다. 그리고 끄는 선이 «창 밖»이라
+       🔴 보이는 글이 사라지는 일은 구조적으로 없다. */
     function 훑기() {
       예약 = false;
-      var 문턱 = window.innerHeight * 0.88;   /* 창 아래에서 12% 올라온 선 */
+      var 창 = window.innerHeight;
+      var 켤선 = 창 * 0.88;
       var n = 0;
-      나타날것 = 나타날것.filter(function (el) {
+      나타날것.forEach(function (el) {
         var r = el.getBoundingClientRect();
-        if (r.height === 0 && r.top === 0) return true;      /* 아직 안 열린 화면 */
-        if (r.top > 문턱) return true;
-        /* 한 번에 여러 개가 걸리면 조금씩 시차를 둔다 — 한꺼번에 튀어나오지 않게 */
-        el.style.setProperty('--d', (n++ * 110) + 'ms');
-        el.classList.add('is-in');
-        return false;
+        if (r.height === 0 && r.top === 0) return;          /* 아직 안 열린 화면 */
+        var 켜짐 = el.classList.contains('is-in');
+        if (!켜짐 && r.top < 켤선) {
+          /* 한 번에 여러 개가 걸리면 조금씩 시차를 둔다 — 한꺼번에 튀어나오지 않게 */
+          el.style.setProperty('--d', (n++ * 110) + 'ms');
+          el.classList.add('is-in');
+        } else if (켜짐 && r.top > 창) {
+          el.classList.remove('is-in');                     /* 창 밖(아래)으로 나갔을 때만 */
+        }
       });
-      if (!나타날것.length && 시계) { clearInterval(시계); 시계 = null; }
     }
 
     function 예약하기() {
@@ -233,14 +337,9 @@
 
     window.addEventListener('scroll', 예약하기, { passive: true });
     window.addEventListener('resize', 예약하기);
-    /* 🔴 안전망은 «시간»이 아니라 «되풀이»다.
-       예전 코드는 3초 뒤에 남은 것을 «전부» 켰다. 사람은 대개 3초 안에 스크롤을 안 내리므로
-       내려갔을 땐 아래가 이미 다 켜져 있어 나타나는 장면을 한 번도 못 봤다
-       (유진님 2026-09-12 10:16 「그냥 뚝 나눠져서 보여」).
-       그래서 «보이는 자리에 온 것만» 켜는 같은 검사를 0.6초마다 되풀이한다 —
-       스크롤 신호가 안 오는 환경에서도 글이 사라지지 않고, 정상일 때도 미리 켜지지 않는다.
-       다 켜지면 스스로 멈춘다. */
-    시계 = setInterval(훑기, 600);
+    /* 🔴 안전망: 스크롤 신호가 아예 안 오는 환경에서도 글이 사라지지 않게 0.6초마다 같은 검사를
+       되풀이한다. «보이는 자리에 온 것만» 켜므로 미리 켜지지도 않는다. */
+    setInterval(훑기, 600);
     훑기();
   }
 })();
