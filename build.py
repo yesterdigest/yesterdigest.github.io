@@ -55,8 +55,32 @@ def pretty(d):
 #    → 첫 화면의 단추 둘만 남긴다. 편 카드 안의 단추는 «그 편 게시물»로 가는 것이라 겹치지 않아 그대로 둔다.
 #    되살리려면 이 자리에 cta_band() 를 다시 만들고 화면 함수에서 부르면 된다.
 
+def 기기목업(그림, alt, 재생=False):
+    """스마트폰 «그림» 안에 우리 화면을 넣는다.
+
+    🔴 테두리는 CSS 로 직접 그린다(.device). 남의 기기 사진·남의 앱 화면 캡처를 쓰지 않고,
+       Instagram·YouTube 의 UI 도 흉내내지 않는다 — 상표·저작권 때문이다 (§3.6 · 팀장 09:48).
+       화면 안에 들어가는 것은 «우리 카드/릴스»와 «우리 계정 이름»뿐이다.
+    """
+    재생표 = ('<span class="device-play" aria-hidden="true">'
+              '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></span>') if 재생 else ''
+    return """<div class="device" aria-hidden="false">
+                  <span class="device-slit" aria-hidden="true"></span>
+                  <div class="device-screen">
+                    <div class="device-top">
+                      <img src="/assets/brand/logo-256.png" alt="" width="40" height="40">
+                      <span>@yesterdigest</span>
+                    </div>
+                    <div class="device-media">
+                      <img data-src="%s" alt="%s">
+                      %s
+                    </div>
+                  </div>
+                </div>""" % (그림, e(alt), 재생표)
+
+
 def showcase(editions):
-    """첫 화면 — 가만히 두면 «일정 시간마다» 장이 바뀐다 (유진님 2026-09-12 09:26).
+    """첫 화면 — 가만히 두면 «일정 시간마다» 장이 바뀐다 (유진님 2026-09-12 09:26 · 09:48).
 
     장은 data/showcase.json 에서 온다. 「보임: true」인 것만 나오고, 하나를 더하면
     점 표시·자동 넘김·손가락 넘김이 «저절로» 따라온다 — 나중에 CV·자동화 매매를 한 장씩 붙이려고
@@ -66,7 +90,12 @@ def showcase(editions):
     장 = [c for c in sc['장'] if c.get('보임')]
     if not 장:
         raise SystemExit('data/showcase.json 에 보임:true 인 장이 없다.')
-    최근표지 = editions['편'][0]['표지'] if editions.get('편') else None
+
+    최신 = editions['편'][0] if editions.get('편') else {}
+    표지 = 최신.get('표지')
+    릴스 = '/assets/reel/%s.jpg' % 최신.get('날짜', '')
+    if not os.path.exists(os.path.join(HERE, 릴스.lstrip('/'))):
+        릴스 = 표지                       # 릴스 표지 그림이 없으면 카드 표지로 대신한다
 
     단추종류 = {
         'youtube': ('btn-yt', IC['yt'], 'YouTube 보러가기', YT_CHANNEL),
@@ -75,13 +104,7 @@ def showcase(editions):
 
     패널 = []
     for i, c in enumerate(장):
-        cls, icon, 글, 주소 = 단추종류[c['단추']]
-        머리 = ''
-        if c.get('칩'):
-            머리 = ('<p class="name-chip"><img src="/assets/brand/logo-256.png" alt="">'
-                    '<span>%s</span></p>' % e(c['칩']).replace(e(CHARACTER), '<b>%s</b>' % e(CHARACTER)))
-        elif c.get('눈금'):
-            머리 = '<p class="eyebrow">%s</p>' % e(c['눈금'])
+        머리 = '<p class="eyebrow">%s</p>' % e(c['눈금']) if c.get('눈금') else ''
 
         줄 = []
         for n, t in enumerate(c['제목줄']):
@@ -90,43 +113,49 @@ def showcase(editions):
             줄.append('<span class="accent">%s</span>' % e(t) if n == c.get('강조줄') else e(t))
         제목 = '<br>'.join(줄)
 
-        if c['그림'] == '캐릭터':
-            # 정지 PNG 가 기본. home.js 가 움직임을 마다하지 않는 환경에서만 GIF 로 바꾼다.
-            그림 = ('<img id="hero-char" src="/assets/brand/character-wave.png" '
-                    'data-motion="/assets/brand/character-wave.gif" '
-                    'width="780" height="780" alt="손을 흔드는 %s">' % e(CHARACTER))
-            그림칸 = 'hero-art'
+        모토 = ('<p class="motto"><span aria-hidden="true">&#9201;</span>%s</p>' % e(c['모토'])) if c.get('모토') else ''
+
+        단추 = ''
+        if c.get('단추'):
+            cls, icon, 글, 주소 = 단추종류[c['단추']]
+            단추 = ('<div class="hero-actions"><a class="btn %s btn-xl" href="%s" target="_blank" rel="noopener">'
+                    '%s %s %s</a></div>' % (cls, 주소, icon, e(글), IC['go']))
+
+        if c['그림'] == '로고':
+            그림 = ('<div class="hero-art"><img id="hero-char" src="/assets/brand/character-wave.png" '
+                    'data-motion="/assets/brand/character-wave.gif" width="780" height="780" '
+                    'alt="손을 흔드는 %s"></div>' % e(CHARACTER))
+        elif c['그림'] == '카드목업' and 표지:
+            그림 = '<div class="hero-art hero-art-device">%s</div>' % 기기목업(표지, '가장 최근 편 카드뉴스 표지')
+        elif c['그림'] == '릴스목업' and 릴스:
+            그림 = '<div class="hero-art hero-art-device">%s</div>' % 기기목업(릴스, '가장 최근 편 릴스 표지', 재생=True)
         else:
-            # 첫 그림이 늦지 않게, 이 장이 «처음 보일 때» home.js 가 붙인다
-            그림 = ('<img data-src="%s" width="720" height="900" alt="가장 최근 편 카드뉴스 표지">'
-                    '<noscript><img src="%s" width="720" height="900" alt="가장 최근 편 카드뉴스 표지"></noscript>'
-                    % (최근표지, 최근표지)) if 최근표지 else ''
-            그림칸 = 'hero-art hero-art-cover'
+            그림 = ''
 
         패널.append("""          <article class="sc-panel%(on)s" id="sc-%(id)s" data-sc="%(id)s"%(hidden)s>
             <div class="hero-inner">
-              <div>
+              <div class="hero-text">
                 %(머리)s
                 <h1>%(제목)s</h1>
                 <p class="hero-lead">%(설명)s</p>
-                <div class="hero-actions">
-                  <a class="btn %(cls)s btn-xl" href="%(주소)s" target="_blank" rel="noopener">%(icon)s %(글)s %(go)s</a>
-                </div>
+                %(모토)s
+                %(단추)s
               </div>
-              <div class="%(그림칸)s">%(그림)s</div>
+              %(그림)s
             </div>
           </article>""" % dict(on=' is-on' if i == 0 else '', id=e(c['id']),
                                 hidden='' if i == 0 else ' aria-hidden="true"',
-                                머리=머리, 제목=제목, 설명=e(c['설명']),
-                                cls=cls, 주소=주소, icon=icon, 글=e(글), go=IC['go'],
-                                그림칸=그림칸, 그림=그림))
+                                머리=머리, 제목=제목, 설명=e(c['설명']), 모토=모토,
+                                단추=단추, 그림=그림))
 
     return """      <section class="hero showcase" data-interval="%(초d)d" aria-roledescription="carousel" aria-label="어제한입 소개">
         <div class="sc-stack">
 %(패널)s
         </div>
-        <div class="sc-dots" role="tablist" aria-label="소개 화면 고르기"></div>
-        <p class="hero-sub"><a href="#editions" data-view="editions">지난 편 훑어보기 →</a></p>
+        <div class="sc-foot">
+          <div class="sc-dots" role="tablist" aria-label="소개 화면 고르기"></div>
+          <p class="hero-sub"><a href="#editions" data-view="editions">Latest drops <span aria-hidden="true">&#8595;</span></a></p>
+        </div>
       </section>""" % dict(초d=int(sc.get('넘김초', 7)) * 1000, 패널='\n'.join(패널))
 
 

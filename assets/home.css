@@ -109,6 +109,25 @@ h1, h2, h3,
 .showcase {
   margin-top: calc(-1 * var(--header-h, 69px));
   padding-top: var(--header-h, 69px);
+  /* 🔴 창을 꽉 채운다 (유진님 09:48 「확대 축소에 따라서 자동으로 꽉채울 수 있도록」).
+     svh 를 쓰는 까닭 — 폰 브라우저의 주소창이 접혔다 펴져도 잘리지 않는다. */
+  min-height: 100vh;
+  min-height: 100svh;
+  display: grid;
+  grid-template-rows: 1fr auto;   /* 내용은 가운데, 점·링크는 아래에 붙는다 */
+  align-items: center;
+  box-sizing: border-box;
+}
+
+.sc-stack { align-self: center; }
+
+.sc-foot {
+  position: relative;
+  z-index: 2;
+  display: grid;
+  gap: 6px;
+  justify-items: center;
+  padding-bottom: clamp(14px, 3vh, 30px);
 }
 
 .site-header {
@@ -166,9 +185,9 @@ h1, h2, h3,
 
 .hero-inner {
   min-height: 0;
-  grid-template-columns: minmax(0, 1fr) minmax(300px, 0.9fr);
-  gap: 40px;
-  padding: 58px 0 66px;
+  grid-template-columns: minmax(0, 1fr) minmax(280px, .86fr);
+  gap: clamp(20px, 4vw, 52px);
+  padding: clamp(12px, 3vh, 40px) 0;
   align-items: center;
 }
 
@@ -189,14 +208,15 @@ h1, h2, h3,
 .name-chip b { color: var(--amber); font-weight: 900; }
 
 .hero h1 {
-  font-size: clamp(2.5rem, 5.4vw, 4.1rem);
+  /* 가로(vw)와 세로(vh) 를 함께 본다 — 낮고 넓은 창에서 글자가 넘치지 않게 */
+  font-size: clamp(2rem, 3.1vw + 2.1vh, 4.6rem);
   line-height: 1.14;
-  margin-bottom: 18px;
+  margin-bottom: clamp(8px, 1.6vh, 18px);
 }
 
 .hero h1 .accent { display: inline; color: var(--amber); font-size: 1em; }
 
-.hero-lead { color: #cfe0ef; margin: 0; }
+.hero-lead { color: #cfe0ef; margin: 0; font-size: clamp(.95rem, .62vw + 1.05vh, 1.32rem); }
 .hero-lead b { color: #fff; }
 
 /* 🔴 인스타·유튜브 단추는 «같은 너비». 글자 수가 달라도 짝이 어긋나면 안 된다
@@ -206,7 +226,7 @@ h1, h2, h3,
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 12px;
-  margin-top: 30px;
+  margin-top: clamp(14px, 2.6vh, 30px);
   width: 100%;          /* 없으면 격자가 «글자 폭»으로 쪼그라든다 (실측 269px) */
   max-width: 640px;
 }
@@ -220,17 +240,17 @@ h1, h2, h3,
 .hero-art { align-self: center; }
 
 .hero-art::before {
-  width: min(340px, 62vw);
-  height: min(340px, 62vw);
+  width: min(330px, 39vh);
+  height: min(330px, 39vh);
   background: radial-gradient(circle at 50% 42%, #ffd06a 0%, var(--amber) 62%, #e79f12 100%);
   box-shadow: 0 0 90px 26px rgba(252, 180, 36, .22);
   animation: halo 7s ease-in-out infinite;
 }
 
-.hero-art img {
+.hero-art > img {
   width: auto;
-  height: min(380px, 48vh);   /* 맞이하는 GIF 가 380×380 — 이보다 키우면 흐려진다 */
-  max-width: 88vw;
+  height: min(380px, 44vh);   /* 맞이하는 GIF 가 380×380 — 이보다 키우면 흐려진다 */
+  max-width: 84vw;
   filter: drop-shadow(0 30px 34px rgba(0, 0, 0, .3));
   animation: bob 5.5s ease-in-out infinite;
 }
@@ -288,19 +308,101 @@ html:not(.js) .sc-panel { opacity: 1; visibility: visible; transform: none; }
 .sc-dots button.is-on { width: 26px; background: var(--amber); }
 
 /* 표지를 그림으로 쓰는 장 (인스타) */
-.hero-art-cover { display: grid; place-items: center; }
-.hero-art-cover::before { display: none; }
 
-.hero-art-cover img {
-  width: auto;
-  height: min(380px, 48vh);
-  max-width: 84vw;
-  border-radius: 18px;
-  box-shadow: 0 26px 60px rgba(0, 0, 0, .42);
-  animation: none;
+.showcase .hero-sub { margin: 0; text-align: center; }
+
+.showcase .hero-sub a {
+  font-size: clamp(.85rem, 1.6vh, .98rem);
+  font-weight: 700;
+  letter-spacing: .02em;
+  border-bottom-color: rgba(159, 192, 220, .5);
 }
 
-.showcase .hero-sub { position: relative; z-index: 2; text-align: center; padding-bottom: 22px; margin: 0; }
+
+/* 유진님 모토 — 2026-09-06 「"시간은 금이다" 이게 내 모토야」 */
+.motto {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin: clamp(10px, 2vh, 18px) 0 0;
+  padding: 7px 16px;
+  border: 1px solid rgba(252, 180, 36, .38);
+  border-radius: 999px;
+  background: rgba(252, 180, 36, .1);
+  color: var(--amber);
+  font-size: clamp(.82rem, 1.5vh, .95rem);
+  font-weight: 700;
+  letter-spacing: .01em;
+}
+
+/* ── 스마트폰 «그림» — CSS 로 직접 그린다 ────────────
+   🔴 남의 기기 사진·남의 앱 화면을 쓰지 않는다. 안에 넣는 것은 우리 카드/릴스뿐이고
+      Instagram·YouTube 의 UI 는 흉내내지 않는다 (§3.6 · 팀장 2026-09-12 09:48). */
+.hero-art-device { display: grid; place-items: center; }
+.hero-art-device::before { display: none; }
+
+.device {
+  position: relative;
+  width: auto;
+  height: min(460px, 56vh);
+  aspect-ratio: 9 / 18.5;
+  padding: 9px;
+  border-radius: 30px;
+  background: linear-gradient(150deg, #3a4557 0%, #171d27 46%, #0b0f16 100%);
+  box-shadow: 0 0 0 1px rgba(255, 255, 255, .09), 0 30px 60px rgba(0, 0, 0, .5);
+}
+
+.device-slit {
+  position: absolute;
+  top: 4px;
+  left: 50%;
+  width: 34%;
+  height: 4px;
+  transform: translateX(-50%);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, .16);
+}
+
+.device-screen {
+  display: grid;
+  grid-template-rows: auto 1fr;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  border-radius: 23px;
+  background: #0d1117;
+}
+
+.device-top {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 7px 9px;
+  color: #d7e4f0;
+  font-size: .62rem;
+  font-weight: 700;
+  letter-spacing: .01em;
+}
+
+.device-top img { width: 17px; height: 17px; border-radius: 50%; }
+
+.device-media { position: relative; display: grid; place-items: center; overflow: hidden; background: #0d1117; }
+.device-media img { width: 100%; height: 100%; object-fit: contain; }
+
+.device-play {
+  position: absolute;
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  color: #fff;
+  background: rgba(10, 14, 20, .5);
+  border: 2px solid rgba(255, 255, 255, .85);
+  border-radius: 50%;
+  backdrop-filter: blur(2px);
+}
+
+.device-play svg { width: 20px; height: 20px; margin-left: 2px; }
 
 /* ── 섹션 공통 ─────────────────────────────────────── */
 .section { padding: 84px 0; }
@@ -600,7 +702,7 @@ html:not(.js) .sc-panel { opacity: 1; visibility: visible; transform: none; }
 .drawer-foot .btn { width: 100%; min-height: 48px; font-size: .98rem; }
 
 /* 맞이하는 GIF 로 바뀌면 위아래로 흔들던 것은 멈춘다 (그림 안에서 이미 움직인다) */
-.hero-art img.is-waving { animation: none; }
+.hero-art > img.is-waving { animation: none; }
 
 /* ── Google OAuth 안내 — «작게 · 맨 아래» ─────────────
    유진님 2026-09-12 08:53 「작게넣거나 어디에 좀 안보이는곳에」.
@@ -671,11 +773,14 @@ html:not(.js) .sc-panel { opacity: 1; visibility: visible; transform: none; }
 .footer-inner { align-items: center; }
 
 /* ── 폰 ────────────────────────────────────────────── */
-@media (max-width: 900px) {
-  .hero-inner { grid-template-columns: 1fr; padding: 24px 0 40px; gap: 18px; text-align: center; }
+@media (max-width: 900px) and (min-height: 620px), (max-width: 620px) {
+  .hero-inner { grid-template-columns: 1fr; padding: clamp(8px, 2vh, 24px) 0; gap: clamp(10px, 2.4vh, 22px); text-align: center; }
   .hero-art { order: -1; }
-  .hero-art::before { width: min(186px, 44vw); height: min(186px, 44vw); }
-  .hero-art img { height: min(224px, 26vh); max-width: 62vw; }
+  .hero-art::before { width: min(186px, 22vh); height: min(186px, 22vh); }
+  .hero-art > img { height: min(224px, 24vh); max-width: 60vw; }
+  .device { height: min(330px, 34vh); }
+  .motto { margin-inline: auto; }
+  .hero-text { display: grid; justify-items: center; }
   .name-chip, .hero-actions, .hero-lead { margin-inline: auto; }
   .hero-actions { justify-self: center; }
   .section { padding: 58px 0; }
@@ -693,8 +798,23 @@ html:not(.js) .sc-panel { opacity: 1; visibility: visible; transform: none; }
   .btn, .ed-cta .btn { width: 100%; }
 }
 
+
+/* ── 세로가 짧은 창 (창을 확대했을 때가 대표적이다) ──
+   🔴 첫 화면이 넘쳐 단추가 잘리지 않게, 그림 → 글씨 → 여백 순으로 줄인다.
+      실측으로 잡았다: 853×533(=1280 확대 150%) 에서 인스타 장의 단추가 4px 잘렸다. */
+@media (max-height: 620px) {
+  .device { height: min(300px, 46vh); }
+  .hero-art > img { height: min(240px, 40vh); }
+  .hero-art::before { width: min(220px, 36vh); height: min(220px, 36vh); }
+  .hero h1 { font-size: clamp(1.6rem, 2.2vw + 1.9vh, 2.7rem); }
+  .hero-lead { font-size: clamp(.88rem, .5vw + 1vh, 1.05rem); }
+  .btn-xl { min-height: 48px; padding: 12px 22px; font-size: .98rem; }
+  .motto { margin-top: 8px; padding: 5px 13px; }
+  .sc-foot { padding-bottom: 8px; gap: 2px; }
+}
+
 @media (prefers-reduced-motion: reduce) {
-  .hero-art img, .hero-art::before { animation: none; }
+  .hero-art > img, .hero-art::before { animation: none; }
   /* 🔴 `.js .reveal` 보다 세게 써야 이긴다 — 안 그러면 움직임을 마다한 사람에게 글이 안 보인다 */
   .js .reveal, .reveal { opacity: 1; transform: none; transition: none; }
   .sc-panel { transition: none; }
