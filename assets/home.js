@@ -8,7 +8,6 @@
   var root = document.documentElement;
   root.classList.add('js');                 /* 이 클래스가 있어야 한 화면만 보인다 */
 
-  var 캐러셀들 = [];   /* 아래 3번에서 채운다. show() 가 먼저 부르므로 여기서 만든다 */
   var 상단바 = function () {};   /* 4번에서 채운다. show() 가 먼저 부르므로 여기서 만든다 */
 
   /* ── 1. 화면 전환 ───────────────────────────── */
@@ -34,7 +33,6 @@
     /* 화면이 바뀐 것을 읽어주는 기계에도 알린다 */
     target.setAttribute('tabindex', '-1');
     target.focus({ preventScroll: true });
-    sync캐러셀();
     상단바();
   }
 
@@ -86,107 +84,7 @@
     a.addEventListener('click', close서랍);
   });
 
-  /* ── 3. 편 캐러셀 — «편 사이»를 스르륵 넘긴다 ── */
-
-  document.querySelectorAll('.carousel').forEach(function (host) {
-    var track = host.querySelector('.track');
-    var slides = [].slice.call(track.children);
-    var prev = host.querySelector('.nav-arrow.prev');
-    var next = host.querySelector('.nav-arrow.next');
-    var dotWrap = host.parentElement.querySelector('.dots');
-    if (!slides.length) return;
-
-    var dots = slides.map(function (_, i) {
-      var b = document.createElement('button');
-      b.type = 'button';
-      b.setAttribute('aria-label', (i + 1) + '번째 편으로 이동');
-      b.addEventListener('click', function () { scrollToIndex(i); });
-      dotWrap.appendChild(b);
-      return b;
-    });
-
-    function single() { return track.clientWidth < slides[0].offsetWidth * 1.6; }
-
-    function posOf(s) {
-      var pad = parseFloat(getComputedStyle(track).paddingLeft) || 0;
-      return s.offsetLeft - track.offsetLeft - pad;
-    }
-
-    function scrollToIndex(i) {
-      var s = slides[Math.max(0, Math.min(slides.length - 1, i))];
-      track.scrollTo({
-        left: single() ? s.offsetLeft - (track.clientWidth - s.offsetWidth) / 2 : posOf(s),
-        behavior: reduce ? 'auto' : 'smooth'
-      });
-    }
-
-    function current() {
-      var w = slides[0].offsetWidth;
-      var ref = track.scrollLeft + (single() ? track.clientWidth / 2 : w / 2);
-      var best = 0, bestD = Infinity;
-      slides.forEach(function (s, i) {
-        var d = Math.abs(posOf(s) + w / 2 - ref);
-        if (d < bestD) { bestD = d; best = i; }
-      });
-      return best;
-    }
-
-    function sync() {
-      var i = current();
-      slides.forEach(function (s, k) { s.classList.toggle('is-active', k === i); });
-      dots.forEach(function (d, k) { d.classList.toggle('is-on', k === i); });
-      var 넘길것있음 = track.scrollWidth > track.clientWidth + 2;
-      if (prev) prev.disabled = !넘길것있음 || track.scrollLeft <= 2;
-      if (next) next.disabled = !넘길것있음 || track.scrollLeft >= track.scrollWidth - track.clientWidth - 2;
-      if (dotWrap) dotWrap.hidden = !넘길것있음;   /* 다 보이면 점은 뜻이 없다 */
-    }
-
-    function step() { return slides[0].getBoundingClientRect().width + 20; }
-    if (prev) prev.addEventListener('click', function () { track.scrollBy({ left: -step(), behavior: reduce ? 'auto' : 'smooth' }); });
-    if (next) next.addEventListener('click', function () { track.scrollBy({ left: step(), behavior: reduce ? 'auto' : 'smooth' }); });
-
-    track.tabIndex = 0;
-    track.setAttribute('role', 'group');
-    track.addEventListener('keydown', function (ev) {
-      if (ev.key === 'ArrowRight') { ev.preventDefault(); scrollToIndex(current() + 1); }
-      if (ev.key === 'ArrowLeft') { ev.preventDefault(); scrollToIndex(current() - 1); }
-    });
-
-    /* 마우스 드래그 (손가락은 브라우저 기본 스크롤이 처리한다) */
-    var down = false, startX = 0, startLeft = 0, moved = 0;
-    track.addEventListener('pointerdown', function (ev) {
-      if (ev.pointerType !== 'mouse') return;
-      down = true; moved = 0; startX = ev.clientX; startLeft = track.scrollLeft;
-      track.classList.add('is-dragging');
-    });
-    window.addEventListener('pointermove', function (ev) {
-      if (!down) return;
-      var dx = ev.clientX - startX;
-      moved = Math.max(moved, Math.abs(dx));
-      track.scrollLeft = startLeft - dx;
-    });
-    window.addEventListener('pointerup', function () {
-      if (!down) return;
-      down = false;
-      track.classList.remove('is-dragging');
-      scrollToIndex(current());
-    });
-    /* 드래그였으면 클릭을 막는다 — 표지가 Instagram 링크라 잘못 열리면 안 된다 */
-    track.addEventListener('click', function (ev) {
-      if (moved > 6) { ev.preventDefault(); ev.stopPropagation(); moved = 0; }
-    }, true);
-
-    var t;
-    track.addEventListener('scroll', function () { clearTimeout(t); t = setTimeout(sync, 60); }, { passive: true });
-    window.addEventListener('resize', sync);
-    캐러셀들.push(sync);
-    sync();
-  });
-
-  function sync캐러셀() { 캐러셀들.forEach(function (f) { f(); }); }
-
-
-  /* ── 4. 상단 바 — 맨 위에서는 배경과 이어지고, 내리면 드러난다 ──
+  /* ── 3. 상단 바 — 맨 위에서는 배경과 이어지고, 내리면 드러난다 ──
      유진님 2026-09-12 09:24. 임계값은 «상단 바 높이의 40%»로 재서 잡는다(고정 숫자를 안 박는다). */
   var header = document.querySelector('.site-header');
   if (header) {
@@ -203,7 +101,7 @@
     상단바();
   }
 
-  /* ── 5. 첫 화면 쇼케이스 — 가만히 두면 저절로 바뀐다 ──
+  /* ── 4. 첫 화면 쇼케이스 — 가만히 두면 저절로 바뀐다 ──
      유진님 2026-09-12 09:26. 장 수는 data/showcase.json 이 정하므로 여기서는 «세어서» 쓴다. */
   var sc = document.querySelector('.showcase');
   if (sc) {
@@ -282,7 +180,7 @@
     돌리기();     /* prefers-reduced-motion 이면 돌리기()가 스스로 아무것도 안 한다 */
   }
 
-  /* ── 6. 맞이하는 캐릭터 ─────────────────────── */
+  /* ── 5. 맞이하는 캐릭터 ─────────────────────── */
   /* 정지 PNG(105KB)가 먼저 뜨고, 그 위에 GIF(350KB)를 «따로 받아» 다 받은 뒤에만 바꾼다.
      첫 그림이 늦어지지 않고, 못 받으면 PNG 그대로 남는다.
      움직임을 마다하는 설정이면 아예 받지 않는다. */
@@ -296,26 +194,53 @@
     }
   }
 
-  /* ── 7. 스크롤 등장 ─────────────────────────── */
+  /* ── 6. 스크롤 등장 — «스르륵» ─────────────────
+     유진님 2026-09-12 10:16 「스르륵 나타나도록 해달라고 했는데 지금은 그냥 뚝 나눠져서 보여」.
+
+     🔴 왜 안 보였나 — 예전 코드는 «3초 뒤에 남은 것을 전부» 보이게 하는 안전망을 뒀다.
+        사람은 대개 3초 안에 스크롤을 안 내린다. 그래서 내려갔을 땐 아래 것들이 «이미 다 나타나 있어»
+        나타나는 장면을 한 번도 못 본다. 「뚝 나눠져 보인다」가 이것이다.
+     그래서 관찰자를 걷어내고 «창 아래 끝에 닿으면 그때» 한 덩어리씩 켠다.
+     🔴 안전망은 남긴다 — 다만 «하나도 못 켰을 때»만 켜지게 해서, 정상일 때는 안 끼어든다. */
   var 나타날것 = [].slice.call(document.querySelectorAll('.reveal'));
-  if (!reduce && 'IntersectionObserver' in window) {
-    var io = new IntersectionObserver(function (entries) {
-      /* 한 번에 여러 개가 걸리면 조금씩 시차를 둔다 — 한꺼번에 튀어나오지 않게 */
-      var n = 0;
-      entries.forEach(function (en) {
-        if (!en.isIntersecting) return;
-        en.target.style.setProperty('--d', (n++ * 90) + 'ms');
-        en.target.classList.add('is-in');
-        io.unobserve(en.target);
-      });
-    }, { rootMargin: '0px 0px -8% 0px', threshold: 0.06 });
-    나타날것.forEach(function (el) { io.observe(el); });
-    /* 🔴 안전망: 3초 뒤에도 안 나타난 것이 있으면 그냥 보여준다.
-       (관찰자가 안 걸리는 환경에서 글이 사라지는 사고를 막는다) */
-    setTimeout(function () {
-      나타날것.forEach(function (el) { el.classList.add('is-in'); });
-    }, 3000);
-  } else {
+
+  if (reduce) {
     나타날것.forEach(function (el) { el.classList.add('is-in'); });
+  } else {
+    var 예약 = false, 시계 = null;
+
+    function 훑기() {
+      예약 = false;
+      var 문턱 = window.innerHeight * 0.88;   /* 창 아래에서 12% 올라온 선 */
+      var n = 0;
+      나타날것 = 나타날것.filter(function (el) {
+        var r = el.getBoundingClientRect();
+        if (r.height === 0 && r.top === 0) return true;      /* 아직 안 열린 화면 */
+        if (r.top > 문턱) return true;
+        /* 한 번에 여러 개가 걸리면 조금씩 시차를 둔다 — 한꺼번에 튀어나오지 않게 */
+        el.style.setProperty('--d', (n++ * 110) + 'ms');
+        el.classList.add('is-in');
+        return false;
+      });
+      if (!나타날것.length && 시계) { clearInterval(시계); 시계 = null; }
+    }
+
+    function 예약하기() {
+      if (예약) return;
+      예약 = true;
+      requestAnimationFrame(훑기);
+    }
+
+    window.addEventListener('scroll', 예약하기, { passive: true });
+    window.addEventListener('resize', 예약하기);
+    /* 🔴 안전망은 «시간»이 아니라 «되풀이»다.
+       예전 코드는 3초 뒤에 남은 것을 «전부» 켰다. 사람은 대개 3초 안에 스크롤을 안 내리므로
+       내려갔을 땐 아래가 이미 다 켜져 있어 나타나는 장면을 한 번도 못 봤다
+       (유진님 2026-09-12 10:16 「그냥 뚝 나눠져서 보여」).
+       그래서 «보이는 자리에 온 것만» 켜는 같은 검사를 0.6초마다 되풀이한다 —
+       스크롤 신호가 안 오는 환경에서도 글이 사라지지 않고, 정상일 때도 미리 켜지지 않는다.
+       다 켜지면 스스로 멈춘다. */
+    시계 = setInterval(훑기, 600);
+    훑기();
   }
 })();

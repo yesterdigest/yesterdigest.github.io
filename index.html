@@ -19,10 +19,15 @@
        🔴 배민 배포본이 아니라 «Google Fonts» 에서 받는다 — 배포처가 다르면 약관이 다르다 (CLAUDE.md §3.6).
        🔴 홈페이지에만 쓴다. 영상·카드뉴스 글씨체는 안 건드린다 (유진님 08:41). -->
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Gothic+A1:wght@400;700&display=swap">
+  <!-- 영문 전용 (유진님 2026-09-12 10:30 「영어를 적절히 활용해줘」).
+       🔴 주아는 한글 글씨체다 — 영문을 주아로 찍으면 어색해서 영문에만 따로 물린다.
+       Inter · SIL OFL 1.1 (google/fonts ofl/inter · METADATA license=OFL) · Google Fonts 배포본.
+       라틴 문자만 받는다 (latin subset) — 무게는 셋뿐이라 가볍다. -->
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@500;700;800&display=swap">
   <!-- Jua 는 «이 페이지가 실제로 쓰는 글자»만 받는다 (text=). 제목·이름·날짜에만 쓰므로 글자가 정해져 있다.
        아래 글자 목록은 build.py 가 만들어진 HTML 에서 «세어» 넣는다 — 손으로 고치지 않는다.
        숫자·년월일·요일 일곱 자는 날마다 바뀌므로 «반드시» 바탕 묶음으로 넣는다. -->
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Jua&display=swap&text=%20%21%28%29%2C-.0123456789%3A%3FABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz~%C2%B7%EA%B0%84%EA%B2%80%EA%B2%8C%EA%B3%A0%EA%B6%8C%EA%B7%BC%EA%B8%88%EA%B8%B0%EA%B8%B8%EB%82%9C%EB%84%90%EB%85%84%EB%89%B4%EB%8B%88%EB%8B%A4%EB%8D%B0%EB%93%9C%EB%94%B0%EB%9D%BC%EB%A1%9C%EB%A5%B4%EB%A5%BC%EB%A7%8C%EB%A9%94%EB%AA%A9%EB%AC%B8%EB%B0%8F%EB%B2%8C%EB%B3%84%EC%82%AC%EC%82%AD%EC%84%A0%EC%88%98%EC%8A%88%EC%8A%A4%EC%8B%9C%EC%94%A9%EC%96%B4%EC%97%90%EC%98%81%EC%9A%94%EC%9A%A9%EC%9A%B4%EC%9B%94%EC%9D%80%EC%9D%98%EC%9D%B4%EC%9D%B8%EC%9D%BC%EC%9E%85%EC%9E%91%EC%9E%A1%EC%9E%A5%EC%A0%84%EC%A0%9C%EC%A3%BC%EC%A7%80%EC%B1%84%EC%B2%AD%EC%B6%9C%EC%B8%A0%EC%B9%B4%EC%BD%98%ED%81%AC%ED%84%B0%ED%85%90%ED%86%A0%ED%8E%B8%ED%95%98%ED%95%9C%ED%95%A9%ED%99%94%ED%99%95%ED%9B%84">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Jua&display=swap&text=%20%21%28%29%2C-.0123456789%3A%3FABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz~%C2%B7%EA%B0%84%EA%B2%80%EA%B2%8C%EA%B3%A0%EA%B6%8C%EA%B7%BC%EA%B8%88%EA%B8%B0%EA%B8%B8%EB%82%9C%EB%84%90%EB%85%84%EB%89%B4%EB%8B%88%EB%8B%A4%EB%8D%B0%EB%93%9C%EB%94%B0%EB%9D%BC%EB%A1%9C%EB%A5%B4%EB%A5%BC%EB%A7%8C%EB%A9%94%EB%AA%A9%EB%AC%B8%EB%B0%8F%EB%B2%8C%EB%B3%84%EC%82%AC%EC%82%AD%EC%84%A0%EC%88%98%EC%8A%88%EC%8A%A4%EC%8B%9C%EC%94%A9%EC%96%B4%EC%97%90%EC%98%81%EC%9A%94%EC%9A%A9%EC%9A%B4%EC%9B%94%EC%9D%80%EC%9D%98%EC%9D%B4%EC%9D%B8%EC%9D%BC%EC%9E%85%EC%9E%91%EC%9E%A1%EC%9E%A5%EC%A0%9C%EC%A3%BC%EC%A7%80%EC%B1%84%EC%B2%AD%EC%B6%9C%EC%B8%A0%EC%B9%B4%EC%BD%98%ED%81%AC%ED%84%B0%ED%85%90%ED%86%A0%ED%8E%B8%ED%95%98%ED%95%9C%ED%95%A9%ED%99%94%ED%99%95%ED%9B%84">
   <link rel="stylesheet" href="/assets/styles.css">
   <link rel="stylesheet" href="/assets/home.css">
 </head>
@@ -65,7 +70,19 @@
 
   <main id="main">
     <section class="view is-active" id="view-yesterdigest" data-view="yesterdigest">
-      <section class="hero showcase" data-interval="7000" aria-roledescription="carousel" aria-label="어제한입 소개">
+      <section class="hero showcase" data-interval="4000" aria-roledescription="carousel" aria-label="어제한입 소개">
+        <div class="hero-deco" aria-hidden="true">
+          <span class="orb orb-a"></span>
+          <span class="orb orb-b"></span>
+          <span class="orb orb-c"></span>
+          <span class="beam"></span>
+          <span class="grid-lines"></span>
+          <span class="arc arc-a"></span>
+          <span class="arc arc-b"></span>
+          <span class="glass glass-a"></span>
+          <span class="glass glass-b"></span>
+          <span class="grain"></span>
+        </div>
         <div class="sc-stack">
           <article class="sc-panel is-on" id="sc-main" data-sc="main">
             <div class="hero-inner">
@@ -132,58 +149,53 @@
           <div class="sc-dots" role="tablist" aria-label="소개 화면 고르기"></div>
           <p class="hero-sub"><a href="#editions" data-view="editions">Latest drops <span aria-hidden="true">&#8595;</span></a></p>
         </div>
+        <div class="ticker" aria-hidden="true"><div class="ticker-run"><span>어제한입 <b>&#183;</b> YESTERDIGEST <b>&#183;</b> 매일 아침 7시 <b>&#183;</b> 시간은 금이다 <b>&#183;</b> 어제한입 <b>&#183;</b> YESTERDIGEST <b>&#183;</b> 매일 아침 7시 <b>&#183;</b> 시간은 금이다 <b>&#183;</b> 어제한입 <b>&#183;</b> YESTERDIGEST <b>&#183;</b> 매일 아침 7시 <b>&#183;</b> 시간은 금이다 <b>&#183;</b> </span><span>어제한입 <b>&#183;</b> YESTERDIGEST <b>&#183;</b> 매일 아침 7시 <b>&#183;</b> 시간은 금이다 <b>&#183;</b> 어제한입 <b>&#183;</b> YESTERDIGEST <b>&#183;</b> 매일 아침 7시 <b>&#183;</b> 시간은 금이다 <b>&#183;</b> 어제한입 <b>&#183;</b> YESTERDIGEST <b>&#183;</b> 매일 아침 7시 <b>&#183;</b> 시간은 금이다 <b>&#183;</b> </span></div></div>
       </section>
 
       <section class="section" aria-labelledby="about-title">
-        <div class="section-heading reveal">
-          <p class="eyebrow">What we do</p>
-          <h2 id="about-title">뉴스를 고르고, 확인하고, 한입 크기로 전합니다.</h2>
-          <p>
-            YesterDigest는 뉴스 콘텐츠 제작과 게시를 돕는 운영자용 시스템입니다.
-            일반 방문자에게 Google 로그인을 요구하거나 계정을 수집하지 않습니다.
-          </p>
-        </div>
-        <div class="steps reveal">
-          <article class="card">
-            <span class="step-number" aria-hidden="true">1</span>
-            <h3>주요 이슈 선별</h3>
-            <p>공식 자료와 복수의 보도를 바탕으로 전날의 핵심 이슈를 선별하고 사실관계를 확인합니다.</p>
-          </article>
-          <article class="card">
-            <span class="step-number" aria-hidden="true">2</span>
-            <h3>콘텐츠 제작</h3>
-            <p>선별한 이슈를 세로형 영상과 카드뉴스에 맞춰 간결하고 이해하기 쉬운 형식으로 제작합니다.</p>
-          </article>
-          <article class="card">
-            <span class="step-number" aria-hidden="true">3</span>
-            <h3>검토 후 게시</h3>
-            <p>사람이 정확성·저작권·표현을 최종 확인한 뒤 공식 API를 통해 채널에 게시하고 관리합니다.</p>
-          </article>
+        <div class="section-inner">
+          <div class="section-heading reveal">
+            <p class="eyebrow">What we do</p>
+            <h2 id="about-title">고르고,<br>확인하고,<br>한입 크기로.</h2>
+            <!-- 🔴 여기 있던 구글 OAuth 두 문장은 «맨 아래» oauth_note() 로 옮겼다
+                 (유진님 2026-09-12 08:53 「어디에 좀 안보이는곳에 둘 순없어?」 ·
+                  09:48 「소개가 너무 정직해」). 지운 것이 아니라 «옮긴» 것이다 — 되돌리지 마라. -->
+            <p>어제 하루를 한입 크기로 잘라, 아침 7시에 놓아둡니다.
+               무엇을 골랐는지와 어떻게 확인했는지를 먼저 챙기고요.</p>
+          </div>
+          <div class="steps reveal">
+            <article class="card">
+              <span class="step-number" aria-hidden="true">1</span>
+              <h3>주요 이슈 선별</h3>
+              <p>공식 자료와 복수의 보도를 바탕으로 전날의 핵심 이슈를 선별하고 사실관계를 확인합니다.</p>
+            </article>
+            <article class="card">
+              <span class="step-number" aria-hidden="true">2</span>
+              <h3>콘텐츠 제작</h3>
+              <p>선별한 이슈를 세로형 영상과 카드뉴스에 맞춰 간결하고 이해하기 쉬운 형식으로 제작합니다.</p>
+            </article>
+            <article class="card">
+              <span class="step-number" aria-hidden="true">3</span>
+              <h3>검토 후 게시</h3>
+              <p>사람이 정확성·저작권·표현을 최종 확인한 뒤 공식 API를 통해 채널에 게시하고 관리합니다.</p>
+            </article>
+          </div>
         </div>
       </section>
 
-      <section class="section" aria-labelledby="contact-title">
-        <div class="contact-panel reveal">
-          <div>
-            <h2 id="contact-title">문의 및 데이터 삭제 요청</h2>
-            <p>서비스, 개인정보, Google 계정 접근 권한 또는 데이터 삭제와 관련해 문의할 수 있습니다.</p>
-          </div>
-          <a class="contact-email" href="mailto:yesterdigest@gmail.com">yesterdigest@gmail.com</a>
-        </div>
-      </section>
     </section>
 
     <section class="view" id="view-editions" data-view="editions">
       <section class="section">
-        <div class="section-heading reveal">
-          <p class="eyebrow">Daily 07:00</p>
-          <h2>지난 편</h2>
-          <p>어제의 이슈 네댓 개를 카드뉴스 한 벌과 세로 영상 한 편으로 만듭니다.
-             여기서는 <b>표지 한 장</b>만 보여드려요 — 전체는 Instagram과 YouTube에 있습니다.</p>
+        <div class="section-inner">
+          <div class="section-heading reveal">
+            <p class="eyebrow">Latest drops</p>
+            <h2>지난 편</h2>
+            <p>어제의 이슈 네댓 개를 카드뉴스 한 벌과 세로 영상 한 편으로 만듭니다.
+               여기서는 <b>표지 한 장</b>만 보여드려요 — 전체는 Instagram과 YouTube에 있습니다.</p>
+          </div>
         </div>
-        <div class="carousel">
-          <button class="nav-arrow prev" type="button" aria-label="이전 편"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg></button>
-          <div class="track" aria-label="지난 편">
+        <div class="ed-list">
           <article class="ed reveal" style="--accent: #70D4FF">
             <a class="ed-cover" href="https://www.instagram.com/p/DdKYg43Ek-b/" target="_blank" rel="noopener"
                aria-label="2026년 9월 11일 카드뉴스를 Instagram에서 보기">
@@ -193,16 +205,23 @@
               <img data-src="/assets/cover/2026-09-11.jpg" width="720" height="900" decoding="async"
                    alt="2026년 9월 11일 어제한입 카드뉴스 표지">
               <noscript><img src="/assets/cover/2026-09-11.jpg" width="720" height="900" alt="2026년 9월 11일 어제한입 카드뉴스 표지"></noscript>
-              <span class="ed-peek">표지 미리보기</span>
             </a>
-            <div class="ed-body">
-              <p class="ed-date"><span class="ed-dot" aria-hidden="true"></span>2026년 9월 11일 <small>(금)</small></p>
-              <ul class="ed-topics"><li>윤석열 전 대통령, 하루 두 재판</li><li>김수현, 미도 계약금 소송 최종 승소</li><li>완주 고속도로 터널 추돌, 9명 부상</li><li>조희대 대법원장 발언과 청와대 반응</li></ul>
+            <div class="ed-text">
+              <!-- 🔴 표지 그림 «안»에 이미 날짜와 이슈 네 줄이 있다. 그래서 화면에 또 쓰지 않는다
+                   (팀장 2026-09-12 「표지 안에 이미 있는 날짜·이슈를 화면에 또 쓰지 않을 것」).
+                   큰 글자 자리는 «영문 날짜 표기»가 맡는다 — 표지의 한글 날짜와 겹치지 않고,
+                   유진님 10:30 「영어를 적절히 활용해줘」의 «날짜 표기» 쓰임에 맞는다.
+                   한글 날짜와 이슈 제목은 아래 .sr-only 로 남겨 검색엔진·읽는 기계에는 그대로 간다. -->
+              <p class="ed-day"><span class="ed-dot" aria-hidden="true"></span>SEP 11, 2026<i>FRI</i></p>
               <p class="ed-more">카드 6장 전체와 릴스 1편은 계정에서 봅니다.</p>
               <div class="ed-cta">
-                <a class="btn btn-ig" href="https://www.instagram.com/p/DdKYg43Ek-b/" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="2.5" y="2.5" width="19" height="19" rx="5.4"/><circle cx="12" cy="12" r="4.2"/><circle cx="17.6" cy="6.4" r="1.2" fill="currentColor" stroke="none"/></svg> Instagram에서 보기 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h13M13 6l6 6-6 6"/></svg></a>
-                <a class="btn btn-yt" href="https://youtube.com/watch?v=c-uiBQKFP5U" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M23.5 6.2a3 3 0 0 0-2.1-2.1C19.5 3.6 12 3.6 12 3.6s-7.5 0-9.4.5A3 3 0 0 0 .5 6.2C0 8.1 0 12 0 12s0 3.9.5 5.8a3 3 0 0 0 2.1 2.1c1.9.5 9.4.5 9.4.5s7.5 0 9.4-.5a3 3 0 0 0 2.1-2.1c.5-1.9.5-5.8.5-5.8s0-3.9-.5-5.8zM9.6 15.6V8.4l6.2 3.6-6.2 3.6z"/></svg> YouTube에서 보기 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h13M13 6l6 6-6 6"/></svg></a>
+                <a class="btn btn-ig" href="https://www.instagram.com/p/DdKYg43Ek-b/" target="_blank" rel="noopener"
+                   aria-label="2026년 9월 11일 카드뉴스를 Instagram에서 보기"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="2.5" y="2.5" width="19" height="19" rx="5.4"/><circle cx="12" cy="12" r="4.2"/><circle cx="17.6" cy="6.4" r="1.2" fill="currentColor" stroke="none"/></svg> <span>INSTAGRAM</span></a>
+                <a class="btn btn-yt" href="https://youtube.com/watch?v=c-uiBQKFP5U" target="_blank" rel="noopener"
+                   aria-label="2026년 9월 11일 영상을 YouTube에서 보기"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M23.5 6.2a3 3 0 0 0-2.1-2.1C19.5 3.6 12 3.6 12 3.6s-7.5 0-9.4.5A3 3 0 0 0 .5 6.2C0 8.1 0 12 0 12s0 3.9.5 5.8a3 3 0 0 0 2.1 2.1c1.9.5 9.4.5 9.4.5s7.5 0 9.4-.5a3 3 0 0 0 2.1-2.1c.5-1.9.5-5.8.5-5.8s0-3.9-.5-5.8zM9.6 15.6V8.4l6.2 3.6-6.2 3.6z"/></svg> <span>YOUTUBE</span></a>
               </div>
+              <ul class="ed-topics sr-only"><li>김수현, 미도 계약금 소송 최종 승소</li><li>완주 고속도로 터널 추돌, 9명 부상</li><li>조희대 대법원장 발언과 청와대 반응</li></ul>
+              <p class="sr-only">2026년 9월 11일 (금) — 윤석열 전 대통령, 하루 두 재판</p>
             </div>
           </article>
           <article class="ed reveal" style="--accent: #70FF9B">
@@ -214,16 +233,23 @@
               <img data-src="/assets/cover/2026-09-10.jpg" width="720" height="900" decoding="async"
                    alt="2026년 9월 10일 어제한입 카드뉴스 표지">
               <noscript><img src="/assets/cover/2026-09-10.jpg" width="720" height="900" alt="2026년 9월 10일 어제한입 카드뉴스 표지"></noscript>
-              <span class="ed-peek">표지 미리보기</span>
             </a>
-            <div class="ed-body">
-              <p class="ed-date"><span class="ed-dot" aria-hidden="true"></span>2026년 9월 10일 <small>(목)</small></p>
-              <ul class="ed-topics"><li>아이유 「이 별로부터」 음원차트 1위</li><li>텔레그램 성착취 총책 무기징역 확정</li><li>용혜인 장관후보자 겸직 논란</li><li>승리, 특수폭행 혐의로 고소</li></ul>
+            <div class="ed-text">
+              <!-- 🔴 표지 그림 «안»에 이미 날짜와 이슈 네 줄이 있다. 그래서 화면에 또 쓰지 않는다
+                   (팀장 2026-09-12 「표지 안에 이미 있는 날짜·이슈를 화면에 또 쓰지 않을 것」).
+                   큰 글자 자리는 «영문 날짜 표기»가 맡는다 — 표지의 한글 날짜와 겹치지 않고,
+                   유진님 10:30 「영어를 적절히 활용해줘」의 «날짜 표기» 쓰임에 맞는다.
+                   한글 날짜와 이슈 제목은 아래 .sr-only 로 남겨 검색엔진·읽는 기계에는 그대로 간다. -->
+              <p class="ed-day"><span class="ed-dot" aria-hidden="true"></span>SEP 10, 2026<i>THU</i></p>
               <p class="ed-more">카드 6장 전체와 릴스 1편은 계정에서 봅니다.</p>
               <div class="ed-cta">
-                <a class="btn btn-ig" href="https://www.instagram.com/p/DdJT4ZymnGI/" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="2.5" y="2.5" width="19" height="19" rx="5.4"/><circle cx="12" cy="12" r="4.2"/><circle cx="17.6" cy="6.4" r="1.2" fill="currentColor" stroke="none"/></svg> Instagram에서 보기 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h13M13 6l6 6-6 6"/></svg></a>
-                <a class="btn btn-yt" href="https://youtube.com/watch?v=_ccVpJCycj4" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M23.5 6.2a3 3 0 0 0-2.1-2.1C19.5 3.6 12 3.6 12 3.6s-7.5 0-9.4.5A3 3 0 0 0 .5 6.2C0 8.1 0 12 0 12s0 3.9.5 5.8a3 3 0 0 0 2.1 2.1c1.9.5 9.4.5 9.4.5s7.5 0 9.4-.5a3 3 0 0 0 2.1-2.1c.5-1.9.5-5.8.5-5.8s0-3.9-.5-5.8zM9.6 15.6V8.4l6.2 3.6-6.2 3.6z"/></svg> YouTube에서 보기 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h13M13 6l6 6-6 6"/></svg></a>
+                <a class="btn btn-ig" href="https://www.instagram.com/p/DdJT4ZymnGI/" target="_blank" rel="noopener"
+                   aria-label="2026년 9월 10일 카드뉴스를 Instagram에서 보기"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="2.5" y="2.5" width="19" height="19" rx="5.4"/><circle cx="12" cy="12" r="4.2"/><circle cx="17.6" cy="6.4" r="1.2" fill="currentColor" stroke="none"/></svg> <span>INSTAGRAM</span></a>
+                <a class="btn btn-yt" href="https://youtube.com/watch?v=_ccVpJCycj4" target="_blank" rel="noopener"
+                   aria-label="2026년 9월 10일 영상을 YouTube에서 보기"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M23.5 6.2a3 3 0 0 0-2.1-2.1C19.5 3.6 12 3.6 12 3.6s-7.5 0-9.4.5A3 3 0 0 0 .5 6.2C0 8.1 0 12 0 12s0 3.9.5 5.8a3 3 0 0 0 2.1 2.1c1.9.5 9.4.5 9.4.5s7.5 0 9.4-.5a3 3 0 0 0 2.1-2.1c.5-1.9.5-5.8.5-5.8s0-3.9-.5-5.8zM9.6 15.6V8.4l6.2 3.6-6.2 3.6z"/></svg> <span>YOUTUBE</span></a>
               </div>
+              <ul class="ed-topics sr-only"><li>텔레그램 성착취 총책 무기징역 확정</li><li>용혜인 장관후보자 겸직 논란</li><li>승리, 특수폭행 혐의로 고소</li></ul>
+              <p class="sr-only">2026년 9월 10일 (목) — 아이유 「이 별로부터」 음원차트 1위</p>
             </div>
           </article>
           <article class="ed reveal" style="--accent: #FFEC70">
@@ -235,22 +261,26 @@
               <img data-src="/assets/cover/2026-09-09.jpg" width="720" height="900" decoding="async"
                    alt="2026년 9월 9일 어제한입 카드뉴스 표지">
               <noscript><img src="/assets/cover/2026-09-09.jpg" width="720" height="900" alt="2026년 9월 9일 어제한입 카드뉴스 표지"></noscript>
-              <span class="ed-peek">표지 미리보기</span>
             </a>
-            <div class="ed-body">
-              <p class="ed-date"><span class="ed-dot" aria-hidden="true"></span>2026년 9월 9일 <small>(수)</small></p>
-              <ul class="ed-topics"><li>임영웅 「또또」 멜론 핫100 1~10위 석권</li><li>파주 카페 냉동창고 사건 — 수사 진행</li><li>포스코 창사 58년 만 첫 파업</li><li>애플 「아이폰 듀오」 폴더블 공개</li><li>경찰 보디캠 194억 중국산 납품 의혹</li></ul>
+            <div class="ed-text">
+              <!-- 🔴 표지 그림 «안»에 이미 날짜와 이슈 네 줄이 있다. 그래서 화면에 또 쓰지 않는다
+                   (팀장 2026-09-12 「표지 안에 이미 있는 날짜·이슈를 화면에 또 쓰지 않을 것」).
+                   큰 글자 자리는 «영문 날짜 표기»가 맡는다 — 표지의 한글 날짜와 겹치지 않고,
+                   유진님 10:30 「영어를 적절히 활용해줘」의 «날짜 표기» 쓰임에 맞는다.
+                   한글 날짜와 이슈 제목은 아래 .sr-only 로 남겨 검색엔진·읽는 기계에는 그대로 간다. -->
+              <p class="ed-day"><span class="ed-dot" aria-hidden="true"></span>SEP 9, 2026<i>WED</i></p>
               <p class="ed-more">카드 7장 전체는 계정에서 봅니다.</p>
               <div class="ed-cta">
-                <a class="btn btn-ig" href="https://www.instagram.com/p/DdF-RQOGsuS/" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="2.5" y="2.5" width="19" height="19" rx="5.4"/><circle cx="12" cy="12" r="4.2"/><circle cx="17.6" cy="6.4" r="1.2" fill="currentColor" stroke="none"/></svg> Instagram에서 보기 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h13M13 6l6 6-6 6"/></svg></a>
-                <a class="btn btn-yt" href="https://youtube.com/watch?v=l2fiycxdPzY" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M23.5 6.2a3 3 0 0 0-2.1-2.1C19.5 3.6 12 3.6 12 3.6s-7.5 0-9.4.5A3 3 0 0 0 .5 6.2C0 8.1 0 12 0 12s0 3.9.5 5.8a3 3 0 0 0 2.1 2.1c1.9.5 9.4.5 9.4.5s7.5 0 9.4-.5a3 3 0 0 0 2.1-2.1c.5-1.9.5-5.8.5-5.8s0-3.9-.5-5.8zM9.6 15.6V8.4l6.2 3.6-6.2 3.6z"/></svg> YouTube에서 보기 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h13M13 6l6 6-6 6"/></svg></a>
+                <a class="btn btn-ig" href="https://www.instagram.com/p/DdF-RQOGsuS/" target="_blank" rel="noopener"
+                   aria-label="2026년 9월 9일 카드뉴스를 Instagram에서 보기"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="2.5" y="2.5" width="19" height="19" rx="5.4"/><circle cx="12" cy="12" r="4.2"/><circle cx="17.6" cy="6.4" r="1.2" fill="currentColor" stroke="none"/></svg> <span>INSTAGRAM</span></a>
+                <a class="btn btn-yt" href="https://youtube.com/watch?v=l2fiycxdPzY" target="_blank" rel="noopener"
+                   aria-label="2026년 9월 9일 영상을 YouTube에서 보기"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M23.5 6.2a3 3 0 0 0-2.1-2.1C19.5 3.6 12 3.6 12 3.6s-7.5 0-9.4.5A3 3 0 0 0 .5 6.2C0 8.1 0 12 0 12s0 3.9.5 5.8a3 3 0 0 0 2.1 2.1c1.9.5 9.4.5 9.4.5s7.5 0 9.4-.5a3 3 0 0 0 2.1-2.1c.5-1.9.5-5.8.5-5.8s0-3.9-.5-5.8zM9.6 15.6V8.4l6.2 3.6-6.2 3.6z"/></svg> <span>YOUTUBE</span></a>
               </div>
+              <ul class="ed-topics sr-only"><li>파주 카페 냉동창고 사건 — 수사 진행</li><li>포스코 창사 58년 만 첫 파업</li><li>애플 「아이폰 듀오」 폴더블 공개</li><li>경찰 보디캠 194억 중국산 납품 의혹</li></ul>
+              <p class="sr-only">2026년 9월 9일 (수) — 임영웅 「또또」 멜론 핫100 1~10위 석권</p>
             </div>
           </article>
-          </div>
-          <button class="nav-arrow next" type="button" aria-label="다음 편"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg></button>
         </div>
-        <div class="dots" aria-label="편 위치"></div>
       </section>
     </section>
   </main>
@@ -264,13 +294,25 @@
       <h2 id="oauth-title">Google 권한은 채널 운영에만 사용합니다.</h2>
       <p class="oauth-lead">YesterDigest는 운영자가 소유한 YouTube 채널에 영상을 업로드하고,
         필요한 경우 게시한 영상을 관리하기 위해 Google OAuth를 사용합니다.</p>
+      <p class="oauth-lead">YesterDigest는 뉴스 콘텐츠 제작과 게시를 돕는 운영자용 시스템입니다.
+        일반 방문자에게 Google 로그인을 요구하거나 계정을 수집하지 않습니다.</p>
       <ul class="oauth-list">
         <li><strong>YouTube 업로드</strong> 검토가 끝난 영상을 운영자의 YouTube 채널에 업로드합니다.</li>
         <li><strong>게시물 관리</strong> 시스템을 통해 게시한 영상의 상태를 확인하고 필요한 경우 삭제합니다.</li>
         <li><strong>제한된 보관</strong> 인증정보는 공개 홈페이지나 공개 저장소에 저장하지 않으며 운영 환경에서만 보호해 보관합니다.</li>
       </ul>
       <p class="oauth-strong">Google 사용자 데이터를 판매하거나 광고 목적으로 제공하지 않습니다.</p>
-      <p class="oauth-more">자세한 내용은 <a href="/privacy/">개인정보처리방침</a>에 있습니다.</p>
+      <div class="oauth-contact" id="contact">
+        <div>
+          <h3 id="contact-title">문의 및 데이터 삭제 요청</h3>
+          <p>서비스, 개인정보, Google 계정 접근 권한 또는 데이터 삭제와 관련해 문의할 수 있습니다.</p>
+        </div>
+        <p class="oauth-links">
+          <a class="oauth-mail" href="mailto:yesterdigest@gmail.com">yesterdigest@gmail.com</a>
+          <a href="/privacy/">개인정보처리방침</a>
+          <a href="/terms/">이용약관</a>
+        </p>
+      </div>
     </div>
   </section>
 

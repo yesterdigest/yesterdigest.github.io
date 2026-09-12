@@ -27,6 +27,10 @@ IG_ACCOUNT = 'https://www.instagram.com/yesterdigest/'
 CHARACTER = '한입이'          # 유진님 2026-09-12 08:00 「한입이로 하자」
 
 WD = ['월', '화', '수', '목', '금', '토', '일']
+# 영문 딱지용 — 유진님 2026-09-12 10:30 「홈페이지는 영어를 적절히 활용해줘」.
+# 🔴 «읽지 않아도 되는 것»만 영어다 (날짜 표기·절 제목·단추). 읽어야 하는 말은 한글로 둔다.
+EN_MON = ['JAN', 'FEB', 'MAR', 'APR', 'MAY', 'JUN', 'JUL', 'AUG', 'SEP', 'OCT', 'NOV', 'DEC']
+EN_WD = ['MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT', 'SUN']
 
 IC = {
  'yt': '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M23.5 6.2a3 3 0 0 0-2.1-2.1C19.5 3.6 12 3.6 12 3.6s-7.5 0-9.4.5A3 3 0 0 0 .5 6.2C0 8.1 0 12 0 12s0 3.9.5 5.8a3 3 0 0 0 2.1 2.1c1.9.5 9.4.5 9.4.5s7.5 0 9.4-.5a3 3 0 0 0 2.1-2.1c.5-1.9.5-5.8.5-5.8s0-3.9-.5-5.8zM9.6 15.6V8.4l6.2 3.6-6.2 3.6z"/></svg>',
@@ -48,6 +52,12 @@ def pretty(d):
     y, m, day = d.split('-')
     wd = WD[datetime.date(int(y), int(m), int(day)).weekday()]
     return '%s년 %s월 %s일' % (y, int(m), int(day)), wd
+
+
+def en_date(d):
+    """「SEP 11, 2026」·「FRI」 — 영문 딱지용."""
+    y, m, day = [int(x) for x in d.split('-')]
+    return '%s %d, %d' % (EN_MON[m - 1], day, y), EN_WD[datetime.date(y, m, day).weekday()]
 
 
 # 🔴 「전체는 계정에서 봐요.」 띠는 2026-09-12 09:09 유진님 지시로 없앴다.
@@ -77,6 +87,42 @@ def 기기목업(그림, alt, 재생=False):
                     </div>
                   </div>
                 </div>""" % (' device--reel' if 재생 else '', 그림, e(alt), 재생표)
+
+
+def hero_deco():
+    """첫 화면 «가장자리»를 채우는 도형들 — 전부 장식이라 읽는 기계에는 안 보인다.
+
+    유진님 2026-09-12 10:16 「처음 들어갔을때 화면이 너무 빈것처럼 느껴져」
+                          · 「투명도, 그라데이션, 여러 효과 등을 넣어서」.
+    🔴 가운데는 비운다. 채우는 것은 «가장자리»다 — 글과 단추가 가려지면 안 된다.
+    🔴 도형뿐이다. 남의 그림·남의 글자를 여기에 넣지 않는다 (§3.6).
+    🔴 우리 «유튜브 채널 아트»의 결도 가져오지 않는다 (유진님 10:21 「저 디자인도 내가 전면 개편을
+       원해. 너무 촌스러워..」). 그쪽은 납작한 벡터다 — 꽉 찬 동그라미 · 짧은 막대 · 점 무리 · 도시 실루엣.
+       여기서 쓰는 것은 그 반대다: «흐린» 큰 원 · 빛 번짐 · 머리카락처럼 가는 호 · 반투명 유리 · 아주 옅은 알갱이.
+    """
+    return """        <div class="hero-deco" aria-hidden="true">
+          <span class="orb orb-a"></span>
+          <span class="orb orb-b"></span>
+          <span class="orb orb-c"></span>
+          <span class="beam"></span>
+          <span class="grid-lines"></span>
+          <span class="arc arc-a"></span>
+          <span class="arc arc-b"></span>
+          <span class="glass glass-a"></span>
+          <span class="glass glass-b"></span>
+          <span class="grain"></span>
+        </div>"""
+
+
+def ticker():
+    """첫 화면 맨 아래 «흐르는 띠». 우리 말만 쓴다.
+
+    🔴 같은 내용을 «두 번» 넣는다 — 애니메이션이 -50% 로 밀기 때문에 그래야 이음매가 안 보인다.
+    """
+    한판 = ('어제한입 <b>&#183;</b> YESTERDIGEST <b>&#183;</b> 매일 아침 7시 '
+            '<b>&#183;</b> 시간은 금이다 <b>&#183;</b> ') * 3
+    return ('        <div class="ticker" aria-hidden="true"><div class="ticker-run">'
+            '<span>%s</span><span>%s</span></div></div>' % (한판, 한판))
 
 
 def showcase(editions):
@@ -159,6 +205,7 @@ def showcase(editions):
                                 단추=단추, 그림=그림))
 
     return """      <section class="hero showcase" data-interval="%(초d)d" aria-roledescription="carousel" aria-label="어제한입 소개">
+%(장식)s
         <div class="sc-stack">
 %(패널)s
         </div>
@@ -166,69 +213,76 @@ def showcase(editions):
           <div class="sc-dots" role="tablist" aria-label="소개 화면 고르기"></div>
           <p class="hero-sub"><a href="#editions" data-view="editions">Latest drops <span aria-hidden="true">&#8595;</span></a></p>
         </div>
-      </section>""" % dict(초d=int(sc.get('넘김초', 7)) * 1000, 패널='\n'.join(패널))
+%(띠)s
+      </section>""" % dict(초d=int(sc.get('넘김초', 4)) * 1000, 패널='\n'.join(패널),
+                            장식=hero_deco(), 띠=ticker())
 
 
 # ── 화면(칸) ───────────────────────────────────────────────────────
 def view_yesterdigest(cfg, data):
-    """들어오면 처음 보이는 화면 — 손 흔드는 한입이가 맞이하고, 바로 계정 버튼."""
+    """들어오면 처음 보이는 화면 — 첫 화면(자동으로 바뀌는 장) + 하는 일 + 문의."""
     return showcase(data['editions']) + """
 
       <section class="section" aria-labelledby="about-title">
-        <div class="section-heading reveal">
-          <p class="eyebrow">What we do</p>
-          <h2 id="about-title">뉴스를 고르고, 확인하고, 한입 크기로 전합니다.</h2>
-          <p>
-            YesterDigest는 뉴스 콘텐츠 제작과 게시를 돕는 운영자용 시스템입니다.
-            일반 방문자에게 Google 로그인을 요구하거나 계정을 수집하지 않습니다.
-          </p>
-        </div>
-        <div class="steps reveal">
-          <article class="card">
-            <span class="step-number" aria-hidden="true">1</span>
-            <h3>주요 이슈 선별</h3>
-            <p>공식 자료와 복수의 보도를 바탕으로 전날의 핵심 이슈를 선별하고 사실관계를 확인합니다.</p>
-          </article>
-          <article class="card">
-            <span class="step-number" aria-hidden="true">2</span>
-            <h3>콘텐츠 제작</h3>
-            <p>선별한 이슈를 세로형 영상과 카드뉴스에 맞춰 간결하고 이해하기 쉬운 형식으로 제작합니다.</p>
-          </article>
-          <article class="card">
-            <span class="step-number" aria-hidden="true">3</span>
-            <h3>검토 후 게시</h3>
-            <p>사람이 정확성·저작권·표현을 최종 확인한 뒤 공식 API를 통해 채널에 게시하고 관리합니다.</p>
-          </article>
+        <div class="section-inner">
+          <div class="section-heading reveal">
+            <p class="eyebrow">What we do</p>
+            <h2 id="about-title">고르고,<br>확인하고,<br>한입 크기로.</h2>
+            <!-- 🔴 여기 있던 구글 OAuth 두 문장은 «맨 아래» oauth_note() 로 옮겼다
+                 (유진님 2026-09-12 08:53 「어디에 좀 안보이는곳에 둘 순없어?」 ·
+                  09:48 「소개가 너무 정직해」). 지운 것이 아니라 «옮긴» 것이다 — 되돌리지 마라. -->
+            <p>어제 하루를 한입 크기로 잘라, 아침 7시에 놓아둡니다.
+               무엇을 골랐는지와 어떻게 확인했는지를 먼저 챙기고요.</p>
+          </div>
+          <div class="steps reveal">
+            <article class="card">
+              <span class="step-number" aria-hidden="true">1</span>
+              <h3>주요 이슈 선별</h3>
+              <p>공식 자료와 복수의 보도를 바탕으로 전날의 핵심 이슈를 선별하고 사실관계를 확인합니다.</p>
+            </article>
+            <article class="card">
+              <span class="step-number" aria-hidden="true">2</span>
+              <h3>콘텐츠 제작</h3>
+              <p>선별한 이슈를 세로형 영상과 카드뉴스에 맞춰 간결하고 이해하기 쉬운 형식으로 제작합니다.</p>
+            </article>
+            <article class="card">
+              <span class="step-number" aria-hidden="true">3</span>
+              <h3>검토 후 게시</h3>
+              <p>사람이 정확성·저작권·표현을 최종 확인한 뒤 공식 API를 통해 채널에 게시하고 관리합니다.</p>
+            </article>
+          </div>
         </div>
       </section>
-
-      <section class="section" aria-labelledby="contact-title">
-        <div class="contact-panel reveal">
-          <div>
-            <h2 id="contact-title">문의 및 데이터 삭제 요청</h2>
-            <p>서비스, 개인정보, Google 계정 접근 권한 또는 데이터 삭제와 관련해 문의할 수 있습니다.</p>
-          </div>
-          <a class="contact-email" href="mailto:yesterdigest@gmail.com">yesterdigest@gmail.com</a>
-        </div>
-      </section>""" % dict(CH=CHARACTER, IG=IG_ACCOUNT, YT=YT_CHANNEL,
-                            icig=IC['ig'], icyt=IC['yt'], icgo=IC['go'])
+"""
 
 
 def view_editions(cfg, data):
-    """지난 편 — «표지 한 장»씩만. 나머지는 계정에서 본다."""
-    slides = []
+    """지난 편 — 편마다 «가로로 꽉 찬 띠» 한 줄. 나머지는 계정에서 본다.
+
+    🔴 2026-09-12 두 번째 개편: 3열 격자를 걷어냈다 (유진님 10:19
+       「저런식으로 분리된 패널형식을 참고하라는게 아니야」). 홈페이지를 칸으로 나누지 않는다.
+       참고 그림에서 가져올 것은 «칸 안의» 결이다 — 큰 글자와 작은 글자의 대비 ·
+       그림이 자리를 꽉 채움 · 경계를 넘어 걸치기 · 영문 딱지.
+    🔴 그래서 표지는 창 «끝»까지 흘러나가고(왼·오른쪽 번갈아), 글은 그 옆에 선다.
+       표지를 자르지 않는다 — 4:5 원본 그대로다.
+    🔴 관문 성격은 그대로다 — 카드 전체와 릴스는 이 페이지에서 보여주지 않는다 (유진님 07:54).
+    """
+    bands = []
     for ed in data['editions']['편']:
         d = ed['날짜']
         title, wd = pretty(d)
+        엔날짜, 엔요일 = en_date(d)
         color = ed.get('요일색') or '#FCB424'
-        topics = ''.join('<li>%s</li>' % e(t) for t in ed.get('이슈', []))
+        이슈 = ed.get('이슈', [])
+        머리기사 = 이슈[0] if 이슈 else title
+        나머지 = ''.join('<li>%s</li>' % e(t) for t in 이슈[1:])
         ig = ed.get('인스타_카드') or ed.get('인스타_릴스') or IG_ACCOUNT
         yt = ed.get('유튜브') or YT_CHANNEL
         릴스있음 = bool(ed.get('인스타_릴스'))
         더보기 = ('카드 %d장 전체와 릴스 1편은 계정에서 봅니다.' if 릴스있음
                   else '카드 %d장 전체는 계정에서 봅니다.') % ed.get('카드수', 0)
 
-        slides.append("""          <article class="ed reveal" style="--accent: %(color)s">
+        bands.append("""          <article class="ed reveal" style="--accent: %(color)s">
             <a class="ed-cover" href="%(ig)s" target="_blank" rel="noopener"
                aria-label="%(title)s 카드뉴스를 Instagram에서 보기">
               <!-- 이 화면은 처음엔 숨어 있다. display:none 이어도 브라우저는 src 를 받아버리므로
@@ -237,38 +291,42 @@ def view_editions(cfg, data):
               <img data-src="%(cover)s" width="720" height="900" decoding="async"
                    alt="%(title)s 어제한입 카드뉴스 표지">
               <noscript><img src="%(cover)s" width="720" height="900" alt="%(title)s 어제한입 카드뉴스 표지"></noscript>
-              <span class="ed-peek">표지 미리보기</span>
             </a>
-            <div class="ed-body">
-              <p class="ed-date"><span class="ed-dot" aria-hidden="true"></span>%(title)s <small>(%(wd)s)</small></p>
-              <ul class="ed-topics">%(topics)s</ul>
+            <div class="ed-text">
+              <!-- 🔴 표지 그림 «안»에 이미 날짜와 이슈 네 줄이 있다. 그래서 화면에 또 쓰지 않는다
+                   (팀장 2026-09-12 「표지 안에 이미 있는 날짜·이슈를 화면에 또 쓰지 않을 것」).
+                   큰 글자 자리는 «영문 날짜 표기»가 맡는다 — 표지의 한글 날짜와 겹치지 않고,
+                   유진님 10:30 「영어를 적절히 활용해줘」의 «날짜 표기» 쓰임에 맞는다.
+                   한글 날짜와 이슈 제목은 아래 .sr-only 로 남겨 검색엔진·읽는 기계에는 그대로 간다. -->
+              <p class="ed-day"><span class="ed-dot" aria-hidden="true"></span>%(엔날짜)s<i>%(엔요일)s</i></p>
               <p class="ed-more">%(more)s</p>
               <div class="ed-cta">
-                <a class="btn btn-ig" href="%(ig)s" target="_blank" rel="noopener">%(icig)s Instagram에서 보기 %(icgo)s</a>
-                <a class="btn btn-yt" href="%(yt)s" target="_blank" rel="noopener">%(icyt)s YouTube에서 보기 %(icgo)s</a>
+                <a class="btn btn-ig" href="%(ig)s" target="_blank" rel="noopener"
+                   aria-label="%(title)s 카드뉴스를 Instagram에서 보기">%(icig)s <span>INSTAGRAM</span></a>
+                <a class="btn btn-yt" href="%(yt)s" target="_blank" rel="noopener"
+                   aria-label="%(title)s 영상을 YouTube에서 보기">%(icyt)s <span>YOUTUBE</span></a>
               </div>
+              <ul class="ed-topics sr-only">%(나머지)s</ul>
+              <p class="sr-only">%(title)s (%(wd)s) — %(머리기사)s</p>
             </div>
-          </article>""" % dict(color=color, ig=ig, yt=yt, cover=ed['표지'], title=title,
-                               wd=wd, topics=topics, more=더보기,
-                               icig=IC['ig'], icyt=IC['yt'], icgo=IC['go']))
+          </article>""" % dict(color=color, ig=ig, yt=yt, cover=ed['표지'], title=title, wd=wd,
+                               엔날짜=엔날짜, 엔요일=엔요일, 머리기사=e(머리기사),
+                               나머지=나머지, more=더보기,
+                               icig=IC['ig'], icyt=IC['yt']))
 
     return """      <section class="section">
-        <div class="section-heading reveal">
-          <p class="eyebrow">Daily 07:00</p>
-          <h2>%(제목)s</h2>
-          <p>어제의 이슈 네댓 개를 카드뉴스 한 벌과 세로 영상 한 편으로 만듭니다.
-             여기서는 <b>표지 한 장</b>만 보여드려요 — 전체는 Instagram과 YouTube에 있습니다.</p>
-        </div>
-        <div class="carousel">
-          <button class="nav-arrow prev" type="button" aria-label="이전 편">%(prev)s</button>
-          <div class="track" aria-label="지난 편">
-%(slides)s
+        <div class="section-inner">
+          <div class="section-heading reveal">
+            <p class="eyebrow">Latest drops</p>
+            <h2>%(제목)s</h2>
+            <p>어제의 이슈 네댓 개를 카드뉴스 한 벌과 세로 영상 한 편으로 만듭니다.
+               여기서는 <b>표지 한 장</b>만 보여드려요 — 전체는 Instagram과 YouTube에 있습니다.</p>
           </div>
-          <button class="nav-arrow next" type="button" aria-label="다음 편">%(next)s</button>
         </div>
-        <div class="dots" aria-label="편 위치"></div>
-      </section>""" % dict(제목=e(cfg['제목']), slides='\n'.join(slides),
-                   prev=IC['prev'], next=IC['next'])
+        <div class="ed-list">
+%(bands)s
+        </div>
+      </section>""" % dict(제목=e(cfg['제목']), bands='\n'.join(bands))
 
 
 SECTION_BUILDERS = {
@@ -282,7 +340,6 @@ SECTION_BUILDERS = {
 # Jua 가 실제로 그리는 자리 (assets/home.css 의 --title-font 선택자와 «짝»이다.
 # 거기에 선택자를 더하면 여기에도 더해야 한다 — 안 그러면 그 글자만 본문 글씨로 튄다)
 JUA_자리 = [r'<h1[^>]*>(.*?)</h1>', r'<h2[^>]*>(.*?)</h2>', r'<h3[^>]*>(.*?)</h3>',
-            r'class="ed-date"[^>]*>(.*?)</p>',
             r'class="brand-link"[^>]*>.*?<span>(.*?)</span>',
             r'class="drawer-title">(.*?)</span>',
             r'class="name-chip"[^>]*>(.*?)</p>']
@@ -303,13 +360,17 @@ def jua_글자(page):
 
 
 def oauth_note():
-    """Google OAuth 안내 — «작게 · 맨 아래».
+    """Google OAuth 안내 + 문의 — «작게 · 맨 아래».
 
     유진님 2026-09-12 08:53 「google oauth관련된건 작게넣거나 어디에 좀 안보이는곳에 둘 순없어? 너무 깨네 저게」
+             09:48 「소개가 너무 정직해」
+    🔴 그래서 본문에 흩어져 있던 것을 여기 «한 자리»로 내렸다 (2026-09-12 두 번째 개편).
+       ① 소개 첫 문단의 구글 두 문장  ② 「문의 및 데이터 삭제 요청」 절 통째로
     🔴 문구는 한 글자도 고치지 않는다. 심사에 쓰인 문장이다. 크기와 자리만 바꿨다.
     🔴 지우면 안 된다 — Google 의 App Homepage 요건이 «앱이 어떤 목적으로 사용자 데이터를
        요구하는지 홈페이지에서 투명하게 설명할 것»과 «개인정보처리방침 링크»를 요구한다
-       (support.google.com/cloud/answer/13807376). 자세한 내용은 개인정보처리방침에 있으면 된다.
+       (support.google.com/cloud/answer/13807376).
+    🔴 메일 주소 · 개인정보처리방침 · 이용약관은 «여기서도 눌러서 갈 수 있어야» 한다.
     🔴 «작게»이지 «흐리게»가 아니다 — 글자 14px 이상, 어두운 바탕에 밝은 글자로 대비를 지킨다.
     """
     return """  <section class="oauth-note" aria-labelledby="oauth-title">
@@ -318,13 +379,25 @@ def oauth_note():
       <h2 id="oauth-title">Google 권한은 채널 운영에만 사용합니다.</h2>
       <p class="oauth-lead">YesterDigest는 운영자가 소유한 YouTube 채널에 영상을 업로드하고,
         필요한 경우 게시한 영상을 관리하기 위해 Google OAuth를 사용합니다.</p>
+      <p class="oauth-lead">YesterDigest는 뉴스 콘텐츠 제작과 게시를 돕는 운영자용 시스템입니다.
+        일반 방문자에게 Google 로그인을 요구하거나 계정을 수집하지 않습니다.</p>
       <ul class="oauth-list">
         <li><strong>YouTube 업로드</strong> 검토가 끝난 영상을 운영자의 YouTube 채널에 업로드합니다.</li>
         <li><strong>게시물 관리</strong> 시스템을 통해 게시한 영상의 상태를 확인하고 필요한 경우 삭제합니다.</li>
         <li><strong>제한된 보관</strong> 인증정보는 공개 홈페이지나 공개 저장소에 저장하지 않으며 운영 환경에서만 보호해 보관합니다.</li>
       </ul>
       <p class="oauth-strong">Google 사용자 데이터를 판매하거나 광고 목적으로 제공하지 않습니다.</p>
-      <p class="oauth-more">자세한 내용은 <a href="/privacy/">개인정보처리방침</a>에 있습니다.</p>
+      <div class="oauth-contact" id="contact">
+        <div>
+          <h3 id="contact-title">문의 및 데이터 삭제 요청</h3>
+          <p>서비스, 개인정보, Google 계정 접근 권한 또는 데이터 삭제와 관련해 문의할 수 있습니다.</p>
+        </div>
+        <p class="oauth-links">
+          <a class="oauth-mail" href="mailto:yesterdigest@gmail.com">yesterdigest@gmail.com</a>
+          <a href="/privacy/">개인정보처리방침</a>
+          <a href="/terms/">이용약관</a>
+        </p>
+      </div>
     </div>
   </section>
 """
@@ -395,6 +468,11 @@ PAGE = """<!doctype html>
        🔴 배민 배포본이 아니라 «Google Fonts» 에서 받는다 — 배포처가 다르면 약관이 다르다 (CLAUDE.md §3.6).
        🔴 홈페이지에만 쓴다. 영상·카드뉴스 글씨체는 안 건드린다 (유진님 08:41). -->
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Gothic+A1:wght@400;700&display=swap">
+  <!-- 영문 전용 (유진님 2026-09-12 10:30 「영어를 적절히 활용해줘」).
+       🔴 주아는 한글 글씨체다 — 영문을 주아로 찍으면 어색해서 영문에만 따로 물린다.
+       Inter · SIL OFL 1.1 (google/fonts ofl/inter · METADATA license=OFL) · Google Fonts 배포본.
+       라틴 문자만 받는다 (latin subset) — 무게는 셋뿐이라 가볍다. -->
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@500;700;800&display=swap">
   <!-- Jua 는 «이 페이지가 실제로 쓰는 글자»만 받는다 (text=). 제목·이름·날짜에만 쓰므로 글자가 정해져 있다.
        아래 글자 목록은 build.py 가 만들어진 HTML 에서 «세어» 넣는다 — 손으로 고치지 않는다.
        숫자·년월일·요일 일곱 자는 날마다 바뀌므로 «반드시» 바탕 묶음으로 넣는다. -->
