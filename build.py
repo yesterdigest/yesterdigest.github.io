@@ -137,6 +137,7 @@ def 기기목업(그림, alt, 재생=False, 주소=None, 설명=None, 윗줄='',
                         <span>yesterdigest</span>
                         <i class="dv-dots"></i>
                       </div>
+                      <span class="dv-peek-img"></span>
                     </div>
                     <div class="dv-nav" aria-hidden="true">%(home)s%(find)s%(heart)s%(who)s</div>""" % dict(
             그림=그림, alt=e(alt), 윗줄=e(윗줄), 아랫줄=e(아랫줄), 캡션=e(캡션),

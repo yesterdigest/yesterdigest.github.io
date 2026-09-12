@@ -746,10 +746,15 @@ html:not(.js) .sc-panel { opacity: 1; visibility: visible; transform: none; }
 /* 다음 글이 «살짝» 보이는 자리 — 진짜 피드는 여기서 끊기지 않는다.
    이게 없으면 설명란과 맨 아래 줄 사이가 통째로 비어 화면이 끝나 보인다. */
 .dv-peek {
+  display: grid;
+  grid-template-rows: auto 1fr;
   overflow: hidden;
   border-top: 1px solid rgba(255, 255, 255, .09);
   opacity: .55;
 }
+
+/* 다음 글의 그림이 «시작되는» 자리. 없으면 여기가 통째로 검게 남는다 */
+.dv-peek-img { background: linear-gradient(160deg, #1b2533, #101722); }
 .dv-nav > :first-child { color: #fff; }
 
 /* ── 세로 영상 판 (유튜브 장) ───────────────────────
