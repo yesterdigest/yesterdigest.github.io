@@ -1286,6 +1286,21 @@ html:not(.js) .ed-nav { display: none; }
 
 .drawer-backdrop.is-open { opacity: 1; }
 
+/* 🔴 2026-09-12 유진님 16:07 — 「여전히 메뉴의 크기가 유지안돼. 확대하면 존나 커져」
+   15:45 에 고친 것은 «머리줄»이었다. 커 보이던 것은 «열리는 서랍»이다 (유진님 15:16 사진도 서랍이었다).
+
+   재보니 (200% 확대 = CSS 768 · dpr2 · 실제화면 1536):
+     · 서랍 폭이 px 라 CSS 320 그대로 → 실제 640px → 화면의 41.7% (100% 에서는 25.0%)
+     · 안쪽도 전부 px·rem 이라 CSS 값이 그대로 → 실제로는 «두 배»로 찍힌다
+       (제목 16.8 · 메뉴줄 글자 16.3 · 높이 52 · 둥글기 14 — 100% 와 한 값도 안 달랐다)
+     · 닫기 단추만 이미 작아졌다 (46→34) — 머리줄 .menu-btn 의 clamp 를 같이 쓰기 때문이다
+
+   고침 — 머리줄과 «같은 결»이다.
+   🔴 clamp 의 «최댓값»에 지금 px 을 그대로 둔다 → 100% 에서 한 픽셀도 안 달라진다.
+      가운데 vw 는 1280 에서 최댓값을 막 넘도록 잡았다 (예: 320/1280 = 25.0 → 25.1vw).
+   🔴 하한을 둔다 — 무한정 작아지면 못 누르고 못 읽는다.
+   🔴 폰(≤640)은 아래 되돌림 블록에서 «옛 값 그대로» 둔다 — 폰은 원래 좁아서
+      줄일 이유가 없고, 유진님이 폰 서랍은 문제 삼지 않으셨다. */
 .drawer {
   position: fixed;
   top: 0;
@@ -1293,9 +1308,9 @@ html:not(.js) .ed-nav { display: none; }
   z-index: 41;
   display: flex;
   flex-direction: column;
-  width: min(320px, 86vw);
+  width: min(86vw, clamp(240px, 25.1vw, 320px));
   height: 100dvh;
-  padding: 16px 16px 22px;
+  padding: clamp(12px, 1.26vw, 16px) clamp(12px, 1.26vw, 16px) clamp(16px, 1.73vw, 22px);
   background: linear-gradient(170deg, #0a2540 0%, var(--ground) 62%);
   border-right: 1px solid var(--line);
   box-shadow: 24px 0 70px rgba(0, 0, 0, .5);
@@ -1313,7 +1328,7 @@ html:not(.js) .ed-nav { display: none; }
   border-bottom: 1px solid var(--line);
 }
 
-.drawer-title { color: #fff; font-size: 1.05rem; letter-spacing: -.02em; }
+.drawer-title { color: #fff; font-size: clamp(14px, 1.32vw, 1.05rem); letter-spacing: -.02em; }
 
 .drawer-nav { display: flex; flex-direction: column; gap: 4px; padding: 14px 0; }
 
@@ -1322,11 +1337,11 @@ html:not(.js) .ed-nav { display: none; }
   align-items: center;
   justify-content: space-between;
   gap: 10px;
-  min-height: 52px;
-  padding: 12px 15px;
-  border-radius: 14px;
+  min-height: clamp(44px, 4.07vw, 52px);
+  padding: clamp(10px, .95vw, 12px) clamp(12px, 1.18vw, 15px);
+  border-radius: clamp(11px, 1.10vw, 14px);
   color: #dceaf6;
-  font-size: 1.02rem;
+  font-size: clamp(13.5px, 1.28vw, 1.02rem);
   font-weight: 700;
   text-decoration: none;
   transition: background .18s var(--ease), transform .18s var(--ease), color .18s;
@@ -1343,7 +1358,13 @@ html:not(.js) .ed-nav { display: none; }
 .menu-out svg { width: 16px; height: 16px; }
 
 .drawer-foot { display: grid; gap: 8px; margin-top: auto; }
-.drawer-foot .btn { width: 100%; min-height: 48px; font-size: .98rem; }
+.drawer-foot .btn {
+  width: 100%;
+  min-height: clamp(42px, 3.76vw, 48px);
+  padding-block: clamp(10px, 1.10vw, 14px);   /* .btn 의 14px 을 여기서만 줄인다 */
+  font-size: clamp(13px, 1.23vw, .98rem);
+}
+.drawer-foot .btn svg { width: clamp(16px, 1.57vw, 20px); height: clamp(16px, 1.57vw, 20px); }
 
 /* 맞이하는 GIF 로 바뀌면 위아래로 흔들던 것은 멈춘다 (그림 안에서 이미 움직인다) */
 .hero-art > img.is-waving { animation: none; }
@@ -1559,6 +1580,13 @@ html:not(.js) .ed-nav { display: none; }
   .brand-link small { display: block; }
   .nav-links { display: none; }
   .btn { width: 100%; }
+  /* 🔴 폰 서랍은 «옛 값 그대로» — 폭도 «안»도. 폰은 원래 좁아 줄일 이유가 없고,
+     여기서 줄이면 누르는 자리가 44px 밑으로 내려간다 (2026-09-12) */
+  .drawer { width: min(320px, 86vw); padding: 16px 16px 22px; }
+  .drawer-title { font-size: 1.05rem; }
+  .menu-item { min-height: 52px; padding: 12px 15px; border-radius: 14px; font-size: 1.02rem; }
+  .drawer-foot .btn { min-height: 48px; padding-block: 14px; font-size: .98rem; }
+  .drawer-foot .btn svg { width: 20px; height: 20px; }
 }
 
 /* ── 좁고 «낮은» 창 (작은 폰) ────────────────────────
