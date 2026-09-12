@@ -186,9 +186,29 @@ h1, h2, h3,
 .brand-link small { color: #a9c4da; }
 .menu-btn { color: #fff; }
 
-.nav { justify-content: space-between; gap: 12px; min-height: 68px; }
-.brand-link img { width: 38px; height: 38px; box-shadow: 0 6px 18px rgba(0, 0, 0, .4); }
-.brand-link span { font-size: 1.05rem; }
+/* 🔴 2026-09-12 유진님 15:16 — 「좌측 상단의 메뉴가 화대됨에 따라 같이 커져.... 이거 너무
+   잘못된거 같은데」
+
+   재보니 «머리줄이 커진 게 아니라 옆이 줄어든 것»이었다 (실측, 진짜 확대 dpr2):
+     · 머리줄 부품은 전부 px·rem 이라 확대해도 CSS px 이 «그대로» (46 · 38 · 40 · 68)
+     · 그런데 제목은 clamp 안에 vw 가 있어 67.16px → 24.8px 로 «2.7배 작아진다»
+     ⇒ 창폭 대비: 햄버거 3.59% → 7.19% (정확히 2배). 그래서 커 보인다.
+
+   팀장 판단(1번) — «머리줄을 줄인다». 제목을 안 줄이는 쪽은 유진님이 합격 주신
+   100% 화면을 건드릴 위험이 있어 택하지 않았다.
+
+   🔴 clamp 의 «최댓값»을 지금 px 그대로 둔다 → 100% 에서 한 픽셀도 안 달라진다.
+      가운데 vw 는 1280 에서 최댓값을 «막 넘도록» 잡았다(예: 46/1280=3.594 → 3.6vw).
+   🔴 하한을 둔다 — 무한정 작아지면 못 누른다. 단추류는 34px 이 바닥이다.
+      그래서 비율이 «완전히» 평평해지지는 않는다. 7.19% → 5.31% 까지다. */
+.nav { justify-content: space-between; gap: 12px; min-height: clamp(52px, 5.32vw, 68px); }
+.brand-link img {
+  width: clamp(28px, 2.98vw, 38px);
+  height: clamp(28px, 2.98vw, 38px);
+  box-shadow: 0 6px 18px rgba(0, 0, 0, .4);
+}
+.brand-link span { font-size: clamp(13px, 1.32vw, 1.05rem); }
+.site-header .brand-link small { font-size: clamp(9.5px, .91vw, .72rem); }
 
 /* 햄버거가 «좌측 상단» 첫 자리 (유진님 2026-09-12 08:18) */
 .nav .brand-link { margin-right: auto; }
@@ -197,34 +217,36 @@ h1, h2, h3,
 
 .icon-link {
   display: inline-grid;
-  width: 40px;
-  height: 40px;
+  width: clamp(34px, 3.13vw, 40px);
+  height: clamp(34px, 3.13vw, 40px);
   place-items: center;
   color: #fff;
   border-radius: 50%;
   transition: transform .22s var(--ease), box-shadow .22s var(--ease);
 }
 
-.icon-link svg { width: 19px; height: 19px; }
+.icon-link svg { width: clamp(14px, 1.49vw, 19px); height: clamp(14px, 1.49vw, 19px); }
 .icon-link.ig { background: var(--ig); }
 .icon-link.yt { background: #ff0033; }
 .icon-link:hover, .icon-link:focus-visible { transform: translateY(-2px) scale(1.06); }
 
 .menu-btn {
   display: inline-grid;
-  width: 46px;
-  height: 46px;
+  width: clamp(34px, 3.6vw, 46px);
+  height: clamp(34px, 3.6vw, 46px);
   place-items: center;
   padding: 0;
   background: rgba(255, 255, 255, .06);
   border: 1px solid rgba(255, 255, 255, .16);
-  border-radius: 15px;
+  /* 단추가 줄어도 모서리가 같은 결로 따라간다 (폰에서 배운 것):
+     100% 15/46 = 32.6% · 하한 11/34 = 32.4% */
+  border-radius: clamp(11px, 1.18vw, 15px);
   cursor: pointer;
   backdrop-filter: blur(8px);
   transition: background .2s var(--ease), transform .2s var(--ease);
 }
 
-.menu-btn svg { width: 23px; height: 23px; }
+.menu-btn svg { width: clamp(17px, 1.8vw, 23px); height: clamp(17px, 1.8vw, 23px); }
 .menu-btn:hover, .menu-btn:focus-visible { background: rgba(255, 255, 255, .16); transform: translateY(-1px); }
 
 /* ── 첫 화면 ────────────────────────────────────────
@@ -357,12 +379,12 @@ h1, h2, h3,
 .when-chip {
   display: inline-block;
   margin: 0 0 clamp(6px, 1.2vh, 12px);
-  padding: 5px 13px;
+  padding: clamp(3px, .4vw, 5px) clamp(8px, 1.02vw, 13px);
   border: 1px solid rgba(255, 255, 255, .2);
   border-radius: 999px;
   background: rgba(255, 255, 255, .07);
   color: #dbe8f4;
-  font-size: .74rem;
+  font-size: clamp(9.7px, .93vw, .74rem);
   font-weight: 800;
   letter-spacing: .1em;
 }
