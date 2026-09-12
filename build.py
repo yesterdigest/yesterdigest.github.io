@@ -154,34 +154,6 @@ def 기기목업(그림, alt, 재생=False, 주소=None, 설명=None, 윗줄='',
               %(겉닫)s""" % dict(겉=겉, 겉닫=겉닫, 릴=' device--reel' if 재생 else '', 속=속)
 
 
-def hero_deco():
-    """첫 화면 «가장자리»를 채우는 것들 — 전부 장식이라 읽는 기계에는 안 보인다.
-
-    🔴 2026-09-12 두 번째 판. 유진님 11:19 「뒷배경이 너무 아재같아」.
-       첫 판은 «흐린 큰 원 · 격자선 · 빛 번짐»이었다. 그게 «아재»로 읽힌 어휘다 —
-       2010년대 SaaS 첫 화면의 결이다. **그 셋을 다시 쓰지 않는다.**
-
-    이번 어휘는 «부드럽게 번지는 것»이 아니라 «또렷한 구조»다.
-      · 속이 빈 거대한 글자(테두리만) — 가장자리를 넘어 걸친다
-      · 비스듬히 가로지르는 «날이 선» 띠 (앰버 실선 한 줄)
-      · 등고선 — 1px 동심원. 흐린 원과 정반대다
-      · 모서리를 잡아주는 «ㄱ자» 선과 작은 네모
-      · 옅은 알갱이 (평평한 색이 싸 보이는 것만 막는다)
-    🔴 우리 유튜브 채널 아트의 결(꽉 찬 동그라미·짧은 막대·점 무리)도 그대로 금지다 (10:21).
-    🔴 색은 남색 + 앰버 둘뿐. 늘리지 않는다.
-    """
-    return """        <div class="hero-deco" aria-hidden="true">
-          <span class="band"></span>
-          <span class="contour"></span>
-          <span class="wordmark">YESTERDIGEST</span>
-          <span class="corner corner-tl"></span>
-          <span class="corner corner-br"></span>
-          <span class="node node-a"></span>
-          <span class="node node-b"></span>
-          <span class="grain"></span>
-        </div>"""
-
-
 def ticker():
     """첫 화면 맨 아래 «흐르는 띠». 우리 말만 쓴다.
 
@@ -293,7 +265,6 @@ def showcase(editions):
                                 단추=단추, 그림=그림))
 
     return """      <section class="hero showcase" data-interval="%(초d)d" aria-roledescription="carousel" aria-label="어제한입 소개">
-%(장식)s
         <div class="sc-stack">
 %(패널)s
         </div>
@@ -311,7 +282,7 @@ def showcase(editions):
         </div>
 %(띠)s
       </section>""" % dict(초d=int(sc.get('넘김초', 4)) * 1000, 패널='\n'.join(패널),
-                            장식=hero_deco(), 띠=ticker())
+                            띠=ticker())   # 🔴 A안 — 배경 장식을 «만들지 않는다» (유진님 13:37)
 
 
 # ── 화면(칸) ───────────────────────────────────────────────────────

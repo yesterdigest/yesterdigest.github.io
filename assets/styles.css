@@ -125,20 +125,8 @@ img {
   position: relative;
   overflow: hidden;
   color: var(--white);
-  background:
-    radial-gradient(circle at 80% 18%, rgba(127, 212, 255, 0.2), transparent 28%),
-    linear-gradient(135deg, var(--navy-deep) 0%, var(--navy) 70%, #154c7a 100%);
-}
-
-.hero::after {
-  content: "";
-  position: absolute;
-  right: -100px;
-  bottom: -180px;
-  width: 430px;
-  height: 430px;
-  border: 72px solid rgba(252, 180, 36, 0.11);
-  border-radius: 50%;
+  /* 🔴 A안 — 납작한 한 색. 그러데이션도 흐린 고리도 두지 않는다 (home.css 의 A안 주석 참조) */
+  background: #071f37;
 }
 
 .hero-inner {
