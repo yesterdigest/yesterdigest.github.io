@@ -170,7 +170,8 @@ h1, h2, h3,
   background: transparent;
   border-bottom: 1px solid transparent;
   transition: background .3s var(--ease), border-color .3s var(--ease),
-              box-shadow .3s var(--ease), backdrop-filter .3s var(--ease);
+              box-shadow .3s var(--ease), backdrop-filter .3s var(--ease),
+              opacity .45s var(--ease);   /* 🔴 opacity 는 «지난 편을 잡았을 때» 쓴다 (.ed-held) */
 }
 
 .site-header.is-stuck {
@@ -965,15 +966,35 @@ html:not(.js) .sc-panel { opacity: 1; visibility: visible; transform: none; }
   touch-action: pan-y;          /* 🔴 세로 스크롤은 늘 페이지 몫이다 */
   outline-offset: -3px;
   border-radius: 18px;
+  transition: box-shadow .45s var(--ease), background .45s var(--ease);
 }
 
 .ed-stage:focus-visible { outline: 2px solid var(--amber); }
 
-/* 잡힌 것이 «눈에 보인다» */
+/* 잡힌 것이 «눈에 보인다» — 🔴 2026-09-12 유진님 16:05
+   「누르면 자연스럽게 확대되면서 다른 부분(위 아래)은 음영처리해서 이슈에 집중되게」
+
+   🔴 덮개를 따로 만들지 않는다. 무대 «바깥»으로 100vmax 퍼지는 그림자 하나면
+      위·아래·좌우가 다 어두워지고, 무대 «안»(고른 칸)에는 그림자가 닿지 않아 또렷한 그대로다.
+      덮개를 쓰면 내용을 가리거나 눌림을 먹는데 그림자는 둘 다 없다.
+   🔴 푸는 길은 지금 그대로다 — 다시 누르기 · Esc · 마지막 편에서 휠 (JS 의 잡기(false)).
+      잡기·넘기기·화살표·방향키도 손대지 않았다. */
 .ed-stage.is-held {
   outline: 2px solid var(--amber);
   background: rgba(252, 180, 36, .045);
+  box-shadow: 0 0 0 100vmax rgba(3, 7, 13, .72);
 }
+
+/* 고른 칸은 «스르륵» 커진다 — 폰 재생 단추와 같은 결(같은 --ease).
+   🔴 1.05 는 무대의 위쪽 여백(실측 19.2px)에 들어가는 값이다. 더 키우면 위가 잘린다. */
+.ed-stage.is-held .ed[aria-hidden="false"] { transform: scale(1.05); }
+
+/* 양옆 이웃은 더 물러난다 */
+.ed-stage.is-held .ed[aria-hidden="true"] { opacity: .08; }
+
+/* 🔴 머리줄만 그림자 위에 뜬다 (z-index: 20 · 실측). 그림자로는 못 덮으므로 같이 물러나게 한다.
+   JS 의 잡기() 가 body 에 .ed-held 를 붙인다. 흐려지기만 할 뿐 그대로 눌린다. */
+body.ed-held .site-header { opacity: .3; }
 
 /* 🔴 ③ 다음 편 «예고» — 유진님 2026-09-12 13:37
      「이 예전편이 약간 우측에 살짝 투명하게 나와서 예고를 하는 느낌으로 …
@@ -1018,12 +1039,12 @@ html:not(.js) .sc-panel { opacity: 1; visibility: visible; transform: none; }
   transition: opacity .5s var(--ease);
 }
 
-.ed[aria-hidden="false"] { opacity: 1; transition: opacity .5s var(--ease); }
+.ed[aria-hidden="false"] { opacity: 1; transition: opacity .5s var(--ease), transform .5s var(--ease); }
 
 /* 🔴 왼쪽 이웃만 안을 뒤집어 «표지»가 안쪽(오른쪽) 가장자리에 오게 한다.
    그래야 좌우 peek 이 같은 결이 된다 (위 JS 주석의 실측 참조).
    지금 편이 되는 순간 data-곁 이 비므로 저절로 제자리로 돌아온다. */
-.ed[data-곁="왼"] { grid-template-columns: minmax(0, 1fr) minmax(0, var(--cover-w)); }
+.ed[data-곁="왼"] { grid-template-columns: minmax(0, var(--글폭)) minmax(0, var(--cover-w)); }
 /* 🔴 grid-row 를 «같이» 못박는다. 칸만 지정하면 표지가 DOM 상 먼저라
    격자가 되돌아가지 못해 «두 줄»로 쌓인다 (실측: 표지 y381 · 글 y889, 칸 높이 450→838). */
 .ed[data-곁="왼"] .ed-text { grid-column: 1; grid-row: 1; }
@@ -1077,13 +1098,22 @@ html:not(.js) .sc-panel { opacity: 1; visibility: visible; transform: none; }
 
 .ed {
   flex: 0 0 var(--칸);
+  /* 🔴 2026-09-12 유진님 16:05 「여전히 이슈가 왼쪽으로 쏠려있어. 가운데로 좀 옮겨」 — «세 번째» 말씀이다.
+     앞서 두 번 「0픽셀」이라 보고한 것은 «칸(상자)»의 가운데였다. 상자는 가운데인데 상자 «안»이
+     왼쪽에 몰려 있었다 — 글칸이 `1fr` 이라 칸을 다 먹는데 글은 620px 에서 멈춰,
+     남는 폭이 통째로 «글 오른쪽»에 빈자리로 쌓였다.
+     실측 1920: 표지왼 311.6 · 글오른 1355.6 → 내용 가운데 833.6 ↔ 창 가운데 960 = «126px 왼쪽».
+     (1280 에서는 글칸이 460px 라 620 에 안 닿아 «마침» 0 이었다. 그래서 우리 눈에 안 잡혔다.)
+     → 글칸을 «글 폭»에서 멈추고(minmax 0~620) 격자를 가운데로 민다. 남는 폭이 좌우로 갈린다. */
+  --글폭: 620px;
+  justify-content: center;
   /* 🔴 flex 항목의 «자동 최소 폭»을 끈다. 안 끄면 안쪽 내용(폰의 단추 두 개 140+122)이
      칸을 --칸 보다 넓게 밀어, 칸 폭과 «미는 양»이 어긋나 가운데가 한 칸에 15px 씩 밀린다
      (실측 390px: 칸이어야 할 289 ↔ 실제 304 · 어긋남 8→23→38). */
   min-width: 0;
   display: grid;
   --cover-w: clamp(210px, 26vw, 360px);
-  grid-template-columns: minmax(0, var(--cover-w)) minmax(0, 1fr);
+  grid-template-columns: minmax(0, var(--cover-w)) minmax(0, var(--글폭));
   align-items: center;
   gap: clamp(20px, 4vw, 64px);
   padding-inline: var(--shell);
@@ -1113,7 +1143,6 @@ html:not(.js) .sc-panel { opacity: 1; visibility: visible; transform: none; }
 
 .ed-cover:hover img { transform: scale(1.035); }
 
-.ed-text { max-width: 620px; }
 
 /* 영문 날짜 표기 — 이 자리의 «아주 크게» */
 .ed-day {
@@ -1486,7 +1515,7 @@ html:not(.js) .ed-nav { display: none; }
   .ed[data-곁="왼"] {
     /* 🔴 `1fr` 이 아니라 `minmax(0, 1fr)`. 그냥 1fr 이면 칸의 «최소 크기»가 안쪽 내용(단추 두 개
        272px)으로 정해져 칸 안쪽 폭(257)을 넘고, 덩어리가 오른쪽으로 8px 밀린다 (실측). */
-    grid-template-columns: minmax(0, 1fr);
+    grid-template-columns: minmax(0, 1fr);   /* 🔴 --글폭 걸쇠를 푼다 — 여기선 폭 전체가 내용이다 */
     grid-template-rows: auto auto;
     align-content: center;
     justify-items: center;

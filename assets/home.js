@@ -283,6 +283,9 @@
     function 잡기(on) {
       잡힘 = on;
       stage.classList.toggle('is-held', on);
+      /* 🔴 머리줄은 z-index 20 이라 무대의 «주변 음영»(box-shadow) 위에 뜬다.
+         CSS 가 위로 못 올라가므로 여기서 body 에 표시를 남긴다 (유진님 16:05 「위 아래는 음영처리」). */
+      document.body.classList.toggle('ed-held', on);
       if (hint) hint.textContent = hint.getAttribute(on ? 'data-on' : 'data-off');
     }
 
