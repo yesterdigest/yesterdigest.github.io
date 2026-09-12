@@ -360,12 +360,12 @@ h1, h2, h3,
   position: relative;
   z-index: 1;
   min-height: 0;
-  grid-template-columns: minmax(0, 1fr) minmax(270px, .86fr);
+  grid-template-columns: minmax(0, 1fr) minmax(300px, .74fr);
   gap: clamp(18px, 4vw, 56px);
   /* 🔴 아주 넓은 창에서 글과 그림이 양 끝으로 벌어져 «가운데가 텅» 비어 보였다 (실측 1910px).
      껍데기(머리·바닥·장식)는 창 끝에 붙인 채, 읽는 덩어리만 여기서 모은다. */
   width: 100%;
-  max-width: 1560px;
+  max-width: 1180px;
   margin-inline: auto;   /* 🔴 width:100% 와 «짝»이다. 위 .ed 주석 참조 */
   padding-block: clamp(10px, 3vh, 36px);
   align-items: center;
@@ -610,183 +610,243 @@ html:not(.js) .sc-panel { opacity: 1; visibility: visible; transform: none; }
 }
 
 .sc-dots button.is-on { width: 28px; background: var(--amber); }
-
 /* ── 스마트폰 «그림» — CSS 로 직접 그린다 ────────────
    🔴 남의 기기 사진·남의 앱 화면 캡처를 쓰지 않는다 (§3.6).
-   🔴 2026-09-12 — 유진님 11:19 ④ 「인스타 장에서 폰 비율이 깨짐」 · ② 「사실화하면 좋겠어」.
+   🔴 2026-09-12 3차 — 유진님 12:39 ④「유튜브 슬라이드에서 화면이 저런식으로 이상하게 형성」
+      ⑤「유튜브 설명란이나 인스타 설명란도 자연스럽게 넣을 수 있잖아」·「쇼츠와 릴스 화면을 참고」.
 
-   ④ 무엇이 깨졌나 — 기기 크기를 «안쪽 그림»이 정하게 뒀더니, 4:5 카드가 들어간 장에서
-      기기가 320×420(비 0.761) «태블릿 모양»이 됐다. 릴스 장은 260×463(0.561)이었다. 실측이다.
-      → 기기 «틀»을 9/19.5 로 못박는다. 안쪽 그림은 틀에 맞춰 들어간다.
-        · 릴스(9:16)   : 화면을 꽉 채운다 (cover)
-        · 카드(4:5)    : 진짜 폰에서 «피드 한 장»이 그렇듯 가운데 놓이고 위아래가 남는다 (contain)
+   ④ 무엇이 «깨져» 있었나 — 실측으로 잡았다.
+      .device-screen 이 3행 격자인데 릴스 판에서 media 가 `grid-row: 2/4`, cap 도 `grid-row: 3` 이라
+      둘이 같은 행을 요구해 브라우저가 «칸(열)을 하나 더» 만들었다.
+      그래서 세로 영상이 화면 왼쪽 149px 에만 들어가고 오른쪽 45px 이 캡션 칸으로 남았다
+      (실측 1440×900: 화면 194 폭 ↔ 영상 149 폭). 이게 유진님이 보신 「위아래가 빈」 화면이다.
+      → 릴스 판은 격자를 아예 안 쓴다. 그림이 화면 전체를 덮고, 글과 기호는 그 «위에» 얹는다.
 
-   ② 어디까지 «사실화»하나 — 팀장이 그은 선 그대로다.
-      해도 되는 것 : 세로 비율 · 둥근 모서리 · 재생 삼각형 · 진행 막대 · 위아래 어두운 그라데이션
-                     · 오른쪽 세로 아이콘 «자리» · 아래 캡션 «자리» 같은 «일반적인 형태»
-      🔴 하면 안 되는 것 : Instagram·YouTube 의 고유 UI·아이콘·글꼴·색 체계를 복제하는 것
-      → 그래서 오른쪽 줄은 «빈 동그라미 셋»이고 캡션은 «빈 막대 둘»이다.
-        알아볼 수 있는 그림(하트·말풍선·화살표)을 여기에 그리지 않는다. */
+   ② 상표 선 (팀장 2026-09-12 재설정 · docs/reports/2026-09-12-홈페이지-3차-지시.md)
+      해도 되는 것 : 짜임과 밀도 — 오른쪽 세로 줄 · 왼쪽 아래 계정/제목 · 아래 진행 막대 · 설명란
+                     · «보통 기호»(하트 · 말풍선 · 화살표 · 북마크 · 점 셋) · 비율과 간격의 결
+      🔴 하면 안 되는 것 : 그 회사 로고 · 고유 아이콘 모양 베끼기 · 그 회사 글꼴·브랜드 색 체계
+      🔴 2차의 «빈 동그라미 셋»은 유진님께 「깨진 것」으로 보였다. 선이 너무 안쪽이었다.
+
+   ③ 크기 — 유진님이 «세 번»(12:24 · 12:25 · 12:39) 「스마트폰이 너무 작다」고 하셨다.
+      430px(52vh) → 640px(72vh). 폰이 첫 화면의 주인공이 되는 크기다. */
 .hero-art-device { display: grid; place-items: center; }
 .hero-art-device::before { display: none; }
 
 /* 🔴 기기 전체가 링크다 (유진님 11:19 ③ 「누르면 각 디테일한 페이지로 이동하도록」) */
 .device-link {
   display: block;
-  border-radius: 34px;
+  border-radius: 40px;
   text-decoration: none;
   outline-offset: 6px;
 }
 
 .device {
   position: relative;
-  /* 🔴 폰 «틀»을 못박는다 — 안쪽 그림이 틀을 정하게 두면 비율이 깨진다(위 ④) */
+  /* 🔴 폰 «틀»을 못박는다 — 안쪽 그림이 틀을 정하게 두면 비율이 깨진다 */
   aspect-ratio: 9 / 19.5;
-  height: min(430px, 52vh);
-  padding: 8px;
-  border-radius: 30px;
+  height: min(640px, 72vh);
+  padding: 9px;
+  border-radius: 38px;
   background: linear-gradient(150deg, #3a4557 0%, #171d27 46%, #0b0f16 100%);
-  box-shadow: 0 0 0 1px rgba(255, 255, 255, .09), 0 34px 70px rgba(0, 0, 0, .55);
+  box-shadow: 0 0 0 1px rgba(255, 255, 255, .09), 0 40px 84px rgba(0, 0, 0, .55);
   transform: rotate(-1.6deg);
   transition: transform .5s var(--ease), box-shadow .5s var(--ease);
+  /* 기기가 커져도 «안쪽 글»은 기기 폭에 맞춰 커진다 (고정 px 이면 큰 폰에서 글이 개미만 해진다) */
+  container-type: inline-size;
 }
 
 .device-link:hover .device,
 .device-link:focus-visible .device {
   transform: rotate(0deg) translateY(-6px) scale(1.02);
-  box-shadow: 0 0 0 1px rgba(252, 180, 36, .4), 0 44px 88px rgba(0, 0, 0, .6);
+  box-shadow: 0 0 0 1px rgba(252, 180, 36, .4), 0 50px 100px rgba(0, 0, 0, .6);
 }
 
 .device-slit {
   position: absolute;
   top: 4px;
   left: 50%;
-  width: 30%;
-  height: 4px;
+  width: 28%;
+  height: 5px;
   transform: translateX(-50%);
   border-radius: 999px;
   background: rgba(255, 255, 255, .16);
 }
 
 .device-screen {
-  display: grid;
-  grid-template-rows: auto 1fr auto;
-  width: 100%;
-  height: 100%;
-  overflow: hidden;
-  border-radius: 23px;
-  background: #0a0d13;
-}
-
-.device-top {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  padding: 8px 10px;
-  color: #d7e4f0;
-  font-size: .62rem;
-  font-weight: 700;
-  letter-spacing: .01em;
-}
-
-.device-top img { width: 17px; height: 17px; border-radius: 50%; }
-
-/* 「…」 자리 — 점 셋을 «그림»이 아니라 배경으로 찍는다 */
-.device-dots {
-  width: 14px;
-  height: 3px;
-  margin-left: auto;
-  background-image: radial-gradient(circle, rgba(255, 255, 255, .45) 1.4px, transparent 1.5px);
-  background-size: 5px 3px;
-}
-
-.device-media {
   position: relative;
   display: grid;
-  place-items: center;
-  overflow: hidden;
-  background: #05070b;
-}
-
-.device-media img {
+  grid-template-rows: auto auto auto 1fr;
   width: 100%;
   height: 100%;
-  object-fit: contain;       /* 카드(4:5)는 피드 한 장처럼 가운데 놓인다 */
+  overflow: hidden;
+  border-radius: 30px;
+  background: #0a0d13;
+  color: #e8eef5;
+  line-height: 1.35;
 }
 
-.device--reel .device-media img { object-fit: cover; }   /* 릴스(9:16)는 화면을 꽉 채운다 */
+.device-media img { display: block; width: 100%; height: 100%; }
 
-/* 위아래 어두운 그라데이션 — 진짜 세로 영상 화면의 결 */
-.device-scrim {
+/* ── 피드 한 장 판 (인스타 장) ──────────────────────
+   위 계정 줄 · 그림(4:5) · 동작 줄 · 설명란. 참고 사진의 «짜임»이다. */
+.dv-top {
+  display: flex;
+  align-items: center;
+  gap: 6cqw;
+  padding: 3.4cqw 4cqw;
+  font-size: 4.4cqw;
+  font-weight: 700;
+}
+
+.dv-top img { width: 8.6cqw; height: 8.6cqw; border-radius: 50%; }
+.dv-top span { flex: 1; }
+
+.dv-dots {
+  width: 5cqw;
+  height: 1.3cqw;
+  background-image: radial-gradient(circle, rgba(255, 255, 255, .55) 30%, transparent 34%);
+  background-size: 2cqw 1.3cqw;
+}
+
+.device:not(.device--reel) .device-screen { grid-template-rows: auto auto auto auto 1fr auto; }
+.device:not(.device--reel) .dv-media { aspect-ratio: 4 / 5; overflow: hidden; }
+.device:not(.device--reel) .dv-media img { object-fit: cover; }
+
+.dv-acts {
+  display: flex;
+  align-items: center;
+  gap: 4.6cqw;
+  padding: 3.4cqw 4cqw 1.6cqw;
+  color: #eef4fa;
+}
+
+.dv-acts svg { width: 6.6cqw; height: 6.6cqw; display: block; }
+.dv-mark { margin-left: auto; }
+
+.dv-cap { padding: 0 4cqw 3cqw; font-size: 3.9cqw; }
+.dv-cap p { margin: 0 0 1.2cqw; }
+.dv-cap b { font-weight: 800; }
+.dv-cap-sub { color: #aebfd0; }
+.dv-cap-foot { color: #6f8398; font-size: 3.3cqw; letter-spacing: .04em; }
+
+/* 맨 아래 줄 — «보통 기호»(집 · 돋보기 · 하트 · 사람)뿐이다. 그 회사 아이콘을 베끼지 않는다.
+   🔴 이 줄이 없으면 화면 아래 140px 이 그냥 검게 남아 «깨진 것»처럼 보인다 (실측). */
+.dv-nav {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  padding: 3cqw 4cqw;
+  border-top: 1px solid rgba(255, 255, 255, .09);
+  color: #cfdcea;
+}
+
+.dv-nav svg { width: 6.2cqw; height: 6.2cqw; display: block; }
+
+/* 다음 글이 «살짝» 보이는 자리 — 진짜 피드는 여기서 끊기지 않는다.
+   이게 없으면 설명란과 맨 아래 줄 사이가 통째로 비어 화면이 끝나 보인다. */
+.dv-peek {
+  overflow: hidden;
+  border-top: 1px solid rgba(255, 255, 255, .09);
+  opacity: .55;
+}
+.dv-nav > :first-child { color: #fff; }
+
+/* ── 세로 영상 판 (유튜브 장) ───────────────────────
+   🔴 격자를 쓰지 않는다 — 위 ④ 의 원인이 그것이었다. 그림이 화면 전체를 덮는다. */
+.device--reel .device-screen { display: block; }
+
+.device--reel .dv-media { position: absolute; inset: 0; }
+.device--reel .dv-media img { object-fit: cover; }
+
+.dv-scrim {
   position: absolute;
   inset: 0;
   background:
-    linear-gradient(to bottom, rgba(0, 0, 0, .42), transparent 18%),
-    linear-gradient(to top, rgba(0, 0, 0, .62), transparent 26%);
+    linear-gradient(to bottom, rgba(0, 0, 0, .38), transparent 16%),
+    linear-gradient(to top, rgba(0, 0, 0, .72), transparent 34%);
 }
 
-/* 오른쪽 세로 «아이콘 자리» — 빈 동그라미 셋. 알아볼 수 있는 그림을 그리지 않는다 */
-.device-rail {
+.dv-over {
   position: absolute;
-  right: 7px;
-  bottom: 42px;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  color: #fff;
+}
+
+/* 오른쪽 세로 줄 — 하트 · 말풍선 · 화살표. «보통 기호»다 */
+.dv-rail {
+  position: absolute;
+  right: 3.2cqw;
+  bottom: 27cqw;
   display: grid;
-  gap: 11px;
+  gap: 6.4cqw;
   justify-items: center;
 }
 
-.device-rail i {
-  display: block;
-  width: 15px;
-  height: 15px;
-  border: 1.5px solid rgba(255, 255, 255, .5);
-  border-radius: 50%;
+.dv-act { display: grid; justify-items: center; gap: 1.2cqw; }
+.dv-act svg { width: 8cqw; height: 8cqw; display: block; filter: drop-shadow(0 1px 2px rgba(0, 0, 0, .6)); }
+.dv-act b { font-size: 3.1cqw; font-weight: 700; letter-spacing: .01em; }
+
+/* 왼쪽 아래 — 계정 줄과 제목 두 줄 */
+.dv-foot { padding: 0 22cqw 7cqw 4cqw; }
+
+.dv-who {
+  display: flex;
+  align-items: center;
+  gap: 2.4cqw;
+  margin: 0 0 2.4cqw;
+  font-size: 4cqw;
+  font-weight: 700;
 }
 
-.device-rail i:nth-child(2) { border-radius: 5px; }
-.device-rail i:nth-child(3) { width: 13px; height: 13px; opacity: .8; }
+.dv-who img { width: 8.4cqw; height: 8.4cqw; border-radius: 50%; }
 
-/* 아래 «캡션 자리» — 빈 막대 둘.
-   릴스는 화면 «위에» 얹히고(세로 영상의 결), 카드는 그림 «아래»에 놓인다(피드 한 장의 결). */
-.device-cap {
-  grid-row: 3;
-  display: grid;
-  gap: 5px;
-  padding: 10px 10px 12px;
-}
-
-.device--reel .device-media { grid-row: 2 / 4; }
-
-.device--reel .device-cap {
-  grid-row: 3;
-  z-index: 1;
-  align-self: end;
-  padding: 0 34px 20px 10px;
-}
-
-.device-cap i {
-  display: block;
-  height: 4px;
+.dv-who em {
+  font-style: normal;
+  padding: 1cqw 3.4cqw;
   border-radius: 999px;
-  background: rgba(255, 255, 255, .42);
+  background: #fff;
+  color: #10151d;
+  font-size: 3.4cqw;
+  font-weight: 800;
 }
 
-.device-cap i:last-child { width: 58%; background: rgba(255, 255, 255, .26); }
+.dv-title {
+  margin: 0;
+  font-size: 4cqw;
+  font-weight: 600;
+  line-height: 1.35;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, .6);
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
+  overflow: hidden;
+}
 
-/* 카드 장에는 오른쪽 줄을 두지 않는다 — 세로 영상의 결이라서 */
-/* 🔴 카드 장은 «피드 한 장»의 결이다 — 그림이 화면 너비를 꽉 채우고(4:5), 그 아래가 캡션이다.
-   contain 으로 위아래를 다 비워두면 그림이 작아 보이고 화면이 휑하다. 실측으로 잡았다. */
-.device:not(.device--reel) .device-media { align-self: start; aspect-ratio: 4 / 5; }
-.device:not(.device--reel) .device-media img { object-fit: cover; }
-.device:not(.device--reel) .device-rail { display: none; }
-.device:not(.device--reel) .device-scrim { display: none; }
-
-.device-play {
+/* 맨 아래 진행 막대 */
+.dv-bar {
   position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 0.9cqw;
+  background: rgba(255, 255, 255, .22);
+}
+
+.dv-bar i { display: block; width: 34%; height: 100%; background: var(--amber); }
+
+.dv-play {
+  position: absolute;
+  left: 50%;
+  top: 44%;
   display: grid;
   place-items: center;
-  width: 42px;
-  height: 42px;
+  width: 15cqw;
+  height: 15cqw;
+  transform: translate(-50%, -50%);
   color: #fff;
   background: rgba(10, 14, 20, .42);
   border: 2px solid rgba(255, 255, 255, .85);
@@ -794,27 +854,8 @@ html:not(.js) .sc-panel { opacity: 1; visibility: visible; transform: none; }
   backdrop-filter: blur(2px);
 }
 
-.device-play svg { width: 19px; height: 19px; margin-left: 2px; }
+.dv-play svg { width: 7cqw; height: 7cqw; margin-left: .6cqw; }
 
-/* 진행 막대 — 맨 아래 한 줄 */
-.device-bar {
-  position: absolute;
-  left: 8px;
-  right: 8px;
-  bottom: 8px;
-  height: 2.5px;
-  border-radius: 999px;
-  background: rgba(255, 255, 255, .2);
-  overflow: hidden;
-}
-
-.device-bar i {
-  display: block;
-  width: 34%;
-  height: 100%;
-  border-radius: 999px;
-  background: var(--amber);
-}
 
 /* ── 섹션 공통 ─────────────────────────────────────── */
 .section { padding-block: clamp(52px, 7.5vh, 96px); }
@@ -923,36 +964,95 @@ html:not(.js) .sc-panel { opacity: 1; visibility: visible; transform: none; }
    세로 스크롤이 가로 이동을 «민다» — 그래서 🔴 가로 스크롤 막대가 생기지 않고,
    폰에서도 손가락 세로 스크롤로 넘어간다.
    🔴 JS 가 없거나 움직임을 마다한 설정이면 «그냥 위아래로 쌓인다» (아래 되돌림 블록). */
-.section--rail { padding-bottom: 0; }
+.section--rail { padding-bottom: clamp(40px, 6vh, 72px); }
 
-.ed-rail {
-  height: calc(var(--n, 3) * 100vh);
-  /* 🔴 절(.section)의 가장자리 여백을 «빠져나온다». 안 그러면 무대가 창보다 좁아
-     표지가 창 끝까지 못 가고, 칸 너비도 창 너비와 어긋난다 (실측: 무대 358 ↔ 창 390). */
-  margin-inline: calc(-1 * var(--shell));
-}
+/* 🔴 2026-09-12 3차 — 유진님 12:39 ②
+   「아래로 내리다가 갑자기 이 옆으로 넘어가는 게 떠서 끝까지 내려서 보고싶었던 사람들이 못볼거 같아」
+
+   무엇이 문제였나 — 2차는 .ed-rail 을 «창 높이 × 편 수»(실측 2700px)로 만들고 무대를 sticky 로
+   붙여, 세로 스크롤 자리를 통째로 가로 이동에 썼다. 처음 온 사람은 여기서 세 화면을 내려도
+   페이지가 «안 내려가는» 것처럼 느낀다. 그래서 스크롤을 가로채는 구조를 걷어냈다.
+
+   지금 구조 — 칸은 «한 화면 높이»뿐이고 페이지는 늘 그냥 내려간다.
+     · 평소            : 스크롤은 아래로만 간다. 옆으로 안 넘어간다
+     · 끌기·스와이프    : 언제나 «한 번에 한 편». 세로 스크롤을 막지 않는다(touch-action: pan-y)
+     · 화살표 단추·방향키: 언제나
+     · 🔴 휠로 옆으로   : «눌러서 잡았을 때»만. 마지막 편에 닿으면 스스로 풀고 페이지가 다시 내려간다
+   🔴 JS 가 없거나 움직임을 마다한 설정이면 그냥 위아래로 쌓인다 (아래 되돌림 블록). */
+.ed-rail { margin-inline: calc(-1 * var(--shell)); }
 
 .ed-stage {
-  position: sticky;
-  top: 0;
-  height: 100vh;
-  height: 100svh;
+  position: relative;
   display: grid;
-  /* 🔴 칸 너비를 못박는다. `auto` 로 두면 격자 칸이 «트랙의 최대 너비»(칸 셋 합)로 부풀어
-     .ed-track 의 width:100% 가 창 너비가 아니게 된다 — 실측: 트랙 912 ↔ 무대 358. */
   grid-template-columns: minmax(0, 1fr);
-  align-content: center;
   overflow: hidden;
-  padding-top: var(--header-h, 68px);
-  box-sizing: border-box;
+  padding-block: clamp(14px, 2.4vh, 28px) clamp(48px, 7vh, 76px);
+  touch-action: pan-y;          /* 🔴 세로 스크롤은 늘 페이지 몫이다 */
+  outline-offset: -3px;
+  border-radius: 18px;
+}
+
+.ed-stage:focus-visible { outline: 2px solid var(--amber); }
+
+/* 잡힌 것이 «눈에 보인다» */
+.ed-stage.is-held {
+  outline: 2px solid var(--amber);
+  background: rgba(252, 180, 36, .045);
 }
 
 .ed-track {
   display: flex;
   width: 100%;
   will-change: transform;
-  transition: transform .12s linear;
+  transform: translate3d(calc(var(--i, 0) * -100%), 0, 0);
+  transition: transform .5s var(--ease);
 }
+
+/* 안내 한 줄 — 잡기 전과 잡은 뒤 문구가 다르다 */
+.ed-hint {
+  position: absolute;
+  left: 50%;
+  bottom: 18px;
+  transform: translateX(-50%);
+  margin: 0;
+  padding: 5px 14px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: rgba(10, 16, 26, .6);
+  color: #9fb3c6;
+  font-size: .76rem;
+  white-space: nowrap;
+  pointer-events: none;
+}
+
+.ed-stage.is-held .ed-hint { border-color: var(--amber); color: var(--amber); }
+
+/* 화살표 단추 — 잡지 않아도 누를 수 있고 Tab 으로도 닿는다 */
+.ed-nav {
+  position: absolute;
+  right: var(--shell);
+  bottom: 14px;
+  display: flex;
+  gap: 8px;
+}
+
+.ed-nav button {
+  display: grid;
+  place-items: center;
+  width: 42px;
+  height: 42px;
+  padding: 0;
+  border: 1px solid var(--line);
+  border-radius: 50%;
+  background: rgba(10, 16, 26, .6);
+  color: #dce7f2;
+  cursor: pointer;
+  transition: background .25s, border-color .25s, opacity .25s;
+}
+
+.ed-nav button:hover:not(:disabled) { background: var(--amber); border-color: var(--amber); color: #10151d; }
+.ed-nav button:disabled { opacity: .3; cursor: default; }
+.ed-nav svg { width: 20px; height: 20px; }
 
 .ed {
   flex: 0 0 100%;
@@ -1060,13 +1160,13 @@ html:not(.js) .sc-panel { opacity: 1; visibility: visible; transform: none; }
 .ed-cta .btn span { font-size: .76rem; letter-spacing: .16em; }
 
 /* 어디쯤 왔는지 — 바닥에 얇게 */
+/* 어디쯤 왔는지 — 무대 «맨 아래 모서리»에. 안내·화살표와 겹치지 않는 자리다 */
 .ed-progress {
   position: absolute;
-  left: var(--shell);
-  right: var(--shell);
-  bottom: clamp(16px, 4vh, 40px);
-  height: 2px;
-  border-radius: 999px;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 3px;
   background: rgba(255, 255, 255, .12);
   overflow: hidden;
 }
@@ -1075,19 +1175,19 @@ html:not(.js) .sc-panel { opacity: 1; visibility: visible; transform: none; }
   display: block;
   width: calc(100% / var(--n, 3));
   height: 100%;
-  border-radius: 999px;
   background: var(--amber);
   transform: translateX(var(--p, 0));
-  transition: transform .12s linear;
+  transition: transform .5s var(--ease);
 }
 
 /* 🔴 되돌림 — JS 가 없거나 움직임을 마다하면 «그냥 위아래로 쌓인다».
    옆으로 미는 장치가 안 돌 때 글이 갇히는 일이 없어야 한다. */
-html:not(.js) .ed-rail,
-html:not(.js) .ed-stage { height: auto; position: static; overflow: visible; padding-top: 0; }
-html:not(.js) .ed-track { flex-direction: column; gap: 56px; }
+html:not(.js) .ed-stage { overflow: visible; padding-block: 0; }
+html:not(.js) .ed-track { flex-direction: column; gap: 56px; transform: none; }
 html:not(.js) .ed { flex: none; }
-html:not(.js) .ed-progress { display: none; }
+html:not(.js) .ed-progress,
+html:not(.js) .ed-hint,
+html:not(.js) .ed-nav { display: none; }
 
 /* ── 스크롤 등장 ────────────────────────────────────
    🔴 «기본은 보이는 쪽»이다. `.js` 는 home.js 가 붙이므로, JS 가 안 돌면 아무것도 숨지 않는다
@@ -1337,7 +1437,7 @@ html:not(.js) .ed-progress { display: none; }
   .hero-art { order: -1; }
   .hero-art::before { width: min(180px, 21vh); height: min(180px, 21vh); }
   .hero-art > img { height: min(218px, 23vh); max-width: 60vw; }
-  .device { height: min(300px, 33vh); }
+  .device { height: min(380px, 42vh); }
   .when-chip, .hero .eyebrow { margin-inline: auto; }
   .hero-text { display: grid; justify-items: center; }
   .name-chip, .hero-actions, .hero-lead { margin-inline: auto; }
@@ -1405,7 +1505,7 @@ html:not(.js) .ed-progress { display: none; }
    🔴 실측으로 잡았다: 360×640 에서 첫 화면이 747px 이 되어 단추가 잘렸다.
       그림 → 글씨 → 여백 순으로 줄인다. */
 @media (max-width: 900px) and (max-height: 720px) {
-  .device { height: min(236px, 27vh); }
+  .device { height: min(270px, 31vh); }
   .hero-art > img { height: min(172px, 19vh); }
   .hero-art::before { width: min(146px, 17vh); height: min(146px, 17vh); }
   .hero h1 { font-size: clamp(1.5rem, 2.6vw + 1.7vh, 2.3rem); }

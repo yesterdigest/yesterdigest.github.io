@@ -40,6 +40,13 @@ IC = {
  'next': '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg>',
  'menu': '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg>',
  'x': '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>',
+ 'home': '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linejoin="round" aria-hidden="true"><path d="M3.5 10.6 12 3.8l8.5 6.8V20a.8.8 0 0 1-.8.8h-4.4v-6h-6.6v6H4.3a.8.8 0 0 1-.8-.8z"/></svg>',
+ 'find': '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" aria-hidden="true"><circle cx="10.6" cy="10.6" r="6.8"/><path d="M15.6 15.6 21 21"/></svg>',
+ 'who': '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8.2" r="4"/><path d="M4.4 20.4c1-4 4-6 7.6-6s6.6 2 7.6 6"/></svg>',
+ 'heart': '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linejoin="round" aria-hidden="true"><path d="M12 20.2 4.6 13a4.6 4.6 0 0 1 6.5-6.5l.9.9.9-.9A4.6 4.6 0 1 1 19.4 13z"/></svg>',
+ 'bubble': '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linejoin="round" aria-hidden="true"><path d="M4 5.5h16a1 1 0 0 1 1 1v9a1 1 0 0 1-1 1h-8.4L7 21v-4.5H4a1 1 0 0 1-1-1v-9a1 1 0 0 1 1-1z"/></svg>',
+ 'share': '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linejoin="round" aria-hidden="true"><path d="M3 19c.6-5.2 4.4-8 10-8V6.4L21.5 13 13 19.6V15c-4.4 0-7.6 1.2-10 4z"/></svg>',
+ 'mark': '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linejoin="round" aria-hidden="true"><path d="M6.5 3.5h11a1 1 0 0 1 1 1v16l-6.5-4.4L5.5 20.5v-16a1 1 0 0 1 1-1z"/></svg>',
  'out': '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 4h6v6M20 4l-9 9M18 14v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h5"/></svg>',
 }
 
@@ -65,45 +72,85 @@ def en_date(d):
 #    → 첫 화면의 단추 둘만 남긴다. 편 카드 안의 단추는 «그 편 게시물»로 가는 것이라 겹치지 않아 그대로 둔다.
 #    되살리려면 이 자리에 cta_band() 를 다시 만들고 화면 함수에서 부르면 된다.
 
-def 기기목업(그림, alt, 재생=False, 주소=None, 설명=None):
+def 기기목업(그림, alt, 재생=False, 주소=None, 설명=None, 윗줄='', 아랫줄='', 캡션=''):
     """스마트폰 «그림» 안에 우리 화면을 넣는다.
 
     🔴 테두리는 CSS 로 직접 그린다(.device). 남의 기기 사진·남의 앱 화면 캡처를 쓰지 않는다 (§3.6).
-    🔴 2026-09-12 개편 — 유진님 11:19 「실제 shorts표현과 릴스표현을 사실화하면 좋겠어」.
-       «진짜 폰처럼» 보이게 하는 것이지 «그 앱을 똑같이 그리는» 것이 아니다.
-         해도 되는 것 : 세로 비율 · 둥근 모서리 · 재생 삼각형 · 진행 막대 · 위아래 어두운 그라데이션
-                        · 오른쪽 세로 아이콘 «자리» · 아래 캡션 «자리» 같은 일반적인 형태
-         🔴 하면 안 되는 것 : Instagram·YouTube 의 고유 UI·아이콘·글꼴·색 체계를 복제하는 것
-       그래서 오른쪽 줄과 캡션은 «알아볼 수 있는 그림»이 아니라 «빈 동그라미와 막대»다.
+    🔴 2026-09-12 3차 — 유진님 12:39 「내가 첨부한 쇼츠와 릴스 화면을 참고해서 업데이트해줘」.
+       팀장이 상표 선을 «다시 그었다» (docs/reports/2026-09-12-홈페이지-3차-지시.md §상표):
+         해도 되는 것 : 짜임·배치(오른쪽 세로 줄 · 왼쪽 아래 계정/제목 · 아래 진행 막대 · 설명란 자리)
+                        · «보통 기호»(하트 · 말풍선 · 화살표 · 북마크 · 점 셋) · 비율과 간격의 결
+         🔴 하면 안 되는 것 : 그 회사 «로고»(유튜브 재생 사각형 · 인스타 카메라) · 고유 아이콘 모양 베끼기
+                              · 그 회사 글꼴·브랜드 색 체계 · 그 회사가 만든 화면이라는 오해
+       🔴 2차의 «빈 동그라미 셋»은 유진님 눈에 «깨진 것»으로 보였다. 선이 너무 안쪽이었다.
+    🔴 글은 «우리 것»만 넣는다 — 우리 계정명, 그날 날짜, 그날 실제 이슈 제목. 지어낸 글씨(lorem) 금지.
     🔴 유진님 11:19 「누르면 각 디테일한 페이지로 이동하도록」 — 기기 전체가 링크다.
-       키보드로도 닿아야 해서 <a> 로 감싼다.
     """
-    재생표 = ('<span class="device-play" aria-hidden="true">'
-              '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></span>'
-              '<span class="device-bar" aria-hidden="true"><i></i></span>') if 재생 else ''
     겉 = ('<a class="device-link" href="%s" target="_blank" rel="noopener" aria-label="%s">'
           % (e(주소), e(설명 or alt))) if 주소 else '<div class="device-link">'
     겉닫 = '</a>' if 주소 else '</div>'
+
+    def 기호(이름, 글):
+        return '<span class="dv-act">%s<b>%s</b></span>' % (IC[이름], e(글))
+
+    if 재생:
+        # ── 세로 영상 판 — 그림이 화면을 꽉 채우고 그 «위에» 얹힌다
+        속 = """<div class="dv-media">
+                      <img data-src="%(그림)s" alt="%(alt)s">
+                      <span class="dv-scrim" aria-hidden="true"></span>
+                    </div>
+                    <div class="dv-over" aria-hidden="true">
+                      <div class="dv-rail">%(줄)s</div>
+                      <div class="dv-foot">
+                        <p class="dv-who"><img src="/assets/brand/logo-256.png" alt="" width="40" height="40"><span>@yesterdigest</span><em>구독</em></p>
+                        <p class="dv-title">%(윗줄)s<br>%(아랫줄)s</p>
+                      </div>
+                      <span class="dv-bar"><i></i></span>
+                    </div>
+                    <span class="dv-play" aria-hidden="true">
+                      <svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+                    </span>""" % dict(
+            그림=그림, alt=e(alt), 윗줄=e(윗줄), 아랫줄=e(아랫줄),
+            줄=''.join(기호(n, g) for n, g in
+                       (('heart', '좋아요'), ('bubble', '댓글'), ('share', '공유'))))
+    else:
+        # ── 피드 한 장 판 — 계정 줄 · 그림 · 동작 줄 · 설명란
+        속 = """<div class="dv-top">
+                      <img src="/assets/brand/logo-256.png" alt="" width="40" height="40">
+                      <span>yesterdigest</span>
+                      <i class="dv-dots" aria-hidden="true"></i>
+                    </div>
+                    <div class="dv-media">
+                      <img data-src="%(그림)s" alt="%(alt)s">
+                    </div>
+                    <div class="dv-acts" aria-hidden="true">
+                      %(heart)s%(bubble)s%(share)s<span class="dv-mark">%(mark)s</span>
+                    </div>
+                    <div class="dv-cap" aria-hidden="true">
+                      <p><b>yesterdigest</b> %(윗줄)s</p>
+                      <p class="dv-cap-sub">%(아랫줄)s</p>
+                      <p class="dv-cap-foot">%(캡션)s</p>
+                    </div>
+                    <div class="dv-peek" aria-hidden="true">
+                      <div class="dv-top">
+                        <img src="/assets/brand/logo-256.png" alt="" width="40" height="40">
+                        <span>yesterdigest</span>
+                        <i class="dv-dots"></i>
+                      </div>
+                    </div>
+                    <div class="dv-nav" aria-hidden="true">%(home)s%(find)s%(heart)s%(who)s</div>""" % dict(
+            그림=그림, alt=e(alt), 윗줄=e(윗줄), 아랫줄=e(아랫줄), 캡션=e(캡션),
+            heart=IC['heart'], bubble=IC['bubble'], share=IC['share'], mark=IC['mark'],
+            home=IC['home'], find=IC['find'], who=IC['who'])
+
     return """%(겉)s
                 <div class="device%(릴)s">
                   <span class="device-slit" aria-hidden="true"></span>
                   <div class="device-screen">
-                    <div class="device-top">
-                      <img src="/assets/brand/logo-256.png" alt="" width="40" height="40">
-                      <span>@yesterdigest</span>
-                      <i class="device-dots" aria-hidden="true"></i>
-                    </div>
-                    <div class="device-media">
-                      <img data-src="%(그림)s" alt="%(alt)s">
-                      <span class="device-scrim" aria-hidden="true"></span>
-                      <span class="device-rail" aria-hidden="true"><i></i><i></i><i></i></span>
-                      %(재생표)s
-                    </div>
-                    <span class="device-cap" aria-hidden="true"><i></i><i></i></span>
+                    %(속)s
                   </div>
                 </div>
-              %(겉닫)s""" % dict(겉=겉, 겉닫=겉닫, 릴=' device--reel' if 재생 else '',
-                                 그림=그림, alt=e(alt), 재생표=재생표)
+              %(겉닫)s""" % dict(겉=겉, 겉닫=겉닫, 릴=' device--reel' if 재생 else '', 속=속)
 
 
 def hero_deco():
@@ -163,6 +210,13 @@ def showcase(editions):
     if not os.path.exists(os.path.join(HERE, 릴스.lstrip('/'))):
         릴스 = 표지                       # 릴스 표지 그림이 없으면 카드 표지로 대신한다
 
+    # 🔴 목업 «안»에 들어갈 글 — 전부 그날 실제 편에서 온다 (지어낸 글씨 금지).
+    이슈 = 최신.get('이슈', [])
+    _y, _m, _d = (최신.get('날짜') or '2026-01-01').split('-')
+    날짜말 = '%d월 %d일' % (int(_m), int(_d))
+    첫이슈 = 이슈[0] if 이슈 else '어제의 이슈'
+    나머지 = (' 외 %d건' % (len(이슈) - 1)) if len(이슈) > 1 else ''
+
     단추종류 = {
         'youtube': ('btn-yt', IC['yt'], 'YouTube 보러가기', YT_CHANNEL),
         'instagram': ('btn-ig', IC['ig'], 'Instagram 보러가기', IG_ACCOUNT),
@@ -206,12 +260,18 @@ def showcase(editions):
             그림 = ('<div class="hero-art hero-art-device">%s</div>'
                     % 기기목업(표지, '가장 최근 편 카드뉴스 표지',
                                주소=최신.get('인스타_카드') or IG_ACCOUNT,
-                               설명='가장 최근 편 카드뉴스를 Instagram에서 보기'))
+                               설명='가장 최근 편 카드뉴스를 Instagram에서 보기',
+                               윗줄='%s 어제 이슈 %d개를 카드 %d장으로 정리했어요.'
+                                    % (날짜말, len(이슈), 최신.get('카드수', 0)),
+                               아랫줄=첫이슈 + 나머지,
+                               캡션='매일 아침 7시'))
         elif c['그림'] == '릴스목업' and 릴스:
             그림 = ('<div class="hero-art hero-art-device">%s</div>'
                     % 기기목업(릴스, '가장 최근 편 릴스 표지', 재생=True,
                                주소=최신.get('유튜브') or YT_CHANNEL,
-                               설명='가장 최근 편 영상을 YouTube에서 보기'))
+                               설명='가장 최근 편 영상을 YouTube에서 보기',
+                               윗줄='%s 어제 이슈 %d개' % (날짜말, len(이슈)),
+                               아랫줄=첫이슈 + 나머지))
         else:
             그림 = ''
 
@@ -347,18 +407,27 @@ def view_editions(cfg, data):
             <p class="eyebrow">Latest drops</p>
             <h2>%(제목)s</h2>
             <p>어제의 이슈 네댓 개를 카드뉴스 한 벌과 세로 영상 한 편으로 만듭니다.
-               아래로 내리면 <b>편이 옆으로</b> 넘어가요 — 전체는 Instagram과 YouTube에 있습니다.</p>
+               옆으로 <b>밀거나 화살표</b>로 지난 편을 넘겨보세요 — 전체는 Instagram과 YouTube에 있습니다.</p>
           </div>
         </div>
         <div class="ed-rail" style="--n: %(n)d">
-          <div class="ed-stage">
+          <!-- 🔴 무대를 «누르면» 잡힌다. 잡혔을 때만 휠이 옆으로 간다 (유진님 12:39 ②).
+               잡지 않아도 끌기·스와이프·화살표 단추·방향키로 넘길 수 있고, Tab 으로도 닿는다. -->
+          <div class="ed-stage" tabindex="0" role="group"
+               aria-roledescription="carousel" aria-label="지난 편 넘겨보기">
             <div class="ed-track">
 %(panels)s
+            </div>
+            <p class="ed-hint" data-off="눌러서 넘겨보세요" data-on="스크롤로 넘어가요 · Esc 로 풀기">눌러서 넘겨보세요</p>
+            <div class="ed-nav">
+              <button type="button" class="ed-prev" aria-label="이전 편">%(icp)s</button>
+              <button type="button" class="ed-next" aria-label="다음 편">%(icn)s</button>
             </div>
             <div class="ed-progress" aria-hidden="true"><i></i></div>
           </div>
         </div>
-      </section>""" % dict(제목=e(cfg['제목']), panels='\n'.join(panels), n=len(panels))
+      </section>""" % dict(제목=e(cfg['제목']), panels='\n'.join(panels), n=len(panels),
+                            icp=IC['prev'], icn=IC['next'])
 
 
 SECTION_BUILDERS = {

@@ -194,65 +194,137 @@
     }
   }
 
-  /* ── 6. 지난 편 — «아래로 내리면 옆으로» ────────
-     유진님 2026-09-12 11:19 ⑦ 「아래로 드래그하면 옆으로 넘어가면서」.
-     세로 스크롤 자리를 «가로 이동»으로 바꾼다. 🔴 가로 스크롤 막대는 만들지 않는다 —
-     넘치는 것은 .ed-stage 가 숨기고, 미는 것은 transform 이다. 폰에서도 손가락 세로 스크롤로 넘어간다.
-     🔴 움직임을 마다한 설정이면 «아무것도 안 한다» — CSS 가 그냥 위아래로 쌓아준다. */
+  /* ── 6. 지난 편 — 한 번 밀면 한 편 ─────────────
+     🔴 2026-09-12 유진님 12:39.
+       ① 「한번의 드래그로 한페이지씩 넘기듯이 … 연속적으로 드래그해야 조금씩 넘어가도록 되어있어」
+       ② 「아래로 내리다가 갑자기 이 옆으로 넘어가는 게 떠서 끝까지 내려서 보고싶었던 사람들이 못볼거 같아
+           … 이 옆으로 슬라이드로 넘기는 것은 클릭하고 스크롤해야 넘어가도록」
+
+     2차는 스크롤 자리를 통째로 가로 이동에 썼다(sticky + 창높이×편수). 그래서 페이지가
+     «안 내려가는» 것처럼 느껴졌다. 이제 세로 스크롤은 언제나 페이지 몫이고,
+     옆으로 가는 것은 «한 번에 한 편»씩 index 로만 움직인다.
+
+       평소            : 스크롤은 아래로만. 옆으로 안 간다
+       끌기·스와이프    : 언제나 한 편 (문턱 45px · 가로가 세로보다 클 때만)
+       화살표·방향키    : 언제나 한 편
+       🔴 휠로 옆으로   : «눌러서 잡았을 때»만. 끝에 닿으면 스스로 풀려 페이지가 다시 내려간다
+     🔴 움직임을 마다한 설정이면 아무것도 안 한다 — CSS 가 위아래로 쌓아준다. */
   document.querySelectorAll('.ed-rail').forEach(function (rail) {
-    var track = rail.querySelector('.ed-track');
     var stage = rail.querySelector('.ed-stage');
+    var track = rail.querySelector('.ed-track');
     var fill = rail.querySelector('.ed-progress i');
-    var n = track.children.length;
-    if (!track || n < 2) return;
+    var hint = rail.querySelector('.ed-hint');
+    var prev = rail.querySelector('.ed-prev');
+    var next = rail.querySelector('.ed-next');
+    if (!track) return;
+    var 칸 = [].slice.call(track.children);
+    var n = 칸.length;
+    if (n < 2) { if (hint) hint.remove(); if (prev) prev.parentElement.remove(); return; }
 
     if (reduce) {                       /* 옆으로 밀지 않는다. 위아래로 쌓아 보여준다 */
-      rail.style.height = 'auto';
-      stage.style.position = 'static';
-      stage.style.height = 'auto';
       stage.style.overflow = 'visible';
-      stage.style.paddingTop = '0';
+      stage.style.paddingBlock = '0';
+      stage.removeAttribute('tabindex');
       track.style.flexDirection = 'column';
       track.style.gap = '56px';
-      [].slice.call(track.children).forEach(function (p) { p.style.flex = 'none'; });
-      if (fill) fill.parentElement.style.display = 'none';
+      track.style.transform = 'none';
+      칸.forEach(function (p) {
+        p.style.flex = 'none';
+        p.querySelectorAll('img[data-src]').forEach(그림받기);
+      });
+      [hint, fill && fill.parentElement, prev && prev.parentElement].forEach(function (el) {
+        if (el) el.style.display = 'none';
+      });
       return;
     }
 
     rail.style.setProperty('--n', n);
-    var 예약 = false;
+    var i = 0, 잡힘 = false, 최근 = 0;
 
-    function 밀기() {
-      예약 = false;
-      var r = rail.getBoundingClientRect();
-      if (r.height === 0) return;                  /* 아직 안 열린 화면 */
-      var 달릴거리 = r.height - stage.offsetHeight;
-      var p = 달릴거리 > 0 ? (-r.top) / 달릴거리 : 0;
-      p = Math.max(0, Math.min(1, p));
-      track.style.transform = 'translate3d(' + (-p * (n - 1) * 100) + '%, 0, 0)';
-      if (fill) fill.style.transform = 'translateX(' + (p * (n - 1) * 100) + '%)';
-      /* 이 장의 그림은 «가까이 왔을 때» 받는다 */
-      var 지금 = Math.round(p * (n - 1));
-      [지금, 지금 + 1].forEach(function (k) {
-        var el = track.children[k];
-        if (!el) return;
-        el.querySelectorAll('img[data-src]').forEach(function (im) {
-          im.src = im.getAttribute('data-src');
-          im.removeAttribute('data-src');
-        });
+    function 그림받기(im) {
+      if (!im.getAttribute) return;
+      var src = im.getAttribute('data-src');
+      if (!src) return;
+      im.src = src;
+      im.removeAttribute('data-src');
+    }
+
+    function 그리기() {
+      track.style.setProperty('--i', i);
+      if (fill) fill.style.setProperty('--p', (i * 100) + '%');
+      칸.forEach(function (p, k) {
+        /* 🔴 안 보이는 칸은 Tab 으로 걸리지 않게 한다 — 안 그러면 화면 밖 링크에 초점이 간다 */
+        p.inert = k !== i;
+        p.setAttribute('aria-hidden', k === i ? 'false' : 'true');
+        if (Math.abs(k - i) <= 1) p.querySelectorAll('img[data-src]').forEach(그림받기);
       });
+      if (prev) prev.disabled = i === 0;
+      if (next) next.disabled = i === n - 1;
     }
 
-    function 예약하기() {
-      if (예약) return;
-      예약 = true;
-      requestAnimationFrame(밀기);
+    function 가기(d) {
+      var j = Math.max(0, Math.min(n - 1, i + d));
+      if (j === i) return false;
+      i = j; 그리기();
+      return true;
     }
 
-    window.addEventListener('scroll', 예약하기, { passive: true });
-    window.addEventListener('resize', 예약하기);
-    setInterval(밀기, 600);           /* 화면(칸)을 바꿔 열렸을 때도 맞춰준다 */
-    밀기();
+    function 잡기(on) {
+      잡힘 = on;
+      stage.classList.toggle('is-held', on);
+      if (hint) hint.textContent = hint.getAttribute(on ? 'data-on' : 'data-off');
+    }
+
+    /* 누르면 잡힌다 — 안쪽 링크·단추를 누른 것은 그대로 링크다 */
+    stage.addEventListener('click', function (ev) {
+      if (ev.target.closest('a, button')) return;
+      if (끌었다) { 끌었다 = false; return; }
+      잡기(!잡힘);
+      stage.focus({ preventScroll: true });
+    });
+
+    /* 🔴 잡혔을 때만 휠이 옆으로 간다. 끝에 닿으면 «풀고» 페이지가 이어서 내려간다 */
+    stage.addEventListener('wheel', function (ev) {
+      if (!잡힘) return;                              /* 평소에는 그냥 페이지가 내려간다 */
+      if (Math.abs(ev.deltaX) > Math.abs(ev.deltaY)) return;   /* 가로 휠은 브라우저에 맡긴다 */
+      var d = ev.deltaY > 0 ? 1 : -1;
+      if ((d > 0 && i === n - 1) || (d < 0 && i === 0)) { 잡기(false); return; }
+      ev.preventDefault();
+      var t = Date.now();
+      if (t - 최근 < 520) return;      /* 넘어가는 동안 들어온 것은 무시 — 여러 편이 튀지 않게 */
+      최근 = t;
+      가기(d);
+    }, { passive: false });
+
+    /* 끌기·스와이프 — 한 번에 한 편. 세로 스크롤은 막지 않는다(CSS touch-action: pan-y) */
+    var sx = 0, sy = 0, 눌림 = false, 끌었다 = false;
+    stage.addEventListener('pointerdown', function (ev) {
+      if (ev.button) return;
+      sx = ev.clientX; sy = ev.clientY; 눌림 = true; 끌었다 = false;
+    });
+    stage.addEventListener('pointerup', function (ev) {
+      if (!눌림) return;
+      눌림 = false;
+      var dx = ev.clientX - sx, dy = ev.clientY - sy;
+      if (Math.abs(dx) > 45 && Math.abs(dx) > Math.abs(dy)) {
+        끌었다 = true;                    /* 이 뒤에 오는 click 은 «잡기»가 아니다 */
+        가기(dx < 0 ? 1 : -1);
+      }
+    });
+    stage.addEventListener('pointercancel', function () { 눌림 = false; });
+
+    /* 방향키 — 잡지 않아도 된다. Esc 로 푼다 */
+    stage.addEventListener('keydown', function (ev) {
+      if (ev.key === 'ArrowRight') { ev.preventDefault(); 가기(1); }
+      else if (ev.key === 'ArrowLeft') { ev.preventDefault(); 가기(-1); }
+      else if (ev.key === 'Escape') 잡기(false);
+    });
+    document.addEventListener('keydown', function (ev) { if (ev.key === 'Escape') 잡기(false); });
+
+    if (prev) prev.addEventListener('click', function () { 가기(-1); });
+    if (next) next.addEventListener('click', function () { 가기(1); });
+
+    그리기();
   });
 
   /* ── 7. 소개 영상 «틀» — 커졌다 줄어든다 ────────
