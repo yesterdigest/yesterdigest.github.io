@@ -1495,6 +1495,15 @@ html:not(.js) .ed-progress { display: none; }
 
 .hero-sub { display: flex; justify-content: center; align-items: center; gap: 10px; flex-wrap: wrap; }
 
+/* 🔴 2026-09-12 12:32 «고장 수리» — 유진님 12:24 「웹 클릭이 아무곳도 안돼」
+   원인: `.intro-modal { display:grid }` 과 `.drawer { display:flex }` 가
+   브라우저 기본값 `[hidden]{display:none}` 을 «이긴다»(클래스 0,1,0 > UA).
+   그래서 닫혀 있어야 할 INTRO 모달이 `position:fixed; inset:0; z-index:60` 으로
+   «화면 전체»에 깔린 채 남았다. `opacity:0` 은 «안 보이게»만 할 뿐 «클릭은 그대로 먹는다».
+   ⇒ 페이지 어디를 눌러도 그 투명한 판이 먼저 받았다.
+   🔴 이 한 줄을 지우지 마라. display 를 주는 숨김 대상이 또 생기면 같은 고장이 난다. */
+[hidden] { display: none !important; }
+
 .intro-modal {
   position: fixed;
   inset: 0;
