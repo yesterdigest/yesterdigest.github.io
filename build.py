@@ -474,8 +474,10 @@ def oauth_note():
     """
     return """  <section class="oauth-note" aria-labelledby="oauth-title">
     <div class="oauth-inner reveal">
-      <p class="oauth-eyebrow">Google OAuth</p>
-      <h2 id="oauth-title">Google 권한은 채널 운영에만 사용합니다.</h2>
+      <div class="oauth-head">
+        <p class="oauth-eyebrow">Google OAuth</p>
+        <h2 id="oauth-title">Google 권한은 채널 운영에만 사용합니다.</h2>
+      </div>
       <p class="oauth-lead">YesterDigest는 운영자가 소유한 YouTube 채널에 영상을 업로드하고,
         필요한 경우 게시한 영상을 관리하기 위해 Google OAuth를 사용합니다.</p>
       <p class="oauth-lead">YesterDigest는 뉴스 콘텐츠 제작과 게시를 돕는 운영자용 시스템입니다.

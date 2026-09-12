@@ -1408,52 +1408,68 @@ html:not(.js) .ed-nav { display: none; }
 .oauth-inner {
   max-width: var(--content);
   margin-inline: auto;
-  padding-block: 22px 20px;
-  /* 🔴 14px 은 «바닥»이다. 더 줄이지 않는다 — 구글 심사관이 이 안내를 «읽어야» 하고,
-     안 읽히면 「숨겼다」가 된다. 그래서 «크기»가 아니라 «무게»를 낮춘다 —
-     강조색을 빼고, 굵기를 풀고, 줄을 좁힌다.
-     (팀장 판단 2026-09-12 · 🔴 정본 규칙이 아니다. CLAUDE.md 에 글자 크기 규칙은 없다) */
-  font-size: .875rem;          /* 14px — 아래 문턱 */
-  line-height: 1.55;
+  padding-block: 10px 8px;
+  /* 🔴 2026-09-12 유진님 16:08 「google oauth가 너무 많이 차지해 완전아래로 작게 · 많이 안차지하게」
+     재보니 1280×800 에서 «339.8px · 화면의 42.5%» 였다. 위 본문(.card p)이 14.4px 인데
+     여기가 14px 이라 «본문처럼» 보인 것이 커 보인 진짜 이유다.
+
+     🔴 «접지» 않는다. 구글 심사관이 읽는 글이라 접으면 「숨겼다」가 된다.
+        크기·줄간격·배치만 바꾸고 문구는 한 글자도 안 건드렸다.
+     🔴 앞선 세션이 이 자리에 「14px 이 바닥」이라 적어 뒀는데, 그 줄 스스로
+        «정본 규칙이 아니라 작업 기준»이라고 밝혀 뒀다. 유진님 16:08 이 그보다 나중이고 위다.
+        대신 «흐리게» 하지 않는다 — 글자색을 오히려 밝혀 대비를 올렸다. */
+  font-size: 12.5px;
+  line-height: 1.4;
+}
+
+/* 딱지와 제목을 «한 줄»로 — 두 줄이 먹던 38.5px 을 한 줄로 줄인다 */
+.oauth-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 4px 10px;
+  margin: 0 0 3px;
 }
 
 .oauth-eyebrow {
-  margin: 0 0 3px;
+  margin: 0;
   color: #7e97ad;              /* 브랜드색·밝은색을 여기 쓰지 않는다 */
-  font-size: .875rem;          /* 14px — 라벨도 문턱 위로 */
+  font-size: 11px;
   font-weight: 700;
   letter-spacing: .1em;
   text-transform: uppercase;
 }
 
 .oauth-note h2 {
-  margin: 0 0 7px;
-  color: #c6d6e4;              /* 본문과 같은 밝기 — 여기만 튀지 않게 */
-  font-size: .875rem;          /* 14px */
+  margin: 0;
+  color: #d4e2ee;              /* 대비를 올린다 — 작아진 만큼 «흐려지면» 안 된다 */
+  font-size: 12.5px;
   font-weight: 700;
   letter-spacing: -.02em;
 }
 
-.oauth-lead { margin: 0 0 10px; max-width: 62ch; color: #9fb8cc; }
+/* 🔴 62ch 를 뗀다 — 작아진 글자에 62ch 를 걸면 오히려 «줄 수»가 늘어 높이를 먹는다.
+   폭을 다 쓰면 두 문단이 각각 한 줄에 들어간다 (실측). */
+.oauth-lead { margin: 0 0 3px; color: #b3c8da; }
 
+/* 🔴 셋을 «칸»으로 세우면 제일 긴 줄이 칸 높이를 정해 셋 다 그만큼 높아진다.
+   한 줄로 «흘려» 남는 자리를 서로 메우게 한다 (유진님 16:08 · 팀장 「한 줄로 흘리거나」). */
 .oauth-list {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 7px 20px;
-  margin: 0 0 10px;
+  display: block;
+  margin: 0 0 3px;
   padding: 0;
   list-style: none;
-  color: #9fb8cc;
+  color: #b3c8da;
 }
 
-/* 🔴 왼쪽 막대도 브랜드색을 빼고 흐리게 */
-.oauth-list li { padding-left: 10px; border-left: 1px solid rgba(255, 255, 255, .14); }
+.oauth-list li { display: inline; }
+.oauth-list li + li::before { content: " · "; color: #6c8298; }
 
 /* 🔴 제목 셋에 «앰버»를 쓰면 페이지에서 여기가 제일 먼저 눈에 든다 (팀장 2026-09-12 지적).
    강조색을 빼고, 줄도 나누지 않는다 — 한 줄로 흘려 덩어리 높이를 줄인다. */
-.oauth-list strong { display: inline; margin-right: 4px; color: #c6d6e4; font-weight: 700; }
+.oauth-list strong { display: inline; margin-right: 3px; color: #d4e2ee; font-weight: 700; }
 
-.oauth-strong { margin: 0 0 12px; color: #9fb8cc; font-weight: 400; }
+.oauth-strong { margin: 0; color: #b3c8da; font-weight: 400; }
 
 /* 본문 한가운데 있던 「문의 및 데이터 삭제 요청」이 내려온 자리 (유진님 08:53 · 09:48).
    🔴 작게 두되 «누를 수 있어야» 한다 — 메일·개인정보처리방침·이용약관 셋 다 여기서 간다. */
@@ -1462,21 +1478,25 @@ html:not(.js) .ed-nav { display: none; }
   flex-wrap: wrap;
   align-items: center;
   justify-content: space-between;
-  gap: 12px 24px;
-  padding-top: 12px;
+  gap: 2px 20px;
+  margin-top: 4px;
+  padding-top: 5px;
   border-top: 1px solid rgba(255, 255, 255, .08);
 }
 
+/* 제목과 설명도 «한 줄»로 흘린다 — 두 줄이 먹던 자리를 없앤다 */
+.oauth-contact > div { display: flex; flex-wrap: wrap; align-items: baseline; gap: 2px 8px; }
+
 .oauth-contact h3 {
-  margin: 0 0 3px;
+  margin: 0;
   font-family: var(--body-font);
-  font-size: .875rem;          /* 14px */
+  font-size: 12.5px;
   font-weight: 700;
   letter-spacing: -.02em;
-  color: #c6d6e4;
+  color: #d4e2ee;
 }
 
-.oauth-contact p { margin: 0; color: #9fb8cc; }
+.oauth-contact p { margin: 0; color: #b3c8da; }
 
 .oauth-links {
   display: flex;
@@ -1486,7 +1506,8 @@ html:not(.js) .ed-nav { display: none; }
 }
 
 .oauth-links a {
-  padding: 8px 2px;          /* 폰에서 손가락으로 누를 자리를 남긴다 (글자 높이만으로는 23px 였다) */
+  padding: 8px 2px;          /* 🔴 폰에서 손가락으로 누를 자리 — 글자가 작아져도 «이건 안 줄인다» */
+  font-size: 12.5px;
   color: #cfe2f2;
   text-underline-offset: .22em;
   white-space: nowrap;
@@ -1508,7 +1529,10 @@ html:not(.js) .ed-nav { display: none; }
 .oauth-mail:hover { background: rgba(255, 255, 255, .12); }
 
 /* ── 바닥 ──────────────────────────────────────────── */
-.site-footer { background: #030d18; border-top: 1px solid var(--line); }
+/* 🔴 구글 칸과 «한 덩어리»로 보이게 — 사이 선을 없애고 위 여백을 줄인다 (유진님 16:08) */
+.site-footer { background: #041220; border-top: 0; }
+/* 폰에서는 세로로 쌓이는데 30px 간격이 그대로라 바닥이 160px 을 먹었다 (실측) */
+.footer-inner { padding-block: 12px 16px; gap: clamp(10px, 2.4vw, 30px); }
 
 .footer-inner {
   max-width: var(--content);
@@ -1546,8 +1570,9 @@ html:not(.js) .ed-nav { display: none; }
 }
 
 @media (max-width: 720px) {
-  .oauth-list { grid-template-columns: 1fr; gap: 7px; }
-  .oauth-inner { padding-block: 22px 20px; }
+  /* 🔴 낡은 줄이었다 — .oauth-list 는 이제 «한 줄로 흘리는» 배치라 칸 지정이 필요 없고,
+     padding-block 22/20 은 위에서 줄인 14/10 을 폰에서만 되돌리고 있었다 (2026-09-12 16:08) */
+  .oauth-list { display: block; }
 }
 
 @media (max-width: 760px) {
