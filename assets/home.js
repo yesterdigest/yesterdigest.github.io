@@ -271,6 +271,10 @@
       });
       if (prev) prev.disabled = i === 0;
       if (next) next.disabled = i === n - 1;
+      /* 🔴 끝에 서면 «빈 쪽»에 표시를 띄운다 (유진님 16:29). 둘을 «따로» 둔다 —
+         편이 둘뿐이면 한 편이 처음이자 마지막이라 양쪽이 다 빈다. */
+      stage.classList.toggle('is-first', i === 0);
+      stage.classList.toggle('is-last', i === n - 1);
     }
 
     function 가기(d) {

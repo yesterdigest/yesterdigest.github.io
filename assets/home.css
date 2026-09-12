@@ -1072,6 +1072,41 @@ body.ed-held .site-header { opacity: .3; }
 .ed[data-곁="왼"] .ed-text { grid-column: 1; grid-row: 1; }
 .ed[data-곁="왼"] .ed-cover { grid-column: 2; grid-row: 1; }
 
+/* 🔴 끝의 «빈 자리» 표시 — 2026-09-12 유진님 16:29 「양쪽에 전날, 다음날께 왜 안보여?」
+   고리처럼 잇지 «않는다» — 가장 오래된 편이 「다음날」 자리에 서면 거짓말이 된다.
+   빈 것은 그대로 두되 «그 빈 것이 뜻을 갖게» 한다.
+   자리: 칸이 74% 라 남는 26% 가 좌우 13% 씩이다. 그 가운데(6.5%)에 세운다. */
+.ed-edge {
+  position: absolute;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  opacity: 0;
+  color: #7e97ad;
+  font-family: var(--en-font);
+  font-size: clamp(9px, .86vw, 11px);
+  font-weight: 700;
+  letter-spacing: .22em;
+  white-space: nowrap;
+  pointer-events: none;                /* 누를 수 없다 */
+  transition: opacity .5s var(--ease);
+}
+
+/* 🔴 이웃 예고(.26)보다 «더» 조용하게 — 있는 줄만 알면 된다 */
+.ed-edge-new { left: 6.5%; }
+.ed-edge-old { left: 93.5%; }
+.ed-stage.is-first .ed-edge-new,
+.ed-stage.is-last .ed-edge-old { opacity: .2; }
+
+/* 잡았을 때는 주변이 어두워지므로 같이 물러난다 */
+.ed-stage.is-held .ed-edge { opacity: .08 !important; }
+
+/* 🔴 좁은 창에서는 빈칸이 45px 밖에 안 돼 가로로 쓰면 «지금 편을 덮고 화면 밖으로 나간다»
+   (실측 360: 표시가 -3 ~ 47.9 인데 빈칸은 0 ~ 44.8). 세로로 세우면 폭이 글자 크기만큼이라
+   넉넉히 들어간다. */
+@media (max-width: 760px) {
+  .ed-edge { writing-mode: vertical-rl; letter-spacing: .18em; }
+}
+
 /* 안내 한 줄 — 잡기 전과 잡은 뒤 문구가 다르다 */
 .ed-hint {
   position: absolute;
@@ -1264,6 +1299,7 @@ html:not(.js) .ed-track { flex-direction: column; gap: 56px; transform: none; }
 html:not(.js) .ed { flex: none; }
 html:not(.js) .ed-progress,
 html:not(.js) .ed-hint,
+html:not(.js) .ed-edge,
 html:not(.js) .ed-nav { display: none; }
 
 /* ── 스크롤 등장 ────────────────────────────────────

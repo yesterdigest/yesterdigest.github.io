@@ -391,6 +391,12 @@ def view_editions(cfg, data):
             <div class="ed-track">
 %(panels)s
             </div>
+            <!-- 🔴 첫 편의 왼쪽 · 마지막 편의 오른쪽은 «그냥 빈다»(.ed-track 주석). 그 빈 것이
+                 「여기가 끝」이라는 뜻인데 전달이 안 돼 유진님이 16:29 「양쪽에 전날, 다음날께
+                 왜 안보여?」라고 물으셨다. 그래서 빈 자리에 «아주 옅은» 표시를 둔다.
+                 이웃 예고(.26)보다 조용하게 · 누를 수 없게 · 읽는 기계에는 안 잡히게. -->
+            <span class="ed-edge ed-edge-new" aria-hidden="true">NEWEST</span>
+            <span class="ed-edge ed-edge-old" aria-hidden="true">OLDEST</span>
             <p class="ed-hint" data-off="TAP TO BROWSE" data-on="SCROLL TO BROWSE · ESC">TAP TO BROWSE</p>
             <div class="ed-nav">
               <button type="button" class="ed-prev" aria-label="이전 편">%(icp)s</button>
