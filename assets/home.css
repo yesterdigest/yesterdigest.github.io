@@ -543,9 +543,26 @@ html:not(.js) .sc-panel { opacity: 1; visibility: visible; transform: none; }
 .hero-art-device::before { display: none; }
 
 /* 🔴 기기 전체가 링크다 (유진님 11:19 ③ 「누르면 각 디테일한 페이지로 이동하도록」) */
+/* 🔴 2026-09-12 — 폰의 «치수를 전부» 폰 폭 하나에 매단다.
+   유진님 14:54 「웹을 확대하면 스마트폰의 모서리가 점점 더 둥글게 변해서 나중에는 알약같이 변해.
+                  확대하든 축소되든 일정하도록」
+
+   원인은 「반지름이 % 라서」가 «아니었다. 정반대였다» —
+   반지름은 이미 38px «고정»인데, 폰 높이가 72vh 라 확대하면 «폰만» 작아졌다.
+   그래서 같은 38px 이 폭의 12.9% → 38.0% 가 됐다(실측 1280×900 ↔ 640×450 = 확대 200%).
+   폭의 38% 짜리 모서리는 알약이다. 🔴 여기서 px 로 더 못박으면 «더» 나빠진다.
+
+   그래서 폭에 «견주어» 잡는다. 비율은 유진님이 합격 주신 100% 배율의 값 그대로다
+   (폰 폭 295.375px 기준: 40/38/9/30/4/5 → 아래 소수). 폰이 커지든 작아지든 «모양이 같다».
+   🔴 폭은 높이에서 나온다 — aspect-ratio 9/19.5 이므로 폭 = 높이 × 9 ÷ 19.5 (실측 일치).
+      그래서 창 크기별 덮어쓰기는 height 가 아니라 «--폰높이» 를 바꾼다 (아래 @media 세 곳).
+   ⚠️ cqw 를 쓰지 않는다 — .device 는 자기 자신의 container 라 자기 폭을 못 읽고,
+      안쪽에서 쓰면 padding 을 뺀 «내용 폭» 기준이라 값이 어긋난다. */
 .device-link {
+  --폰높이: min(640px, 72vh);
+  --폰폭: calc(var(--폰높이) * 9 / 19.5);
   display: block;
-  border-radius: 40px;
+  border-radius: calc(var(--폰폭) * .1354);
   text-decoration: none;
   outline-offset: 6px;
 }
@@ -554,9 +571,9 @@ html:not(.js) .sc-panel { opacity: 1; visibility: visible; transform: none; }
   position: relative;
   /* 🔴 폰 «틀»을 못박는다 — 안쪽 그림이 틀을 정하게 두면 비율이 깨진다 */
   aspect-ratio: 9 / 19.5;
-  height: min(640px, 72vh);
-  padding: 9px;
-  border-radius: 38px;
+  height: var(--폰높이);
+  padding: calc(var(--폰폭) * .0305);
+  border-radius: calc(var(--폰폭) * .1286);
   background: linear-gradient(150deg, #3a4557 0%, #171d27 46%, #0b0f16 100%);
   box-shadow: 0 0 0 1px rgba(255, 255, 255, .09), 0 40px 84px rgba(0, 0, 0, .55);
   transform: rotate(-1.6deg);
@@ -573,10 +590,10 @@ html:not(.js) .sc-panel { opacity: 1; visibility: visible; transform: none; }
 
 .device-slit {
   position: absolute;
-  top: 4px;
+  top: calc(var(--폰폭) * .0135);
   left: 50%;
   width: 28%;
-  height: 5px;
+  height: calc(var(--폰폭) * .0169);
   transform: translateX(-50%);
   border-radius: 999px;
   background: rgba(255, 255, 255, .16);
@@ -589,7 +606,7 @@ html:not(.js) .sc-panel { opacity: 1; visibility: visible; transform: none; }
   width: 100%;
   height: 100%;
   overflow: hidden;
-  border-radius: 30px;
+  border-radius: calc(var(--폰폭) * .1016);
   background: #0a0d13;
   color: #e8eef5;
   line-height: 1.35;
@@ -1407,7 +1424,7 @@ html:not(.js) .ed-nav { display: none; }
   .hero-art { order: -1; }
   .hero-art::before { width: min(180px, 21vh); height: min(180px, 21vh); }
   .hero-art > img { height: min(218px, 23vh); max-width: 60vw; }
-  .device { height: min(380px, 42vh); }
+  .device-link { --폰높이: min(380px, 42vh); }
   .when-chip, .hero .eyebrow { margin-inline: auto; }
   .hero-text { display: grid; justify-items: center; }
   .name-chip, .hero-actions, .hero-lead { margin-inline: auto; }
@@ -1482,7 +1499,7 @@ html:not(.js) .ed-nav { display: none; }
    🔴 실측으로 잡았다: 360×640 에서 첫 화면이 747px 이 되어 단추가 잘렸다.
       그림 → 글씨 → 여백 순으로 줄인다. */
 @media (max-width: 900px) and (max-height: 720px) {
-  .device { height: min(270px, 31vh); }
+  .device-link { --폰높이: min(270px, 31vh); }
   .hero-art > img { height: min(172px, 19vh); }
   .hero-art::before { width: min(146px, 17vh); height: min(146px, 17vh); }
   .hero h1 { font-size: clamp(1.5rem, 2.6vw + 1.7vh, 2.3rem); }
@@ -1500,7 +1517,7 @@ html:not(.js) .ed-nav { display: none; }
       실측으로 잡았다: 853×533(=1280 확대 150%) 에서 인스타 장의 단추가 4px 잘렸다. */
 @media (max-height: 620px) {
   /* 🔴 실측(640×400 = 1280 확대 200%): 릴스 장의 기기가 점 표시와 11px 겹쳤다 → 비율을 낮춘다 */
-  .device { height: min(290px, 46vh); }
+  .device-link { --폰높이: min(290px, 46vh); }
   .hero-art > img { height: min(232px, 34vh); }
   .hero-art::before { width: min(210px, 34vh); height: min(210px, 34vh); }
   .hero h1 { font-size: clamp(1.55rem, 2.2vw + 1.9vh, 2.6rem); }
