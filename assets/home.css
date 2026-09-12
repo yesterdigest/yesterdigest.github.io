@@ -894,8 +894,10 @@ html:not(.js) .sc-panel { opacity: 1; visibility: visible; transform: none; }
      · 🔴 휠로 옆으로   : «눌러서 잡았을 때»만. 마지막 편에 닿으면 스스로 풀고 페이지가 다시 내려간다
    🔴 JS 가 없거나 움직임을 마다한 설정이면 그냥 위아래로 쌓인다 (아래 되돌림 블록). */
 .ed-rail {
-  --칸: 82%;                 /* 🔴 나머지 18% 가 다음 편 «예고» 자리다.
-                                 트랙과 칸이 «둘 다» 읽으므로 여기(공통 조상)에 둔다 */
+  /* 🔴 트랙과 칸이 «둘 다» 읽으므로 여기(공통 조상)에 둔다.
+     자식에만 두면 트랙의 calc 가 통째로 무효가 되고 transform 이 «조용히» 안 걸린다 (실측). */
+  --칸: 74%;                 /* 나머지 26% 가 좌우로 13% 씩 — 오른쪽 전날 · 왼쪽 다음날 */
+  --페이드: 16%;              /* 🔴 --칸 과 한 쌍. 위 .ed[aria-hidden] 주석 참조 */
   margin-inline: calc(-1 * var(--shell));
 }
 
@@ -931,14 +933,46 @@ html:not(.js) .sc-panel { opacity: 1; visibility: visible; transform: none; }
   display: flex;
   width: 100%;
   will-change: transform;
-  transform: translate3d(calc(-1 * min(var(--i, 0) * var(--칸), var(--n, 3) * var(--칸) - 100%)), 0, 0);
+  /* 🔴 ① 지금 편이 «언제나» 화면 정중앙 (유진님 2026-09-12 13:54
+        「이슈랑 이슈 제목의 그룹이 딱 정중앙에 오도록」).
+     앞의 (100% - 칸)/2 가 «가운데로 미는» 몫이고, 뒤가 몇 번째 편인지다.
+     🔴 가장자리 편에서도 가운데를 옮기지 않는다 — 옮기면 넘길 때마다 화면이 들썩인다.
+        첫 편은 왼쪽이, 마지막 편은 오른쪽이 «그냥 빈다». 빈 것 자체가 「여기가 끝」이다.
+        (그래서 앞 판의 min() 걸쇠를 뺐다. 그건 마지막 편을 오른쪽에 «붙이던» 것이다) */
+  transform: translate3d(calc((100% - var(--칸)) / 2 - var(--i, 0) * var(--칸)), 0, 0);
   transition: transform .5s var(--ease);
 }
 
-/* 지금 편이 아닌 칸은 «옅게». 넘어오면 선명해진다 (JS 가 aria-hidden 을 갈아준다).
-   🔴 누를 수 없고 읽는 기계에도 안 잡힌다 — JS 가 같은 칸에 inert 를 건다. */
-.ed[aria-hidden="true"] { opacity: .26; transition: opacity .5s var(--ease); }
+/* 🔴 ③ 그라데이션 투명 (유진님 13:54 「가운데에 가까울수록 현재처럼 투명도로 보이고,
+      사이드로 갈수록 완전 투명하게」). 옅기 «값»(.26)은 통과라 그대로 두고, 가장자리로 갈수록
+      «사라지는 것»만 더한다.
+
+   🔴 방향을 JS 로 안 가른다 — 덮개를 «양 끝이 진하고 가운데가 0» 으로 만들면 한 규칙으로 끝난다.
+      · 오른쪽 이웃 : 보이는 곳이 «제 왼쪽 끝»이라 0% 쪽(진함) → --페이드(사라짐) 를 탄다
+      · 왼쪽 이웃   : 보이는 곳이 «제 오른쪽 끝»이라 100% 쪽(진함) → 반대편으로 사라진다
+      가운데(안 보이는 부분)가 투명한 것은 상관없다. 화면 밖이다.
+   🔴 --페이드 는 --칸 과 «한 쌍»이다: 보이는 폭 ÷ 칸 폭 = (100-74)/2/74 ≒ 17.6% → 16% 로 둬서
+      화면 가장자리에 닿기 «전에» 0 이 되게 한다. --칸 을 바꾸면 이 값도 다시 계산한다.
+   🔴 지금 편(가운데)은 건드리지 않는다. 또렷한 그대로다. */
+.ed[aria-hidden="true"] {
+  opacity: .26;
+  -webkit-mask-image: linear-gradient(to right, #000 0%, transparent var(--페이드),
+                                      transparent calc(100% - var(--페이드)), #000 100%);
+          mask-image: linear-gradient(to right, #000 0%, transparent var(--페이드),
+                                      transparent calc(100% - var(--페이드)), #000 100%);
+  transition: opacity .5s var(--ease);
+}
+
 .ed[aria-hidden="false"] { opacity: 1; transition: opacity .5s var(--ease); }
+
+/* 🔴 왼쪽 이웃만 안을 뒤집어 «표지»가 안쪽(오른쪽) 가장자리에 오게 한다.
+   그래야 좌우 peek 이 같은 결이 된다 (위 JS 주석의 실측 참조).
+   지금 편이 되는 순간 data-곁 이 비므로 저절로 제자리로 돌아온다. */
+.ed[data-곁="왼"] { grid-template-columns: minmax(0, 1fr) minmax(0, var(--cover-w)); }
+/* 🔴 grid-row 를 «같이» 못박는다. 칸만 지정하면 표지가 DOM 상 먼저라
+   격자가 되돌아가지 못해 «두 줄»로 쌓인다 (실측: 표지 y381 · 글 y889, 칸 높이 450→838). */
+.ed[data-곁="왼"] .ed-text { grid-column: 1; grid-row: 1; }
+.ed[data-곁="왼"] .ed-cover { grid-column: 2; grid-row: 1; }
 
 /* 안내 한 줄 — 잡기 전과 잡은 뒤 문구가 다르다 */
 .ed-hint {
@@ -988,6 +1022,10 @@ html:not(.js) .sc-panel { opacity: 1; visibility: visible; transform: none; }
 
 .ed {
   flex: 0 0 var(--칸);
+  /* 🔴 flex 항목의 «자동 최소 폭»을 끈다. 안 끄면 안쪽 내용(폰의 단추 두 개 140+122)이
+     칸을 --칸 보다 넓게 밀어, 칸 폭과 «미는 양»이 어긋나 가운데가 한 칸에 15px 씩 밀린다
+     (실측 390px: 칸이어야 할 289 ↔ 실제 304 · 어긋남 8→23→38). */
+  min-width: 0;
   display: grid;
   --cover-w: clamp(210px, 26vw, 360px);
   grid-template-columns: minmax(0, var(--cover-w)) minmax(0, 1fr);
@@ -1386,13 +1424,22 @@ html:not(.js) .ed-nav { display: none; }
      🔴 표지를 «끝까지 흘려보내기»는 포기하고 «다 보이게» 한다 — 한 화면(100svh) 안에
         표지 + 제목 넉 줄 + 단추가 다 들어가야 한다. 자르지 않고 «비율 그대로 줄이기»만 한다.
         실측 390×844: 표지 320px + 글 236px = 창 안에 들어간다. */
-  .ed {
-    grid-template-columns: 1fr;
+  /* 🔴 폰에서는 «뒤집지 않는다». 여기선 칸이 한 줄로 쌓여 «폭 전체»가 내용이라
+     좌우 어느 쪽이 보여도 이웃이 그대로 읽힌다 — 뒤집을 이유가 없고,
+     뒤집으면 쌓인 배치를 둘로 갈라 깨뜨린다. */
+  .ed,
+  .ed[data-곁="왼"] {
+    /* 🔴 `1fr` 이 아니라 `minmax(0, 1fr)`. 그냥 1fr 이면 칸의 «최소 크기»가 안쪽 내용(단추 두 개
+       272px)으로 정해져 칸 안쪽 폭(257)을 넘고, 덩어리가 오른쪽으로 8px 밀린다 (실측). */
+    grid-template-columns: minmax(0, 1fr);
     grid-template-rows: auto auto;
     align-content: center;
     justify-items: center;
     gap: 14px;
   }
+
+  .ed[data-곁="왼"] .ed-text,
+  .ed[data-곁="왼"] .ed-cover { grid-column: 1; grid-row: auto; }
   .ed-cover {
     grid-column: auto;
     grid-row: auto;

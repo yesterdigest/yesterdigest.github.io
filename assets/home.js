@@ -256,6 +256,10 @@
         /* 🔴 안 보이는 칸은 Tab 으로 걸리지 않게 한다 — 안 그러면 화면 밖 링크에 초점이 간다 */
         p.inert = k !== i;
         p.setAttribute('aria-hidden', k === i ? 'false' : 'true');
+        /* 🔴 왼쪽 이웃은 «안을 좌우로 뒤집는다» — 안 그러면 보이는 것이 글칸의 «꼬리»뿐이라
+           거의 안 보인다 (실측: 왼쪽 이웃의 배경 대비 최대 6.9 ↔ 오른쪽 이웃 28.7).
+           뒤집으면 왼쪽 이웃도 «표지»가 안쪽 가장자리에 와서 좌우가 같은 결이 된다. */
+        p.dataset['곁'] = k < i ? '왼' : k > i ? '오' : '';
         if (Math.abs(k - i) <= 1) p.querySelectorAll('img[data-src]').forEach(그림받기);
       });
       if (prev) prev.disabled = i === 0;
