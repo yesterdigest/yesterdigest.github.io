@@ -63,7 +63,6 @@ body {
    🔴 홈페이지 전용. 영상·카드뉴스는 안 건드린다. */
 h1, h2, h3,
 .brand-link span,
-.drawer-title,
 .name-chip b,
 .ed-date,
 .hero h1 .accent {
@@ -85,14 +84,28 @@ h1, h2, h3,
 .ed-day,
 .ed-cta .btn span,
 .step-number,
-.oauth-note h2 { font-family: var(--en-font); }
+.oauth-note h2,
+/* 🔴 2026-09-12 유진님 16:07 「보러가기가 너무 짜쳐. 이런거 전부 영어로 고급스럽게」
+   선: «누르는 것·꼬리표는 영어 · 읽는 문장은 한글 · 브랜드 이름은 한글». */
+.btn-xl span,
+.drawer-title,
+.menu-item.is-en,
+.when-chip,
+.ed-hint,
+#intro-title { font-family: var(--en-font); }
 
 .brand-link small,
 .eyebrow,
 .ticker span,
 .hero-sub a,
 .ed-day,
-.ed-cta .btn span {
+.ed-cta .btn span,
+.btn-xl span,
+.drawer-title,
+.menu-item.is-en,
+.when-chip,
+.ed-hint,
+#intro-title {
   text-transform: uppercase;
   font-weight: 700;
 }
@@ -160,6 +173,11 @@ h1, h2, h3,
 .btn-ig { background: var(--ig); box-shadow: 0 12px 28px rgba(198, 44, 143, .32); }
 .btn-yt { background: #ff0033; box-shadow: 0 12px 28px rgba(255, 0, 51, .3); }
 .btn-xl { min-height: 60px; padding: 17px 30px; font-size: 1.08rem; }
+/* 🔴 `VIEW ON INSTAGRAM` 은 「Instagram 보러가기」보다 길다. 자간을 주되 넘치지 않게
+   글자를 창 폭에 맨다 — 폰 390 에서 두 단추가 한 줄에 들어가는지 재서 잡았다. */
+.btn-xl span { font-size: clamp(.78rem, 4.4vw, 1em); letter-spacing: .08em; }
+/* 재서 잡은 값 — 390 에서 글자에 쓸 수 있는 폭 238.7px, `VIEW ON INSTAGRAM` 이
+   17.28px 일 때 209px. 320 폭까지 한 줄에 들어간다 (14.1px → 170 ↔ 173). */
 
 /* ── 상단 바 ────────────────────────────────────────
    유진님 2026-09-12 09:24 「가만히 있을때는 이게 바로 아래의 색상과 이어지게 하고,
@@ -394,10 +412,14 @@ h1, h2, h3,
    (유진님 2026-09-12 09:03). flex 는 글자 길이만큼 늘어나므로 «같은 크기 두 칸» 격자로 둔다. */
 .hero-actions {
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
+  /* 🔴 2026-09-12 — 장마다 단추는 «하나»다. 두 칸 격자는 그 하나를 절반(실측 288px)에 가뒀고,
+     「Instagram 보러가기」는 들어갔지만 `VIEW ON INSTAGRAM` 은 «두 줄»로 접혔다 (실측).
+     한 칸으로 두되 «폭을 못 박아» 장이 바뀌어도 단추 크기가 안 흔들리게 한다.
+     380 을 고른 근거: 안쪽 글자 자리 265px ↔ `VIEW ON INSTAGRAM` 이 17.28px 일 때 209px. */
+  grid-template-columns: minmax(0, 1fr);
   gap: 12px;
   margin-top: clamp(14px, 2.6vh, 28px);
-  width: 100%;          /* 없으면 격자가 «글자 폭»으로 쪼그라든다 (실측 269px) */
+  width: min(100%, 380px);   /* 없으면 격자가 «글자 폭»으로 쪼그라든다 (실측 269px) */
   max-width: 620px;
 }
 
@@ -1062,7 +1084,8 @@ body.ed-held .site-header { opacity: .3; }
   border-radius: 999px;
   background: rgba(10, 16, 26, .6);
   color: #9fb3c6;
-  font-size: .76rem;
+  font-size: .72rem;
+  letter-spacing: .12em;
   white-space: nowrap;
   pointer-events: none;
 }
@@ -1328,7 +1351,7 @@ html:not(.js) .ed-nav { display: none; }
   border-bottom: 1px solid var(--line);
 }
 
-.drawer-title { color: #fff; font-size: clamp(14px, 1.32vw, 1.05rem); letter-spacing: -.02em; }
+.drawer-title { color: #fff; font-size: clamp(12.5px, 1.18vw, .94rem); letter-spacing: .14em; }
 
 .drawer-nav { display: flex; flex-direction: column; gap: 4px; padding: 14px 0; }
 
@@ -1346,6 +1369,9 @@ html:not(.js) .ed-nav { display: none; }
   text-decoration: none;
   transition: background .18s var(--ease), transform .18s var(--ease), color .18s;
 }
+
+/* 영어 줄은 자간을 벌려 «딱지»처럼. 한글 줄(어제한입 등)은 그대로다 */
+.menu-item.is-en { letter-spacing: .12em; }
 
 .menu-item:hover, .menu-item:focus-visible { background: rgba(255, 255, 255, .08); color: #fff; transform: translateX(3px); }
 
@@ -1697,6 +1723,7 @@ html:not(.js) .ed-nav { display: none; }
 .intro-slot { display: grid; justify-items: center; text-align: center; gap: 6px; }
 .intro-slot img { width: min(190px, 44vw); height: auto; }
 .intro-slot p { margin: 0; color: #fff; font-size: 1.05rem; font-weight: 700; }
+#intro-title { letter-spacing: .16em; }
 .intro-slot .intro-sub { color: var(--dim); font-size: .88rem; font-weight: 400; }
 
 .intro-close {

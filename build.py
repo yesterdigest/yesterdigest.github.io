@@ -192,8 +192,10 @@ def showcase(editions):
     나머지 = (' 외 %d건' % (len(이슈) - 1)) if len(이슈) > 1 else ''
 
     단추종류 = {
-        'youtube': ('btn-yt', IC['yt'], 'YouTube 보러가기', YT_CHANNEL),
-        'instagram': ('btn-ig', IC['ig'], 'Instagram 보러가기', IG_ACCOUNT),
+        # 🔴 2026-09-12 유진님 16:07 「보러가기가 너무 짜쳐. 이런거 전부 영어로 고급스럽게」
+        #    누르는 것·꼬리표는 영어, 읽는 문장은 한글, 브랜드 이름은 한글 (팀장이 그은 선).
+        'youtube': ('btn-yt', IC['yt'], 'VIEW ON YOUTUBE', YT_CHANNEL),
+        'instagram': ('btn-ig', IC['ig'], 'VIEW ON INSTAGRAM', IG_ACCOUNT),
     }
 
     패널 = []
@@ -223,7 +225,7 @@ def showcase(editions):
         if c.get('단추'):
             cls, icon, 글, 주소 = 단추종류[c['단추']]
             단추 = ('<div class="hero-actions"><a class="btn %s btn-xl" href="%s" target="_blank" rel="noopener">'
-                    '%s %s %s</a></div>' % (cls, 주소, icon, e(글), IC['go']))
+                    '%s <span>%s</span> %s</a></div>' % (cls, 주소, icon, e(글), IC['go']))
 
         if c['그림'] == '로고':
             그림 = ('<div class="hero-art"><img id="hero-char" src="/assets/brand/character-wave.png" '
@@ -238,7 +240,7 @@ def showcase(editions):
                                윗줄='%s 어제 이슈 %d개를 카드 %d장으로 정리했어요.'
                                     % (날짜말, len(이슈), 최신.get('카드수', 0)),
                                아랫줄=첫이슈 + 나머지,
-                               캡션='매일 아침 7시'))
+                               캡션='DAILY 07:00'))
         elif c['그림'] == '릴스목업' and 릴스:
             그림 = ('<div class="hero-art hero-art-device">%s</div>'
                     % 기기목업(릴스, '가장 최근 편 릴스 표지', 재생=True,
@@ -389,7 +391,7 @@ def view_editions(cfg, data):
             <div class="ed-track">
 %(panels)s
             </div>
-            <p class="ed-hint" data-off="눌러서 넘겨보세요" data-on="스크롤로 넘어가요 · Esc 로 풀기">눌러서 넘겨보세요</p>
+            <p class="ed-hint" data-off="TAP TO BROWSE" data-on="SCROLL TO BROWSE · ESC">TAP TO BROWSE</p>
             <div class="ed-nav">
               <button type="button" class="ed-prev" aria-label="이전 편">%(icp)s</button>
               <button type="button" class="ed-next" aria-label="다음 편">%(icn)s</button>
@@ -413,7 +415,6 @@ SECTION_BUILDERS = {
 # 거기에 선택자를 더하면 여기에도 더해야 한다 — 안 그러면 그 글자만 본문 글씨로 튄다)
 JUA_자리 = [r'<h1[^>]*>(.*?)</h1>', r'<h2[^>]*>(.*?)</h2>', r'<h3[^>]*>(.*?)</h3>',
             r'class="brand-link"[^>]*>.*?<span>(.*?)</span>',
-            r'class="drawer-title">(.*?)</span>',
             r'class="name-chip"[^>]*>(.*?)</p>']
 
 # 날마다 바뀌는 것 — 오늘 페이지에 없어도 반드시 넣는다
@@ -447,7 +448,7 @@ def intro_modal():
       </button>
       <div class="intro-slot">
         <img src="/assets/brand/character-wave.png" alt="" width="380" height="380">
-        <p id="intro-title">소개 영상은 준비 중이에요</p>
+        <p id="intro-title">COMING SOON</p>
         <p class="intro-sub">10초 안에 어제한입이 어떤 곳인지 보여드릴게요.</p>
       </div>
     </div>
@@ -549,9 +550,11 @@ def build():
         if not fn:
             raise SystemExit('칸 "%s" 은 보임:true 인데 만드는 함수가 없다. '
                              'build.py 의 SECTION_BUILDERS 에 등록해라.' % c['id'])
-        menu.append('        <a class="menu-item" href="#%s" data-view="%s"%s>%s</a>'
-                    % (e(c['id']), e(c['id']),
-                       ' aria-current="page"' if c['id'] == 기본 else '', e(c['제목'])))
+        # 🔴 서랍 줄에만 쓰는 «영어 이름». 없으면 제목 그대로 (2026-09-12 유진님 16:07)
+        menu.append('        <a class="menu-item%s" href="#%s" data-view="%s"%s>%s</a>'
+                    % (' is-en' if c.get('메뉴이름') else '', e(c['id']), e(c['id']),
+                       ' aria-current="page"' if c['id'] == 기본 else '',
+                       e(c.get('메뉴이름') or c['제목'])))
         views.append('    <section class="view%s" id="view-%s" data-view="%s">\n%s\n    </section>'
                      % (' is-active' if c['id'] == 기본 else '', e(c['id']), e(c['id']), fn(c, data)))
 
@@ -627,7 +630,7 @@ PAGE = """<!doctype html>
   <div class="drawer-backdrop" id="drawer-backdrop" hidden></div>
   <aside class="drawer" id="drawer" hidden aria-label="화면 목록">
     <div class="drawer-head">
-      <span class="drawer-title">메뉴</span>
+      <span class="drawer-title">MENU</span>
       <button class="menu-btn" type="button" id="menu-close" aria-label="메뉴 닫기">%(icx)s</button>
     </div>
     <nav class="drawer-nav">

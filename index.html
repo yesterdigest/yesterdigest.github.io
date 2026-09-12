@@ -27,9 +27,9 @@
   <!-- Jua 는 «이 페이지가 실제로 쓰는 글자»만 받는다 (text=). 제목·이름·날짜에만 쓰므로 글자가 정해져 있다.
        아래 글자 목록은 build.py 가 만들어진 HTML 에서 «세어» 넣는다 — 손으로 고치지 않는다.
        숫자·년월일·요일 일곱 자는 날마다 바뀌므로 «반드시» 바탕 묶음으로 넣는다. -->
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Jua&display=swap&text=%20%21%28%29%2C-.0123456789%3A%3FABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz~%C2%B7%EA%B0%84%EA%B2%80%EA%B2%8C%EA%B3%A0%EA%B6%8C%EA%B7%BC%EA%B8%88%EA%B8%B0%EA%B8%B8%EB%82%9C%EB%84%90%EB%85%84%EB%89%B4%EB%8B%88%EB%8B%A4%EB%8D%B0%EB%93%9C%EB%94%B0%EB%9D%BC%EB%A1%9C%EB%A5%B4%EB%A5%BC%EB%A7%8C%EB%A9%94%EB%AA%A9%EB%AC%B8%EB%B0%8F%EB%B2%8C%EB%B3%84%EC%82%AC%EC%82%AD%EC%84%A0%EC%88%98%EC%8A%88%EC%8A%A4%EC%8B%9C%EC%94%A9%EC%96%B4%EC%97%90%EC%98%81%EC%9A%94%EC%9A%A9%EC%9A%B4%EC%9B%94%EC%9D%80%EC%9D%98%EC%9D%B4%EC%9D%B8%EC%9D%BC%EC%9E%85%EC%9E%91%EC%9E%A1%EC%9E%A5%EC%A0%9C%EC%A3%BC%EC%A7%80%EC%B1%84%EC%B2%AD%EC%B6%9C%EC%B8%A0%EC%B9%B4%EC%BD%98%ED%81%AC%ED%84%B0%ED%85%90%ED%86%A0%ED%8E%B8%ED%95%98%ED%95%9C%ED%95%A9%ED%99%94%ED%99%95%ED%9B%84">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Jua&display=swap&text=%20%21%28%29%2C-.0123456789%3A%3FABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz~%C2%B7%EA%B0%84%EA%B2%80%EA%B2%8C%EA%B3%A0%EA%B6%8C%EA%B7%BC%EA%B8%88%EA%B8%B0%EA%B8%B8%EB%82%9C%EB%84%90%EB%85%84%EB%89%B4%EB%8B%88%EB%8B%A4%EB%8D%B0%EB%93%9C%EB%94%B0%EB%9D%BC%EB%A1%9C%EB%A5%B4%EB%A5%BC%EB%A7%8C%EB%AA%A9%EB%AC%B8%EB%B0%8F%EB%B2%8C%EB%B3%84%EC%82%AC%EC%82%AD%EC%84%A0%EC%88%98%EC%8A%88%EC%8A%A4%EC%8B%9C%EC%94%A9%EC%96%B4%EC%97%90%EC%98%81%EC%9A%94%EC%9A%A9%EC%9A%B4%EC%9B%94%EC%9D%80%EC%9D%98%EC%9D%B4%EC%9D%B8%EC%9D%BC%EC%9E%85%EC%9E%91%EC%9E%A1%EC%9E%A5%EC%A0%9C%EC%A3%BC%EC%A7%80%EC%B1%84%EC%B2%AD%EC%B6%9C%EC%B8%A0%EC%B9%B4%EC%BD%98%ED%81%AC%ED%84%B0%ED%85%90%ED%86%A0%ED%8E%B8%ED%95%98%ED%95%9C%ED%95%A9%ED%99%94%ED%99%95%ED%9B%84">
   <link rel="stylesheet" href="/assets/styles.css?v=ae861d05">
-  <link rel="stylesheet" href="/assets/home.css?v=2e2566e3">
+  <link rel="stylesheet" href="/assets/home.css?v=0d891ee9">
 </head>
 <body data-default-view="yesterdigest">
   <a class="skip-link" href="#main">본문으로 건너뛰기</a>
@@ -53,12 +53,12 @@
   <div class="drawer-backdrop" id="drawer-backdrop" hidden></div>
   <aside class="drawer" id="drawer" hidden aria-label="화면 목록">
     <div class="drawer-head">
-      <span class="drawer-title">메뉴</span>
+      <span class="drawer-title">MENU</span>
       <button class="menu-btn" type="button" id="menu-close" aria-label="메뉴 닫기"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
     </div>
     <nav class="drawer-nav">
         <a class="menu-item" href="#yesterdigest" data-view="yesterdigest" aria-current="page">어제한입</a>
-        <a class="menu-item" href="#editions" data-view="editions">지난 편</a>
+        <a class="menu-item is-en" href="#editions" data-view="editions">EDITIONS</a>
         <a class="menu-item" href="/privacy/">개인정보처리방침 <span class="menu-out"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 4h6v6M20 4l-9 9M18 14v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h5"/></svg></span></a>
         <a class="menu-item" href="/terms/">이용약관 <span class="menu-out"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 4h6v6M20 4l-9 9M18 14v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h5"/></svg></span></a>
     </nav>
@@ -87,11 +87,11 @@
           <article class="sc-panel" id="sc-instagram" data-sc="instagram" aria-hidden="true">
             <div class="hero-inner">
               <div class="hero-text">
-                <p class="eyebrow">Instagram</p><p class="when-chip">매일 아침 7시</p>
+                <p class="eyebrow">Instagram</p><p class="when-chip">DAILY 07:00</p>
                 <h1>카드뉴스 한 벌,<br><span class="accent">한 장씩.</span></h1>
                 
                 <p class="hero-lead">어제 무슨 일이 있었는지, 카드 한 벌로 끝!</p>
-                <div class="hero-actions"><a class="btn btn-ig btn-xl" href="https://www.instagram.com/yesterdigest/" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="2.5" y="2.5" width="19" height="19" rx="5.4"/><circle cx="12" cy="12" r="4.2"/><circle cx="17.6" cy="6.4" r="1.2" fill="currentColor" stroke="none"/></svg> Instagram 보러가기 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h13M13 6l6 6-6 6"/></svg></a></div>
+                <div class="hero-actions"><a class="btn btn-ig btn-xl" href="https://www.instagram.com/yesterdigest/" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="2.5" y="2.5" width="19" height="19" rx="5.4"/><circle cx="12" cy="12" r="4.2"/><circle cx="17.6" cy="6.4" r="1.2" fill="currentColor" stroke="none"/></svg> <span>VIEW ON INSTAGRAM</span> <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h13M13 6l6 6-6 6"/></svg></a></div>
               </div>
               <div class="hero-art hero-art-device"><a class="device-link" href="https://www.instagram.com/p/DdKYg43Ek-b/" target="_blank" rel="noopener" aria-label="가장 최근 편 카드뉴스를 Instagram에서 보기">
                 <div class="device">
@@ -111,7 +111,7 @@
                     <div class="dv-cap" aria-hidden="true">
                       <p><b>yesterdigest</b> 9월 11일 어제 이슈 4개를 카드 6장으로 정리했어요.</p>
                       <p class="dv-cap-sub">윤석열 전 대통령, 하루 두 재판 외 3건</p>
-                      <p class="dv-cap-foot">매일 아침 7시</p>
+                      <p class="dv-cap-foot">DAILY 07:00</p>
                     </div>
                     <div class="dv-peek" aria-hidden="true">
                       <div class="dv-top">
@@ -130,11 +130,11 @@
           <article class="sc-panel" id="sc-youtube" data-sc="youtube" aria-hidden="true">
             <div class="hero-inner">
               <div class="hero-text">
-                <p class="eyebrow">YouTube</p><p class="when-chip">매일 아침 7시</p>
+                <p class="eyebrow">YouTube</p><p class="when-chip">DAILY 07:00</p>
                 <h1>출근길 한 편,<br><span class="accent">어제를 따라잡기.</span></h1>
                 
                 <p class="hero-lead">어제가 영상 하나로 정리돼요.</p>
-                <div class="hero-actions"><a class="btn btn-yt btn-xl" href="https://www.youtube.com/@yesterdigest" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M23.5 6.2a3 3 0 0 0-2.1-2.1C19.5 3.6 12 3.6 12 3.6s-7.5 0-9.4.5A3 3 0 0 0 .5 6.2C0 8.1 0 12 0 12s0 3.9.5 5.8a3 3 0 0 0 2.1 2.1c1.9.5 9.4.5 9.4.5s7.5 0 9.4-.5a3 3 0 0 0 2.1-2.1c.5-1.9.5-5.8.5-5.8s0-3.9-.5-5.8zM9.6 15.6V8.4l6.2 3.6-6.2 3.6z"/></svg> YouTube 보러가기 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h13M13 6l6 6-6 6"/></svg></a></div>
+                <div class="hero-actions"><a class="btn btn-yt btn-xl" href="https://www.youtube.com/@yesterdigest" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M23.5 6.2a3 3 0 0 0-2.1-2.1C19.5 3.6 12 3.6 12 3.6s-7.5 0-9.4.5A3 3 0 0 0 .5 6.2C0 8.1 0 12 0 12s0 3.9.5 5.8a3 3 0 0 0 2.1 2.1c1.9.5 9.4.5 9.4.5s7.5 0 9.4-.5a3 3 0 0 0 2.1-2.1c.5-1.9.5-5.8.5-5.8s0-3.9-.5-5.8zM9.6 15.6V8.4l6.2 3.6-6.2 3.6z"/></svg> <span>VIEW ON YOUTUBE</span> <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h13M13 6l6 6-6 6"/></svg></a></div>
               </div>
               <div class="hero-art hero-art-device"><a class="device-link" href="https://youtube.com/watch?v=c-uiBQKFP5U" target="_blank" rel="noopener" aria-label="가장 최근 편 영상을 YouTube에서 보기">
                 <div class="device device--reel">
@@ -291,7 +291,7 @@
               </div>
             </article>
             </div>
-            <p class="ed-hint" data-off="눌러서 넘겨보세요" data-on="스크롤로 넘어가요 · Esc 로 풀기">눌러서 넘겨보세요</p>
+            <p class="ed-hint" data-off="TAP TO BROWSE" data-on="SCROLL TO BROWSE · ESC">TAP TO BROWSE</p>
             <div class="ed-nav">
               <button type="button" class="ed-prev" aria-label="이전 편"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg></button>
               <button type="button" class="ed-next" aria-label="다음 편"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg></button>
@@ -313,7 +313,7 @@
       </button>
       <div class="intro-slot">
         <img src="/assets/brand/character-wave.png" alt="" width="380" height="380">
-        <p id="intro-title">소개 영상은 준비 중이에요</p>
+        <p id="intro-title">COMING SOON</p>
         <p class="intro-sub">10초 안에 어제한입이 어떤 곳인지 보여드릴게요.</p>
       </div>
     </div>
