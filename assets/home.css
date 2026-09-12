@@ -1662,6 +1662,33 @@ html:not(.js) .ed-nav { display: none; }
    🔴 첫 화면이 넘쳐 단추가 잘리지 않게, 그림 → 글씨 → 여백 순으로 줄인다.
       실측으로 잡았다: 853×533(=1280 확대 150%) 에서 인스타 장의 단추가 4px 잘렸다. */
 @media (max-height: 620px) {
+  /* 🔴 2026-09-12 — 지난 편도 여기서 줄인다. 「폭」만으로 가른 중단점이 «확대한 사람»을
+     빈 구간에 빠뜨렸다: 200% 로 확대하면 폭뿐 아니라 «높이»도 반이 된다.
+     실측 768×430(=1536×860 을 200% 로 본 것): 무대 518.3px 이 창 430 을 «88.3px» 넘어
+     날짜줄이 위로, 안내·화살표가 아래로 잘렸다. 폭 규칙(≤760)에는 안 걸리는 자리다. */
+  /* 🔴 창 «높이»에도 매단다 — 더 낮아질수록 더 줄어야 한다.
+     실측 640×320(=1280×640 을 200% 로 본 것)은 이 한 단계로는 84px 이 남았다. */
+  /* 🔴 표지는 «폭»으로만 줄인다 — 높이를 직접 주면 4:5 가 깨져 object-fit 이 «잘라낸다»
+     (실측: 아래 두 칸 「용혜인」「승리」가 잘려나갔다). 4:5 라 폭을 32vh 로 막으면 높이는 40vh 다. */
+  .ed { --cover-w: min(clamp(150px, 22vw, 230px), 32vh); }
+  .ed-stage { padding-block: clamp(4px, 1.2vh, 8px) clamp(22px, 6vh, 34px); }
+  .ed-day { font-size: clamp(1.05rem, 2vw, 1.5rem); margin-bottom: clamp(4px, 1.2vh, 8px); }
+  .ed-topics { margin-bottom: clamp(5px, 1.6vh, 10px); }
+  .ed-topics li { padding: clamp(2px, .8vh, 5px) 0; font-size: clamp(.78rem, 1.1vw, .95rem); }
+  .ed-more { display: none; }          /* 관문 안내는 절 머리글에 이미 있다 */
+  .ed-cta { flex-wrap: nowrap; }
+  .ed-cta .btn { flex: 1 1 0; min-height: clamp(34px, 9vh, 40px); padding: clamp(6px, 1.6vh, 9px) 12px; }
+  .ed-nav button { width: 34px; height: 34px; }
+  .ed-nav svg { width: 16px; height: 16px; }
+  /* 낮은 창에서는 알약이 단추 위에 얹힌다 — 비어 있는 왼쪽 아래로 비킨다 (실측) */
+  .ed-hint { left: var(--shell); bottom: 8px; transform: none; }
+}
+
+/* 🔴 낮고 «좁은» 창(≤760 은 한 줄로 쌓인다)은 비켜설 자리가 없어 알약이 단추를 덮는다
+   (실측 640×320 = 1280×640 을 200% 로 본 것). 넘기는 길은 화살표·끌기·방향키로 남는다. */
+@media (max-height: 620px) and (max-width: 760px) {
+  .ed-hint { display: none; }
+
   /* 🔴 실측(640×400 = 1280 확대 200%): 릴스 장의 기기가 점 표시와 11px 겹쳤다 → 비율을 낮춘다 */
   .device-link { --폰높이: min(290px, 46vh); }
   .hero-art > img { height: min(232px, 34vh); }
