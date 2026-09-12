@@ -428,6 +428,8 @@ def oauth_note():
        (support.google.com/cloud/answer/13807376).
     🔴 메일 주소 · 개인정보처리방침 · 이용약관은 «여기서도 눌러서 갈 수 있어야» 한다.
     🔴 «작게»이지 «흐리게»가 아니다 — 글자 14px 이상, 어두운 바탕에 밝은 글자로 대비를 지킨다.
+       (이 줄은 앞선 세션이 남긴 «작업 기준»이다. 🔴 정본 규칙이 아니다 —
+        CLAUDE.md 에 글자 크기 규칙은 없다. 정본으로 만들려면 유진님 승인을 받아야 한다)
     """
     return """  <section class="oauth-note" aria-labelledby="oauth-title">
     <div class="oauth-inner reveal">
