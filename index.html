@@ -22,7 +22,7 @@
   <!-- Jua 는 «이 페이지가 실제로 쓰는 글자»만 받는다 (text=). 제목·이름·날짜에만 쓰므로 글자가 정해져 있다.
        아래 글자 목록은 build.py 가 만들어진 HTML 에서 «세어» 넣는다 — 손으로 고치지 않는다.
        숫자·년월일·요일 일곱 자는 날마다 바뀌므로 «반드시» 바탕 묶음으로 넣는다. -->
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Jua&display=swap&text=%20%21%28%29%2C-.0123456789%3A%3FABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz~%C2%B7%EA%B0%80%EA%B2%80%EA%B2%8C%EA%B3%A0%EA%B6%8C%EA%B8%88%EA%B8%B0%EB%82%9C%EB%84%90%EB%84%98%EB%85%84%EB%89%B4%EB%8B%88%EB%8B%A4%EB%8D%B0%EB%A1%9C%EB%A5%B4%EB%A5%BC%EB%A7%8C%EB%A9%94%EB%A9%B4%EB%AA%A9%EB%AC%B8%EB%B0%8F%EB%B3%84%EB%B3%8D%EC%82%AC%EC%82%AD%EC%84%9C%EC%84%A0%EC%88%98%EC%8A%88%EC%8A%A4%EC%8B%9C%EC%8B%AC%EC%96%B4%EC%97%90%EC%98%81%EC%9A%94%EC%9A%A9%EC%9A%B4%EC%9B%94%EC%9D%80%EC%9D%98%EC%9D%B4%EC%9D%B8%EC%9D%BC%EC%9E%85%EC%9E%91%EC%A0%84%EC%A0%9C%EC%A3%BC%EC%A7%80%EC%A7%A7%EC%B1%84%EC%B2%AD%EC%B8%A0%EC%BD%98%ED%81%AC%ED%84%B0%ED%85%90%ED%86%A0%ED%8E%B8%ED%95%98%ED%95%9C%ED%95%A9%ED%95%B5%ED%99%94%ED%99%95%ED%9B%84">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Jua&display=swap&text=%20%21%28%29%2C-.0123456789%3A%3FABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz~%C2%B7%EA%B0%84%EA%B2%80%EA%B2%8C%EA%B3%A0%EA%B6%8C%EA%B7%BC%EA%B8%88%EA%B8%B0%EA%B8%B8%EB%82%9C%EB%84%90%EB%85%84%EB%89%B4%EB%8B%88%EB%8B%A4%EB%8D%B0%EB%93%9C%EB%94%B0%EB%9D%BC%EB%A1%9C%EB%A5%B4%EB%A5%BC%EB%A7%8C%EB%A9%94%EB%AA%A9%EB%AC%B8%EB%B0%8F%EB%B2%8C%EB%B3%84%EC%82%AC%EC%82%AD%EC%84%A0%EC%88%98%EC%8A%88%EC%8A%A4%EC%8B%9C%EC%94%A9%EC%96%B4%EC%97%90%EC%98%81%EC%9A%94%EC%9A%A9%EC%9A%B4%EC%9B%94%EC%9D%80%EC%9D%98%EC%9D%B4%EC%9D%B8%EC%9D%BC%EC%9E%85%EC%9E%91%EC%9E%A1%EC%9E%A5%EC%A0%84%EC%A0%9C%EC%A3%BC%EC%A7%80%EC%B1%84%EC%B2%AD%EC%B6%9C%EC%B8%A0%EC%B9%B4%EC%BD%98%ED%81%AC%ED%84%B0%ED%85%90%ED%86%A0%ED%8E%B8%ED%95%98%ED%95%9C%ED%95%A9%ED%99%94%ED%99%95%ED%9B%84">
   <link rel="stylesheet" href="/assets/styles.css">
   <link rel="stylesheet" href="/assets/home.css">
 </head>
@@ -70,10 +70,10 @@
           <article class="sc-panel is-on" id="sc-main" data-sc="main">
             <div class="hero-inner">
               <div class="hero-text">
-                
-                <h1>어제를<br><span class="accent">한입에.</span></h1>
-                <p class="hero-lead">매일 아침 7시, 어제의 이슈를 만나보세요!</p>
-                <p class="motto"><span aria-hidden="true">&#9201;</span>시간은 금이다</p>
+                <p class="name-chip"><img src="/assets/brand/logo-256.png" alt=""><span><b>한입이</b></span></p>
+                <h1>시간은 금이다</h1>
+                <p class="motto-sub">빠르게, 그러나 확인한 것만.</p>
+                <p class="hero-lead">어제를 오늘 아침에. 한입이가 골라 확인해 전해요.</p>
                 
               </div>
               <div class="hero-art"><img id="hero-char" src="/assets/brand/character-wave.png" data-motion="/assets/brand/character-wave.gif" width="780" height="780" alt="손을 흔드는 한입이"></div>
@@ -82,10 +82,10 @@
           <article class="sc-panel" id="sc-instagram" data-sc="instagram" aria-hidden="true">
             <div class="hero-inner">
               <div class="hero-text">
-                <p class="eyebrow">Instagram</p>
-                <h1>넘기면서,<br><span class="accent">가볍게.</span></h1>
-                <p class="hero-lead">어제 무슨 일이 있었는지, 카드 한 벌로 끝!</p>
+                <p class="eyebrow">Instagram</p><p class="when-chip">매일 아침 7시</p>
+                <h1>카드뉴스 한 벌,<br><span class="accent">한 장씩.</span></h1>
                 
+                <p class="hero-lead">어제 무슨 일이 있었는지, 카드 한 벌로 끝!</p>
                 <div class="hero-actions"><a class="btn btn-ig btn-xl" href="https://www.instagram.com/yesterdigest/" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="2.5" y="2.5" width="19" height="19" rx="5.4"/><circle cx="12" cy="12" r="4.2"/><circle cx="17.6" cy="6.4" r="1.2" fill="currentColor" stroke="none"/></svg> Instagram 보러가기 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h13M13 6l6 6-6 6"/></svg></a></div>
               </div>
               <div class="hero-art hero-art-device"><div class="device" aria-hidden="false">
@@ -106,13 +106,13 @@
           <article class="sc-panel" id="sc-youtube" data-sc="youtube" aria-hidden="true">
             <div class="hero-inner">
               <div class="hero-text">
-                <p class="eyebrow">YouTube</p>
-                <h1>짧게,<br><span class="accent">핵심만.</span></h1>
-                <p class="hero-lead">출근길에 한 편. 어제가 영상으로 정리돼요.</p>
+                <p class="eyebrow">YouTube</p><p class="when-chip">매일 아침 7시</p>
+                <h1>출근길 한 편,<br><span class="accent">어제를 따라잡기.</span></h1>
                 
+                <p class="hero-lead">어제가 영상 하나로 정리돼요.</p>
                 <div class="hero-actions"><a class="btn btn-yt btn-xl" href="https://www.youtube.com/@yesterdigest" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M23.5 6.2a3 3 0 0 0-2.1-2.1C19.5 3.6 12 3.6 12 3.6s-7.5 0-9.4.5A3 3 0 0 0 .5 6.2C0 8.1 0 12 0 12s0 3.9.5 5.8a3 3 0 0 0 2.1 2.1c1.9.5 9.4.5 9.4.5s7.5 0 9.4-.5a3 3 0 0 0 2.1-2.1c.5-1.9.5-5.8.5-5.8s0-3.9-.5-5.8zM9.6 15.6V8.4l6.2 3.6-6.2 3.6z"/></svg> YouTube 보러가기 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h13M13 6l6 6-6 6"/></svg></a></div>
               </div>
-              <div class="hero-art hero-art-device"><div class="device" aria-hidden="false">
+              <div class="hero-art hero-art-device"><div class="device device--reel" aria-hidden="false">
                   <span class="device-slit" aria-hidden="true"></span>
                   <div class="device-screen">
                     <div class="device-top">

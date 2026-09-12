@@ -64,7 +64,7 @@ def 기기목업(그림, alt, 재생=False):
     """
     재생표 = ('<span class="device-play" aria-hidden="true">'
               '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></span>') if 재생 else ''
-    return """<div class="device" aria-hidden="false">
+    return """<div class="device%s" aria-hidden="false">
                   <span class="device-slit" aria-hidden="true"></span>
                   <div class="device-screen">
                     <div class="device-top">
@@ -76,7 +76,7 @@ def 기기목업(그림, alt, 재생=False):
                       %s
                     </div>
                   </div>
-                </div>""" % (그림, e(alt), 재생표)
+                </div>""" % (' device--reel' if 재생 else '', 그림, e(alt), 재생표)
 
 
 def showcase(editions):
@@ -104,7 +104,15 @@ def showcase(editions):
 
     패널 = []
     for i, c in enumerate(장):
-        머리 = '<p class="eyebrow">%s</p>' % e(c['눈금']) if c.get('눈금') else ''
+        머리 = ''
+        if c.get('칩'):
+            머리 = ('<p class="name-chip"><img src="/assets/brand/logo-256.png" alt="">'
+                    '<span><b>%s</b></span></p>' % e(c['칩']))
+        elif c.get('눈금'):
+            머리 = '<p class="eyebrow">%s</p>' % e(c['눈금'])
+        if c.get('시각칩'):
+            # 「매일 아침 7시」는 «약속»이라 2·3장에만 작게 (1장 모토와 섞지 않는다)
+            머리 += '<p class="when-chip">%s</p>' % e(c['시각칩'])
 
         줄 = []
         for n, t in enumerate(c['제목줄']):
@@ -113,7 +121,9 @@ def showcase(editions):
             줄.append('<span class="accent">%s</span>' % e(t) if n == c.get('강조줄') else e(t))
         제목 = '<br>'.join(줄)
 
-        모토 = ('<p class="motto"><span aria-hidden="true">&#9201;</span>%s</p>' % e(c['모토'])) if c.get('모토') else ''
+        # 🔴 모토는 «두 줄까지». 큰 줄은 제목(h1)이고, 이 받침이 둘째 줄이다.
+        #    근거는 data/showcase.json 의 _문구_근거 에 적어 뒀다 — 지어낸 말이 아니다.
+        모토 = ('<p class="motto-sub">%s</p>' % e(c['받침'])) if c.get('받침') else ''
 
         단추 = ''
         if c.get('단추'):
@@ -137,8 +147,8 @@ def showcase(editions):
               <div class="hero-text">
                 %(머리)s
                 <h1>%(제목)s</h1>
-                <p class="hero-lead">%(설명)s</p>
                 %(모토)s
+                <p class="hero-lead">%(설명)s</p>
                 %(단추)s
               </div>
               %(그림)s

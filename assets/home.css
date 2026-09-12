@@ -268,6 +268,10 @@ h1, h2, h3,
 
 .sc-panel {
   grid-area: 1 / 1;                 /* 모두 같은 칸에 겹친다 */
+  /* 🔴 칸 높이는 «가장 큰 장»이 정한다. 짧은 장은 그 칸의 위쪽에 붙어 아래가 비어 보였다
+     (실측: 폰 390×844 에서 모토 아래로 3분의 1이 빈 띠). 장 안에서 가운데로 모은다. */
+  display: grid;
+  align-content: center;
   opacity: 0;
   visibility: hidden;
   transform: translateY(10px);
@@ -319,20 +323,27 @@ html:not(.js) .sc-panel { opacity: 1; visibility: visible; transform: none; }
 }
 
 
-/* 유진님 모토 — 2026-09-06 「"시간은 금이다" 이게 내 모토야」 */
-.motto {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  margin: clamp(10px, 2vh, 18px) 0 0;
-  padding: 7px 16px;
-  border: 1px solid rgba(252, 180, 36, .38);
-  border-radius: 999px;
-  background: rgba(252, 180, 36, .1);
+/* 모토 받침 줄 — 큰 줄(h1 「시간은 금이다」) 바로 아래 둘째 줄.
+   유진님 2026-09-06 「"시간은 금이다" 이게 내 모토야」 · 받침은 CLAUDE.md §1 을 옮긴 것. */
+.motto-sub {
+  margin: calc(-1 * clamp(2px, .6vh, 8px)) 0 0;
   color: var(--amber);
-  font-size: clamp(.82rem, 1.5vh, .95rem);
+  font-size: clamp(1rem, .7vw + 1.2vh, 1.45rem);
   font-weight: 700;
-  letter-spacing: .01em;
+  letter-spacing: -.01em;
+}
+
+/* 「매일 아침 7시」 — 약속이라 2·3장에만 작게 */
+.when-chip {
+  display: inline-block;
+  margin: 0 0 clamp(6px, 1.2vh, 12px);
+  padding: 5px 13px;
+  border: 1px solid rgba(255, 255, 255, .2);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, .07);
+  color: #dbe8f4;
+  font-size: clamp(.78rem, 1.4vh, .9rem);
+  font-weight: 700;
 }
 
 /* ── 스마트폰 «그림» — CSS 로 직접 그린다 ────────────
@@ -343,9 +354,9 @@ html:not(.js) .sc-panel { opacity: 1; visibility: visible; transform: none; }
 
 .device {
   position: relative;
-  width: auto;
-  height: min(460px, 56vh);
-  aspect-ratio: 9 / 18.5;
+  /* 🔴 기기 크기는 «안쪽 그림»이 정한다. 예전엔 9/18.5 로 못박아 4:5 카드 위아래가 검게 남았다.
+     테두리(padding·둥근 모서리·그림자)는 그대로 두고 안쪽 비율만 그림에 맞춘다. */
+  width: max-content;
   padding: 9px;
   border-radius: 30px;
   background: linear-gradient(150deg, #3a4557 0%, #171d27 46%, #0b0f16 100%);
@@ -386,8 +397,19 @@ html:not(.js) .sc-panel { opacity: 1; visibility: visible; transform: none; }
 
 .device-top img { width: 17px; height: 17px; border-radius: 50%; }
 
-.device-media { position: relative; display: grid; place-items: center; overflow: hidden; background: #0d1117; }
-.device-media img { width: 100%; height: 100%; object-fit: contain; }
+/* 카드 한 장(4:5)이 기본. 릴스 장은 .device--reel 로 9:16 */
+.device-media {
+  position: relative;
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+  background: #0d1117;
+  height: min(390px, 47vh);
+  aspect-ratio: 4 / 5;
+}
+
+.device--reel .device-media { height: min(430px, 52vh); aspect-ratio: 9 / 16; }
+.device-media img { width: 100%; height: 100%; object-fit: cover; }
 
 .device-play {
   position: absolute;
@@ -778,8 +800,9 @@ html:not(.js) .sc-panel { opacity: 1; visibility: visible; transform: none; }
   .hero-art { order: -1; }
   .hero-art::before { width: min(186px, 22vh); height: min(186px, 22vh); }
   .hero-art > img { height: min(224px, 24vh); max-width: 60vw; }
-  .device { height: min(330px, 34vh); }
-  .motto { margin-inline: auto; }
+  .device-media { height: min(265px, 29vh); }
+  .device--reel .device-media { height: min(290px, 32vh); }
+  .when-chip { margin-inline: auto; }
   .hero-text { display: grid; justify-items: center; }
   .name-chip, .hero-actions, .hero-lead { margin-inline: auto; }
   .hero-actions { justify-self: center; }
@@ -799,11 +822,30 @@ html:not(.js) .sc-panel { opacity: 1; visibility: visible; transform: none; }
 }
 
 
+/* ── 좁고 «낮은» 창 (작은 폰) ────────────────────────
+   세로로 쌓이는 배치라 같은 높이여도 훨씬 길어진다.
+   🔴 실측으로 잡았다: 360×640 에서 첫 화면이 747px 이 되어 단추가 잘렸다.
+      그림 → 글씨 → 여백 순으로 줄인다. */
+@media (max-width: 900px) and (max-height: 720px) {
+  .device-media { height: min(210px, 24vh); }
+  .device--reel .device-media { height: min(230px, 27vh); }
+  .hero-art > img { height: min(180px, 20vh); }
+  .hero-art::before { width: min(150px, 18vh); height: min(150px, 18vh); }
+  .hero h1 { font-size: clamp(1.55rem, 2.6vw + 1.7vh, 2.4rem); }
+  .hero-lead { font-size: clamp(.85rem, .5vw + .95vh, 1rem); }
+  .motto-sub { font-size: clamp(.92rem, .6vw + 1vh, 1.15rem); }
+  .btn-xl { min-height: 48px; padding: 12px 20px; font-size: .95rem; }
+  .when-chip { margin-bottom: 6px; padding: 4px 11px; }
+  .name-chip { margin-bottom: 8px; }
+  .sc-foot { padding-bottom: 8px; gap: 2px; }
+}
+
 /* ── 세로가 짧은 창 (창을 확대했을 때가 대표적이다) ──
    🔴 첫 화면이 넘쳐 단추가 잘리지 않게, 그림 → 글씨 → 여백 순으로 줄인다.
       실측으로 잡았다: 853×533(=1280 확대 150%) 에서 인스타 장의 단추가 4px 잘렸다. */
 @media (max-height: 620px) {
-  .device { height: min(300px, 46vh); }
+  .device-media { height: min(250px, 40vh); }
+  .device--reel .device-media { height: min(280px, 44vh); }
   .hero-art > img { height: min(240px, 40vh); }
   .hero-art::before { width: min(220px, 36vh); height: min(220px, 36vh); }
   .hero h1 { font-size: clamp(1.6rem, 2.2vw + 1.9vh, 2.7rem); }
