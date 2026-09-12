@@ -859,12 +859,20 @@ html:not(.js) .sc-panel { opacity: 1; visibility: visible; transform: none; }
 
 .ed:nth-child(even) .ed-cover {
   grid-column: 2;
+  grid-row: 1;
   margin-left: 0;
   margin-right: calc(-1 * var(--shell));
   border-radius: 24px 0 0 24px;
 }
 
-.ed:nth-child(even) .ed-text { grid-column: 1; justify-self: end; }
+/* 🔴 `grid-row: 1` 을 «둘 다»에 준다. 칸 번호만 주면 짝수 줄에서 글이 «둘째 줄»로 떨어진다 —
+   격자의 자동 배치는 앞선 칸으로 되돌아가지 않기 때문이다(sparse). 그래서 표지가 끝난 «뒤»에
+   글이 시작되어, 표지 왼쪽과 글 오른쪽이 통째로 비었다. 실측으로 잡았다:
+     1번 줄 표지 y325~890 / 글 y460~740  (나란히)
+     2번 줄 표지 y940~1495 / 글 y1560~1865 (❌ 안 겹침)
+   이건 앞서 잡은 함정 ⓑ(order 만 바꾸면 칸 너비는 안 바뀐다)와 같은 뿌리다 —
+   «칸을 옮길 때는 가로·세로를 «둘 다» 지정한다». */
+.ed:nth-child(even) .ed-text { grid-column: 1; grid-row: 1; justify-self: end; }
 
 /* 🔴 표지를 «자르지 않는다» — 720×900(4:5) 원본 그대로다.
    그 안에 날짜와 이슈 네 줄이 이미 들어 있어서 위에 글을 겹치지도 않는다. */
@@ -1184,13 +1192,19 @@ html:not(.js) .sc-panel { opacity: 1; visibility: visible; transform: none; }
 
 @media (max-width: 760px) {
   /* 🔴 좁으면 표지를 «위로» 올리고 창 너비를 그대로 채운다 (양쪽 모두 흘러나간다) */
-  .ed { grid-template-columns: 1fr; gap: 18px; }
+  /* 🔴 `.ed:nth-child(even)` 이 «더 센» 선택자(0,2,0)라, `.ed` 만 1칸으로 바꾸면 짝수 줄은
+     두 칸 그대로 남는다. 미디어 쿼리는 세기를 올려주지 않는다 — 짝수 줄도 «같이» 되돌린다.
+     실측(폰 390): 되돌리기 전 2번 줄 표지가 x0~152 로 쪼그라들고 글과 겹쳤다. */
+  .ed, .ed:nth-child(even) { grid-template-columns: 1fr; gap: 18px; }
+  /* 🔴 위에서 준 칸 번호(grid-column/row)를 여기서 «푼다». 한 줄 격자에 2번 칸을 남겨두면
+     없는 칸이 새로 생겨 배치가 깨진다. 글의 차례는 원래 HTML 순서(표지 → 글)가 맞다. */
   .ed-cover, .ed:nth-child(even) .ed-cover {
-    order: -1;
+    grid-column: auto;
+    grid-row: auto;
     margin-inline: calc(-1 * var(--shell));
     border-radius: 0;
   }
-  .ed:nth-child(even) .ed-text { order: 0; justify-self: stretch; }
+  .ed:nth-child(even) .ed-text { grid-column: auto; grid-row: auto; justify-self: stretch; }
   .ed-text { max-width: none; }
   .ed-cta .btn { flex: 1 1 auto; }
 }
