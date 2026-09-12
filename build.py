@@ -462,6 +462,32 @@ def oauth_note():
 
 
 # ── 페이지 ─────────────────────────────────────────────────────────
+def 자산판번호(page):
+    """css·js 주소 뒤에 «내용 해시»를 붙인다 — `/assets/home.css?v=a1b2c3d4`
+
+    🔴 왜 있나 — 2026-09-12 12:24 유진님 「웹 클릭이 아무곳도 안돼」.
+       고쳐서 올렸는데도 «유진님 브라우저가 옛 home.css 를 들고 있어» 여전히 고장난 채였다.
+       HTML 은 새로 받아도 CSS·JS 는 캐시가 오래 남는다 — 새로고침으로 안 풀리는 전형이다.
+       고칠 때마다 「안 바뀌었는데?」가 반복되므로 «구조»로 막는다.
+
+    🔴 시각이나 커밋이 아니라 «파일 내용»의 해시를 쓴다. 두 가지가 같이 지켜진다:
+       ① 내용이 바뀌면 주소가 바뀐다 → 브라우저가 반드시 새로 받는다
+       ② 내용이 같으면 주소도 같다 → 다시 돌려도 index.html 이 안 바뀐다(md5 동일 검사 유지)
+    """
+    import hashlib
+    붙인것 = []
+    for 주소 in ('/assets/styles.css', '/assets/home.css', '/assets/home.js'):
+        f = os.path.join(HERE, 주소.lstrip('/'))
+        if not os.path.exists(f):
+            print('  \u26a0\ufe0f 자산 없음 — 판번호 못 붙임: %s' % 주소)
+            continue
+        h = hashlib.md5(open(f, 'rb').read()).hexdigest()[:8]
+        page = page.replace('"%s"' % 주소, '"%s?v=%s"' % (주소, h))
+        붙인것.append('%s?v=%s' % (주소.rsplit('/', 1)[-1], h))
+    print('  자산 판번호 — ' + ' \u00b7 '.join(붙인것))
+    return page
+
+
 def build():
     sections = json.load(open(os.path.join(HERE, 'data/sections.json'), encoding='utf-8'))
     editions = json.load(open(os.path.join(HERE, 'data/editions.json'), encoding='utf-8'))
@@ -499,6 +525,7 @@ def build():
         intro=intro_modal(), oauth=oauth_note())
     글자 = jua_글자(page)
     page = page.replace('__JUA_TEXT__', urllib.parse.quote(글자, safe=''))
+    page = 자산판번호(page)
     open(os.path.join(HERE, 'index.html'), 'w', encoding='utf-8').write(page)
     print('index.html — 화면 %d개 · 메뉴 %d줄 · 자리만 %d개 (기본 화면: %s)'
           % (len(views), len(menu), len(자리), 기본))
