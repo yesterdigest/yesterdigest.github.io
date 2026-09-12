@@ -36,9 +36,16 @@
     상단바();
   }
 
-  /* data-view 가 붙은 것은 «페이지 이동»이 아니라 «화면 전환» */
+  /* data-view 가 붙은 «줄·단추»는 «페이지 이동»이 아니라 «화면 전환»
+     🔴 2026-09-12 — 여기를 `[data-view]` 로 두면 «화면 자체»(<section class="view" data-view=…>)가
+        걸린다. 그러면 그 화면 «아무 데나» 누른 것이 전부 「화면 전환」이 되어
+          ① show() 의 scrollTo(0) 가 돌아 «보던 자리가 맨 위로 튄다»
+             (유진님 14:52 「클릭하면 갑자기 이슈가 아래쪽으로 가버려」 — 실측 scrollY 138 → 0)
+          ② ev.preventDefault() 가 걸려 «안쪽 링크가 통째로 죽는다»
+             (실측: 지난 편의 INSTAGRAM·YOUTUBE·표지 링크가 눌러도 안 열렸다)
+        그래서 «줄·단추만» 받는다. */
   document.addEventListener('click', function (ev) {
-    var a = ev.target.closest('[data-view]');
+    var a = ev.target.closest('a[data-view], button[data-view]');
     if (!a || a.target === '_blank') return;
     ev.preventDefault();
     close서랍();
@@ -279,13 +286,31 @@
       if (hint) hint.textContent = hint.getAttribute(on ? 'data-on' : 'data-off');
     }
 
+    /* 🔴 누른 칸을 «화면 세로 가운데»로 (유진님 2026-09-12 14:52 「딱 화면 중앙으로 이동」).
+       무대 안쪽(칸)을 scrollIntoView 하면 overflow:hidden 인 무대가 «가로로» 스스로 움직여
+       transform 자리가 틀어진다. 그래서 «창»만 그만큼 민다. */
+    function 가운데로() {
+      var r = 칸[i].getBoundingClientRect();
+      var d = r.top + r.height / 2 - window.innerHeight / 2;
+      if (Math.abs(d) < 2) return;
+      window.scrollBy({ top: d, behavior: reduce ? 'auto' : 'smooth' });
+    }
+
     /* 누르면 잡힌다 — 안쪽 링크·단추를 누른 것은 그대로 링크다 */
     stage.addEventListener('click', function (ev) {
       if (ev.target.closest('a, button')) return;
       if (끌었다) { 끌었다 = false; return; }
       잡기(!잡힘);
-      stage.focus({ preventScroll: true });
+      /* 🔴 초점이 «옮겨질 때»는 아래 focus 처리기가 가운데로 옮긴다. 여기서 또 부르면
+         부드럽게 미는 동안에는 scrollY 가 아직 안 움직여서 «두 배로» 지나친다.
+         그래서 초점이 이미 무대에 있어 focus 가 안 뜨는 경우에만 직접 부른다. */
+      var 초점이온다 = document.activeElement !== stage;
+      stage.focus({ preventScroll: true });   /* 브라우저가 제멋대로 옮기지 못하게 막고 */
+      if (!초점이온다) 가운데로();             /* 우리가 «가운데»로 옮긴다 */
     });
+
+    /* 키보드로 닿았을 때도 같게 — Tab 으로 무대에 들어오면 가운데에 온다 */
+    stage.addEventListener('focus', 가운데로);
 
     /* 🔴 잡혔을 때만 휠이 옆으로 간다. 끝에 닿으면 «풀고» 페이지가 이어서 내려간다 */
     stage.addEventListener('wheel', function (ev) {
