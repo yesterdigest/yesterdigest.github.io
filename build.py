@@ -19,7 +19,7 @@
   ② 종류가 "화면"이면 아래 SECTION_BUILDERS 에 같은 id 로 함수를 등록
   ③ python3 build.py
 """
-import datetime, html, json, os
+import datetime, html, json, os, re, urllib.parse
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 YT_CHANNEL = 'https://www.youtube.com/@yesterdigest'
@@ -50,23 +50,10 @@ def pretty(d):
     return '%s년 %s월 %s일' % (y, int(m), int(day)), wd
 
 
-def cta_band(제목='전체는 계정에서 봐요.', 설명='매일 아침 7시에 새 편이 올라갑니다. 팔로우해 두면 놓치지 않아요.'):
-    """계정으로 넘어가는 띠 — 화면마다 «끝»에 붙는다. 이 페이지의 목적이다."""
-    return """      <section class="cta-band" aria-label="계정 바로가기">
-        <div class="cta-inner">
-          <img class="cta-char" src="/assets/brand/character-wave.png" alt="" width="780" height="780" loading="lazy">
-          <div>
-            <h2>%(제목)s</h2>
-            <p>%(설명)s</p>
-            <div class="cta-actions">
-              <a class="btn btn-ig btn-xl" href="%(IG)s" target="_blank" rel="noopener">%(icig)s Instagram 팔로우 %(icgo)s</a>
-              <a class="btn btn-yt btn-xl" href="%(YT)s" target="_blank" rel="noopener">%(icyt)s YouTube 구독 %(icgo)s</a>
-            </div>
-          </div>
-        </div>
-      </section>""" % dict(제목=e(제목), 설명=e(설명), IG=IG_ACCOUNT, YT=YT_CHANNEL,
-                            icig=IC['ig'], icyt=IC['yt'], icgo=IC['go'])
-
+# 🔴 「전체는 계정에서 봐요.」 띠는 2026-09-12 09:09 유진님 지시로 없앴다.
+#    「지금 너무 인스타 유튜브로 이어지는 링크가 겹쳐... 둘중 하나만 살리자.」
+#    → 첫 화면의 단추 둘만 남긴다. 편 카드 안의 단추는 «그 편 게시물»로 가는 것이라 겹치지 않아 그대로 둔다.
+#    되살리려면 이 자리에 cta_band() 를 다시 만들고 화면 함수에서 부르면 된다.
 
 # ── 화면(칸) ───────────────────────────────────────────────────────
 def view_yesterdigest(cfg, data):
@@ -97,8 +84,6 @@ def view_yesterdigest(cfg, data):
         </div>
       </section>
 
-%(cta)s
-
       <section class="section" aria-labelledby="about-title">
         <div class="section-heading reveal">
           <p class="eyebrow">What we do</p>
@@ -127,35 +112,6 @@ def view_yesterdigest(cfg, data):
         </div>
       </section>
 
-      <!-- Google OAuth — API 심사에 쓰이는 절. 지우거나 메뉴 밖으로 숨기지 않는다 -->
-      <section class="data-section" aria-labelledby="oauth-title">
-        <div class="data-inner">
-          <div>
-            <p class="eyebrow">Google OAuth</p>
-            <h2 id="oauth-title">Google 권한은 채널 운영에만 사용합니다.</h2>
-            <p>
-              YesterDigest는 운영자가 소유한 YouTube 채널에 영상을 업로드하고,
-              필요한 경우 게시한 영상을 관리하기 위해 Google OAuth를 사용합니다.
-            </p>
-            <p class="trust-note">Google 사용자 데이터를 판매하거나 광고 목적으로 제공하지 않습니다.</p>
-          </div>
-          <div class="data-list">
-            <div class="data-item">
-              <strong>YouTube 업로드</strong>
-              <p>검토가 끝난 영상을 운영자의 YouTube 채널에 업로드합니다.</p>
-            </div>
-            <div class="data-item">
-              <strong>게시물 관리</strong>
-              <p>시스템을 통해 게시한 영상의 상태를 확인하고 필요한 경우 삭제합니다.</p>
-            </div>
-            <div class="data-item">
-              <strong>제한된 보관</strong>
-              <p>인증정보는 공개 홈페이지나 공개 저장소에 저장하지 않으며 운영 환경에서만 보호해 보관합니다.</p>
-            </div>
-          </div>
-        </div>
-      </section>
-
       <section class="section" aria-labelledby="contact-title">
         <div class="contact-panel reveal">
           <div>
@@ -165,8 +121,7 @@ def view_yesterdigest(cfg, data):
           <a class="contact-email" href="mailto:yesterdigest@gmail.com">yesterdigest@gmail.com</a>
         </div>
       </section>""" % dict(CH=CHARACTER, IG=IG_ACCOUNT, YT=YT_CHANNEL,
-                            icig=IC['ig'], icyt=IC['yt'], icgo=IC['go'],
-                            cta=cta_band())
+                            icig=IC['ig'], icyt=IC['yt'], icgo=IC['go'])
 
 
 def view_editions(cfg, data):
@@ -222,12 +177,8 @@ def view_editions(cfg, data):
           <button class="nav-arrow next" type="button" aria-label="다음 편">%(next)s</button>
         </div>
         <div class="dots" aria-label="편 위치"></div>
-      </section>
-
-%(cta)s""" % dict(제목=e(cfg['제목']), slides='\n'.join(slides),
-                   prev=IC['prev'], next=IC['next'],
-                   cta=cta_band('더 보려면 계정으로.',
-                                '카드 전체와 릴스는 Instagram·YouTube에 있습니다.'))
+      </section>""" % dict(제목=e(cfg['제목']), slides='\n'.join(slides),
+                   prev=IC['prev'], next=IC['next'])
 
 
 SECTION_BUILDERS = {
@@ -236,6 +187,57 @@ SECTION_BUILDERS = {
     # 'stocks': view_stocks,   ← 주식 동향 칸을 열 때 여기에 등록한다
     # 'cv':     view_cv,       ← 연구 이력 칸을 열 때 여기에 등록한다
 }
+
+
+# Jua 가 실제로 그리는 자리 (assets/home.css 의 --title-font 선택자와 «짝»이다.
+# 거기에 선택자를 더하면 여기에도 더해야 한다 — 안 그러면 그 글자만 본문 글씨로 튄다)
+JUA_자리 = [r'<h1[^>]*>(.*?)</h1>', r'<h2[^>]*>(.*?)</h2>', r'<h3[^>]*>(.*?)</h3>',
+            r'class="ed-date"[^>]*>(.*?)</p>',
+            r'class="brand-link"[^>]*>.*?<span>(.*?)</span>',
+            r'class="drawer-title">(.*?)</span>',
+            r'class="name-chip"[^>]*>(.*?)</p>']
+
+# 날마다 바뀌는 것 — 오늘 페이지에 없어도 반드시 넣는다
+JUA_바탕 = ('0123456789년월일()' + '월화수목금토일'
+            + 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz' + ' .,·-~!?:')
+
+
+def jua_글자(page):
+    """이 페이지에서 Jua 가 그릴 글자를 모은다 → Google Fonts text= 로 넘긴다."""
+    글자 = set(JUA_바탕)
+    for pat in JUA_자리:
+        for m in re.findall(pat, page, re.S):
+            글자 |= set(re.sub(r'<[^>]+>', '', m))
+    글자 -= set('\n\r\t')
+    return ''.join(sorted(글자))
+
+
+def oauth_note():
+    """Google OAuth 안내 — «작게 · 맨 아래».
+
+    유진님 2026-09-12 08:53 「google oauth관련된건 작게넣거나 어디에 좀 안보이는곳에 둘 순없어? 너무 깨네 저게」
+    🔴 문구는 한 글자도 고치지 않는다. 심사에 쓰인 문장이다. 크기와 자리만 바꿨다.
+    🔴 지우면 안 된다 — Google 의 App Homepage 요건이 «앱이 어떤 목적으로 사용자 데이터를
+       요구하는지 홈페이지에서 투명하게 설명할 것»과 «개인정보처리방침 링크»를 요구한다
+       (support.google.com/cloud/answer/13807376). 자세한 내용은 개인정보처리방침에 있으면 된다.
+    🔴 «작게»이지 «흐리게»가 아니다 — 글자 14px 이상, 어두운 바탕에 밝은 글자로 대비를 지킨다.
+    """
+    return """  <section class="oauth-note" aria-labelledby="oauth-title">
+    <div class="oauth-inner">
+      <p class="oauth-eyebrow">Google OAuth</p>
+      <h2 id="oauth-title">Google 권한은 채널 운영에만 사용합니다.</h2>
+      <p class="oauth-lead">YesterDigest는 운영자가 소유한 YouTube 채널에 영상을 업로드하고,
+        필요한 경우 게시한 영상을 관리하기 위해 Google OAuth를 사용합니다.</p>
+      <ul class="oauth-list">
+        <li><strong>YouTube 업로드</strong> 검토가 끝난 영상을 운영자의 YouTube 채널에 업로드합니다.</li>
+        <li><strong>게시물 관리</strong> 시스템을 통해 게시한 영상의 상태를 확인하고 필요한 경우 삭제합니다.</li>
+        <li><strong>제한된 보관</strong> 인증정보는 공개 홈페이지나 공개 저장소에 저장하지 않으며 운영 환경에서만 보호해 보관합니다.</li>
+      </ul>
+      <p class="oauth-strong">Google 사용자 데이터를 판매하거나 광고 목적으로 제공하지 않습니다.</p>
+      <p class="oauth-more">자세한 내용은 <a href="/privacy/">개인정보처리방침</a>에 있습니다.</p>
+    </div>
+  </section>
+"""
 
 
 # ── 페이지 ─────────────────────────────────────────────────────────
@@ -272,10 +274,14 @@ def build():
     page = PAGE % dict(
         YT=YT_CHANNEL, IG=IG_ACCOUNT, CH=CHARACTER, 기본=기본,
         icyt=IC['yt'], icig=IC['ig'], icmenu=IC['menu'], icx=IC['x'],
-        menu='\n'.join(menu), views='\n\n'.join(views), 자리='\n'.join(자리))
+        menu='\n'.join(menu), views='\n\n'.join(views), 자리='\n'.join(자리),
+        oauth=oauth_note())
+    글자 = jua_글자(page)
+    page = page.replace('__JUA_TEXT__', urllib.parse.quote(글자, safe=''))
     open(os.path.join(HERE, 'index.html'), 'w', encoding='utf-8').write(page)
     print('index.html — 화면 %d개 · 메뉴 %d줄 · 자리만 %d개 (기본 화면: %s)'
           % (len(views), len(menu), len(자리), 기본))
+    print('  Jua 는 글자 %d자만 받는다 (text=)' % len(글자))
 
 
 PAGE = """<!doctype html>
@@ -294,7 +300,15 @@ PAGE = """<!doctype html>
   <link rel="icon" href="/assets/logo.png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400..900&display=swap">
+  <!-- 글씨체 — 유진님 2026-09-12 09:01 「배달의 민족 주아로 가자」
+       제목·강조 Jua · 본문 Gothic A1. 둘 다 SIL OFL 1.1 (google/fonts ofl/jua · ofl/gothica1 · METADATA license=OFL).
+       🔴 배민 배포본이 아니라 «Google Fonts» 에서 받는다 — 배포처가 다르면 약관이 다르다 (CLAUDE.md §3.6).
+       🔴 홈페이지에만 쓴다. 영상·카드뉴스 글씨체는 안 건드린다 (유진님 08:41). -->
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Gothic+A1:wght@400;700&display=swap">
+  <!-- Jua 는 «이 페이지가 실제로 쓰는 글자»만 받는다 (text=). 제목·이름·날짜에만 쓰므로 글자가 정해져 있다.
+       아래 글자 목록은 build.py 가 만들어진 HTML 에서 «세어» 넣는다 — 손으로 고치지 않는다.
+       숫자·년월일·요일 일곱 자는 날마다 바뀌므로 «반드시» 바탕 묶음으로 넣는다. -->
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Jua&display=swap&text=__JUA_TEXT__">
   <link rel="stylesheet" href="/assets/styles.css">
   <link rel="stylesheet" href="/assets/home.css">
 </head>
@@ -338,6 +352,7 @@ PAGE = """<!doctype html>
 
 %(자리)s
 
+%(oauth)s
   <footer class="site-footer">
     <div class="footer-inner">
       <p>© 2026 YesterDigest</p>

@@ -14,7 +14,15 @@
   <link rel="icon" href="/assets/logo.png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400..900&display=swap">
+  <!-- 글씨체 — 유진님 2026-09-12 09:01 「배달의 민족 주아로 가자」
+       제목·강조 Jua · 본문 Gothic A1. 둘 다 SIL OFL 1.1 (google/fonts ofl/jua · ofl/gothica1 · METADATA license=OFL).
+       🔴 배민 배포본이 아니라 «Google Fonts» 에서 받는다 — 배포처가 다르면 약관이 다르다 (CLAUDE.md §3.6).
+       🔴 홈페이지에만 쓴다. 영상·카드뉴스 글씨체는 안 건드린다 (유진님 08:41). -->
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Gothic+A1:wght@400;700&display=swap">
+  <!-- Jua 는 «이 페이지가 실제로 쓰는 글자»만 받는다 (text=). 제목·이름·날짜에만 쓰므로 글자가 정해져 있다.
+       아래 글자 목록은 build.py 가 만들어진 HTML 에서 «세어» 넣는다 — 손으로 고치지 않는다.
+       숫자·년월일·요일 일곱 자는 날마다 바뀌므로 «반드시» 바탕 묶음으로 넣는다. -->
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Jua&display=swap&text=%20%21%28%29%2C-.0123456789%3A%3FABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz~%C2%B7%EA%B2%80%EA%B2%8C%EA%B3%A0%EA%B6%8C%EA%B8%88%EA%B8%B0%EB%82%9C%EB%84%90%EB%85%84%EB%85%95%EB%89%B4%EB%8B%88%EB%8B%A4%EB%8D%B0%EB%A1%9C%EB%A5%B4%EB%A5%BC%EB%A7%8C%EB%A9%94%EB%AA%A9%EB%AC%B8%EB%B0%8F%EB%B3%84%EC%82%AC%EC%82%AD%EC%84%A0%EC%84%B8%EC%88%98%EC%8A%88%EC%8A%A4%EC%8B%9C%EC%95%88%EC%96%B4%EC%97%90%EC%98%81%EC%98%88%EC%9A%94%EC%9A%A9%EC%9A%B4%EC%9B%94%EC%9D%80%EC%9D%98%EC%9D%B4%EC%9D%B8%EC%9D%BC%EC%9E%85%EC%9E%91%EC%A0%84%EC%A0%9C%EC%A3%BC%EC%A7%80%EC%B1%84%EC%B2%AD%EC%B8%A0%EC%BD%98%ED%81%AC%ED%84%B0%ED%85%90%ED%86%A0%ED%8E%B8%ED%95%98%ED%95%9C%ED%95%A9%ED%99%94%ED%99%95%ED%9B%84">
   <link rel="stylesheet" href="/assets/styles.css">
   <link rel="stylesheet" href="/assets/home.css">
 </head>
@@ -83,20 +91,6 @@
         </div>
       </section>
 
-      <section class="cta-band" aria-label="계정 바로가기">
-        <div class="cta-inner">
-          <img class="cta-char" src="/assets/brand/character-wave.png" alt="" width="780" height="780" loading="lazy">
-          <div>
-            <h2>전체는 계정에서 봐요.</h2>
-            <p>매일 아침 7시에 새 편이 올라갑니다. 팔로우해 두면 놓치지 않아요.</p>
-            <div class="cta-actions">
-              <a class="btn btn-ig btn-xl" href="https://www.instagram.com/yesterdigest/" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="2.5" y="2.5" width="19" height="19" rx="5.4"/><circle cx="12" cy="12" r="4.2"/><circle cx="17.6" cy="6.4" r="1.2" fill="currentColor" stroke="none"/></svg> Instagram 팔로우 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h13M13 6l6 6-6 6"/></svg></a>
-              <a class="btn btn-yt btn-xl" href="https://www.youtube.com/@yesterdigest" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M23.5 6.2a3 3 0 0 0-2.1-2.1C19.5 3.6 12 3.6 12 3.6s-7.5 0-9.4.5A3 3 0 0 0 .5 6.2C0 8.1 0 12 0 12s0 3.9.5 5.8a3 3 0 0 0 2.1 2.1c1.9.5 9.4.5 9.4.5s7.5 0 9.4-.5a3 3 0 0 0 2.1-2.1c.5-1.9.5-5.8.5-5.8s0-3.9-.5-5.8zM9.6 15.6V8.4l6.2 3.6-6.2 3.6z"/></svg> YouTube 구독 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h13M13 6l6 6-6 6"/></svg></a>
-            </div>
-          </div>
-        </div>
-      </section>
-
       <section class="section" aria-labelledby="about-title">
         <div class="section-heading reveal">
           <p class="eyebrow">What we do</p>
@@ -122,35 +116,6 @@
             <h3>검토 후 게시</h3>
             <p>사람이 정확성·저작권·표현을 최종 확인한 뒤 공식 API를 통해 채널에 게시하고 관리합니다.</p>
           </article>
-        </div>
-      </section>
-
-      <!-- Google OAuth — API 심사에 쓰이는 절. 지우거나 메뉴 밖으로 숨기지 않는다 -->
-      <section class="data-section" aria-labelledby="oauth-title">
-        <div class="data-inner">
-          <div>
-            <p class="eyebrow">Google OAuth</p>
-            <h2 id="oauth-title">Google 권한은 채널 운영에만 사용합니다.</h2>
-            <p>
-              YesterDigest는 운영자가 소유한 YouTube 채널에 영상을 업로드하고,
-              필요한 경우 게시한 영상을 관리하기 위해 Google OAuth를 사용합니다.
-            </p>
-            <p class="trust-note">Google 사용자 데이터를 판매하거나 광고 목적으로 제공하지 않습니다.</p>
-          </div>
-          <div class="data-list">
-            <div class="data-item">
-              <strong>YouTube 업로드</strong>
-              <p>검토가 끝난 영상을 운영자의 YouTube 채널에 업로드합니다.</p>
-            </div>
-            <div class="data-item">
-              <strong>게시물 관리</strong>
-              <p>시스템을 통해 게시한 영상의 상태를 확인하고 필요한 경우 삭제합니다.</p>
-            </div>
-            <div class="data-item">
-              <strong>제한된 보관</strong>
-              <p>인증정보는 공개 홈페이지나 공개 저장소에 저장하지 않으며 운영 환경에서만 보호해 보관합니다.</p>
-            </div>
-          </div>
         </div>
       </section>
 
@@ -244,25 +209,27 @@
         </div>
         <div class="dots" aria-label="편 위치"></div>
       </section>
-
-      <section class="cta-band" aria-label="계정 바로가기">
-        <div class="cta-inner">
-          <img class="cta-char" src="/assets/brand/character-wave.png" alt="" width="780" height="780" loading="lazy">
-          <div>
-            <h2>더 보려면 계정으로.</h2>
-            <p>카드 전체와 릴스는 Instagram·YouTube에 있습니다.</p>
-            <div class="cta-actions">
-              <a class="btn btn-ig btn-xl" href="https://www.instagram.com/yesterdigest/" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="2.5" y="2.5" width="19" height="19" rx="5.4"/><circle cx="12" cy="12" r="4.2"/><circle cx="17.6" cy="6.4" r="1.2" fill="currentColor" stroke="none"/></svg> Instagram 팔로우 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h13M13 6l6 6-6 6"/></svg></a>
-              <a class="btn btn-yt btn-xl" href="https://www.youtube.com/@yesterdigest" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M23.5 6.2a3 3 0 0 0-2.1-2.1C19.5 3.6 12 3.6 12 3.6s-7.5 0-9.4.5A3 3 0 0 0 .5 6.2C0 8.1 0 12 0 12s0 3.9.5 5.8a3 3 0 0 0 2.1 2.1c1.9.5 9.4.5 9.4.5s7.5 0 9.4-.5a3 3 0 0 0 2.1-2.1c.5-1.9.5-5.8.5-5.8s0-3.9-.5-5.8zM9.6 15.6V8.4l6.2 3.6-6.2 3.6z"/></svg> YouTube 구독 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h13M13 6l6 6-6 6"/></svg></a>
-            </div>
-          </div>
-        </div>
-      </section>
     </section>
   </main>
 
   <!-- 자리: stocks (주식 동향) — data/sections.json 에서 "보임": true 로 켜면 메뉴와 화면에 자동으로 나온다 -->
   <!-- 자리: cv (연구 이력) — data/sections.json 에서 "보임": true 로 켜면 메뉴와 화면에 자동으로 나온다 -->
+
+  <section class="oauth-note" aria-labelledby="oauth-title">
+    <div class="oauth-inner">
+      <p class="oauth-eyebrow">Google OAuth</p>
+      <h2 id="oauth-title">Google 권한은 채널 운영에만 사용합니다.</h2>
+      <p class="oauth-lead">YesterDigest는 운영자가 소유한 YouTube 채널에 영상을 업로드하고,
+        필요한 경우 게시한 영상을 관리하기 위해 Google OAuth를 사용합니다.</p>
+      <ul class="oauth-list">
+        <li><strong>YouTube 업로드</strong> 검토가 끝난 영상을 운영자의 YouTube 채널에 업로드합니다.</li>
+        <li><strong>게시물 관리</strong> 시스템을 통해 게시한 영상의 상태를 확인하고 필요한 경우 삭제합니다.</li>
+        <li><strong>제한된 보관</strong> 인증정보는 공개 홈페이지나 공개 저장소에 저장하지 않으며 운영 환경에서만 보호해 보관합니다.</li>
+      </ul>
+      <p class="oauth-strong">Google 사용자 데이터를 판매하거나 광고 목적으로 제공하지 않습니다.</p>
+      <p class="oauth-more">자세한 내용은 <a href="/privacy/">개인정보처리방침</a>에 있습니다.</p>
+    </div>
+  </section>
 
   <footer class="site-footer">
     <div class="footer-inner">
