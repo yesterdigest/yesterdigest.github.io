@@ -3,6 +3,21 @@
   "_출처": "docs/records/publish-log.jsonl (결과.상태=올림)",
   "편": [
     {
+      "날짜": "2026-09-18",
+      "유튜브": "https://youtube.com/watch?v=_6SViQk9EWw",
+      "인스타_릴스": "https://www.instagram.com/reel/DdciFCAjW9G/",
+      "인스타_카드": "https://www.instagram.com/p/DdciYaDmISc/",
+      "이슈": [
+        "로제, 애플 협업 신곡 발매",
+        "이재명 대통령, 기자회견 개최",
+        "일본은행, 금리 31년 만에 최고",
+        "아이유, 데뷔 18주년 2억 기부"
+      ],
+      "카드수": 6,
+      "요일색": "#FFB0AD",
+      "표지": "/assets/cover/2026-09-18.jpg"
+    },
+    {
       "날짜": "2026-09-17",
       "유튜브": "https://youtube.com/watch?v=GZPvPYeyNqg",
       "인스타_릴스": "https://www.instagram.com/reel/DdZxkgBiLyc/",
