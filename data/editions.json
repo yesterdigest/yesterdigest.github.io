@@ -3,6 +3,80 @@
   "_출처": "docs/records/publish-log.jsonl (결과.상태=올림)",
   "편": [
     {
+      "날짜": "2026-09-17",
+      "유튜브": "https://youtube.com/watch?v=GZPvPYeyNqg",
+      "인스타_릴스": "https://www.instagram.com/reel/DdZxkgBiLyc/",
+      "인스타_카드": "https://www.instagram.com/p/DdZx1sPk3hx/",
+      "이슈": [
+        "숙행, 상간 소송 1심 패소",
+        "수시 구제 414건 확정",
+        "두산, 반도체 기판에 9,700억",
+        "스타십 예고, 우주항공주 급등"
+      ],
+      "카드수": 6,
+      "요일색": "#70FF9B",
+      "표지": "/assets/cover/2026-09-17.jpg"
+    },
+    {
+      "날짜": "2026-09-16",
+      "유튜브": "https://youtube.com/watch?v=o8XJ0OwKg_A",
+      "인스타_릴스": "https://www.instagram.com/reel/DdXMvATEpVw/",
+      "인스타_카드": "https://www.instagram.com/p/DdXNFNNkiRz/",
+      "이슈": [
+        "영화 '인턴' 개봉",
+        "대한항공, 보잉과 60조원 계약",
+        "이재명, 한-중앙아 정상회의 개최",
+        "수시 접수 장애, 잠정 250건 구제"
+      ],
+      "카드수": 6,
+      "요일색": "#FFEC70",
+      "표지": "/assets/cover/2026-09-16.jpg"
+    },
+    {
+      "날짜": "2026-09-15",
+      "유튜브": "https://youtube.com/watch?v=ukYWhIT8Sks",
+      "인스타_릴스": "https://www.instagram.com/reel/DdUvvWBjUZf/",
+      "이슈": [
+        "고수, BH엔터와 전속계약 종료",
+        "美 국채금리 5% 돌파, 코스피 하락",
+        "트럼프 \"AI 속도조절론은 사기\"",
+        "전자담배 무인매장, 청소년 출입금지 추진"
+      ],
+      "카드수": 6,
+      "요일색": "#FFB870",
+      "표지": "/assets/cover/2026-09-15.jpg"
+    },
+    {
+      "날짜": "2026-09-14",
+      "유튜브": "https://youtube.com/watch?v=PKgtYE6kLxk",
+      "인스타_릴스": "https://www.instagram.com/reel/DdSLbsQDBsL/",
+      "인스타_카드": "https://www.instagram.com/p/DdSI7G_EyWP/",
+      "이슈": [
+        "모레노호 1기 명단 발표",
+        "서울 버스 16일 파업 예고",
+        "전국 독감 무료접종 21일부터",
+        "올데이 프로젝트 9월 28일 컴백"
+      ],
+      "카드수": 6,
+      "요일색": "#FFB0AD",
+      "표지": "/assets/cover/2026-09-14.jpg"
+    },
+    {
+      "날짜": "2026-09-13",
+      "유튜브": "https://youtube.com/watch?v=OeVKAIpwx10",
+      "인스타_릴스": "https://www.instagram.com/reel/DdPoBInDmgs/",
+      "인스타_카드": "https://www.instagram.com/p/DdPpjogkmbh/",
+      "이슈": [
+        "이창동 '가능한 사랑' 심사위원대상",
+        "용혜인 장관 후보자 자진 사퇴",
+        "수시 접수 장애, 교육부 구제방안",
+        "AI 개발 속도 조절"
+      ],
+      "카드수": 6,
+      "요일색": "#EFADFF",
+      "표지": "/assets/cover/2026-09-13.jpg"
+    },
+    {
       "날짜": "2026-09-11",
       "인스타_카드": "https://www.instagram.com/p/DdKYg43Ek-b/",
       "유튜브": "https://youtube.com/watch?v=c-uiBQKFP5U",
