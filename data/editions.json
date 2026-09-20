@@ -3,6 +3,21 @@
   "_출처": "docs/records/publish-log.jsonl (결과.상태=올림)",
   "편": [
     {
+      "날짜": "2026-09-20",
+      "인스타_릴스": "https://www.instagram.com/reel/DdhuqT1gCJ0/",
+      "인스타_카드": "https://www.instagram.com/p/DdhgR3Yk8Qb/",
+      "유튜브": "https://youtube.com/watch?v=u2fYJxZWHeY",
+      "이슈": [
+        "성승민, 아시안게임 첫 금메달",
+        "농구 대표팀 훈련버스 노쇼",
+        "북한, 동해로 탄도미사일 발사",
+        "컨버스, 인종차별 광고 사과"
+      ],
+      "카드수": 6,
+      "요일색": "#FDB426",
+      "표지": "/assets/cover/2026-09-20.jpg"
+    },
+    {
       "날짜": "2026-09-19",
       "유튜브": "https://youtube.com/watch?v=XgHzugXVYbo",
       "인스타_릴스": "https://www.instagram.com/reel/DdfwGArkxaB/",
