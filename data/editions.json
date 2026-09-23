@@ -3,9 +3,24 @@
   "_출처": "docs/records/publish-log.jsonl (결과.상태=올림)",
   "편": [
     {
+      "날짜": "2026-09-22",
+      "유튜브": "https://youtube.com/watch?v=IFMmdWpkzNc",
+      "인스타_릴스": "https://www.instagram.com/reel/Ddm8cvRk5bq/",
+      "인스타_카드": "https://www.instagram.com/p/DdmwB02E8OG/",
+      "이슈": [
+        "야구 대표팀, 대만에 5대 0",
+        "대법원 «재제청 응할 수 없다»",
+        "김건희 항소심 징역 5년",
+        "심수봉 사과 · 김다현 화답"
+      ],
+      "카드수": 6,
+      "요일색": "#FDB426",
+      "표지": "/assets/cover/2026-09-22.jpg"
+    },
+    {
       "날짜": "2026-09-21",
       "유튜브": "https://youtube.com/watch?v=6R3m1BFqlwQ",
-      "인스타_릴스": "https://www.instagram.com/reel/DdkKmVNDOyg/",
+      "인스타_릴스": "https://www.instagram.com/reel/DdkTIdKG1CJ/",
       "인스타_카드": "https://www.instagram.com/p/DdkKw0xE3U2/",
       "이슈": [
         "강훈식 비서실장 사의 표명",
