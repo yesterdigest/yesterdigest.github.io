@@ -3,6 +3,21 @@
   "_출처": "docs/records/publish-log.jsonl (결과.상태=올림)",
   "편": [
     {
+      "날짜": "2026-09-23",
+      "유튜브": "https://youtube.com/watch?v=xTBTBvNpfCM",
+      "인스타_릴스": "https://www.instagram.com/reel/Ddp5YYXjtsG/",
+      "인스타_카드": "https://www.instagram.com/p/DdqAP-ek8Gj/",
+      "이슈": [
+        "미국 원전 8기 대미투자 1호",
+        "조희대, 대법관 재제청 거부",
+        "공소청 검사 정원 80%대",
+        "허리케인 폴로 5등급"
+      ],
+      "카드수": 6,
+      "요일색": "#FDB426",
+      "표지": "/assets/cover/2026-09-23.jpg"
+    },
+    {
       "날짜": "2026-09-22",
       "유튜브": "https://youtube.com/watch?v=IFMmdWpkzNc",
       "인스타_릴스": "https://www.instagram.com/reel/Ddm8cvRk5bq/",
