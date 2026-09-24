@@ -19,8 +19,11 @@ import os, struct, subprocess, sys, tempfile
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 ROOT = os.path.dirname(HERE)
-LOGO = os.path.join(ROOT, 'assets/logo.png')   # 460x460 rgba · 투명 배경
-PAPER = '#fffdf8'                              # --paper. 🔴 아이폰은 투명을 «검정»으로 칠한다
+# 🔴 2026-09-25 4차 — 새 로고(베어 문 원). 파비콘·홈화면 아이콘은 «먹 네모» 판(icon.svg)에서 만든다.
+#    옛 값: assets/logo.png (캐릭터 얼굴 배지 460x460)
+LOGO = os.path.join(ROOT, 'assets/brand/icon.svg')
+BADGE = os.path.join(ROOT, 'assets/brand/badge.svg')
+PAPER = '#12161c'   # 먹 — icon.svg 바탕과 같다. 🔴 아이폰은 투명을 «검정»으로 칠한다
 CHROME = '/usr/bin/google-chrome'
 
 
@@ -93,11 +96,12 @@ def main():
     ico([16, 32, 48], os.path.join(ROOT, 'favicon.ico'))
     ico_읽어보기(os.path.join(ROOT, 'favicon.ico'))
     icon(180, os.path.join(ROOT, 'apple-touch-icon.png'), bg=PAPER)
+    icon(256, os.path.join(ROOT, 'assets/brand/logo-256.png'))   # schema.org Organization.logo · 파비콘 PNG
     shot(open(os.path.join(HERE, 'og-card.html'), encoding='utf-8').read()
-         .replace('../assets/logo.png', 'file://' + LOGO),
+         .replace('../assets/', 'file://' + ROOT + '/assets/'),
          1200, 630, os.path.join(ROOT, 'assets/og/home.png'))
 
-    for p in ('favicon.ico', 'apple-touch-icon.png', 'assets/og/home.png'):
+    for p in ('favicon.ico', 'apple-touch-icon.png', 'assets/brand/logo-256.png', 'assets/og/home.png'):
         f = os.path.join(ROOT, p)
         assert os.path.getsize(f) > 400, p + ' 가 비었다'   # 조용히 0바이트가 나오는 것을 막는다
         print('  %-26s %6.1f KB' % ('/' + p, os.path.getsize(f) / 1024))

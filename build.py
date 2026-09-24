@@ -24,7 +24,36 @@ import datetime, html, json, os, re, subprocess, urllib.parse
 HERE = os.path.dirname(os.path.abspath(__file__))
 YT_CHANNEL = 'https://www.youtube.com/@yesterdigest'
 IG_ACCOUNT = 'https://www.instagram.com/yesterdigest/'
-CHARACTER = '한입이'          # 유진님 2026-09-12 08:00 「한입이로 하자」
+# 🔴 2026-09-24 — 대표 이름은 «어제한입 / YesterDigest» 하나다.
+#    유진님 16:3x (팀장 전달) 「응 한입이라는 것도 버려도 되니까 고급스럽게」 — 정본 §2 「대표는 한입이」가 이 말씀으로 풀렸다.
+#    옛 값: CHARACTER = '한입이' (2026-09-12 08:00 「한입이로 하자」) · 뺀 자리 목록 → .review/뺀것.md
+BRAND = '어제한입'
+# 🔴 로고 «한 줄» — 새 로고(logo-0924 · assets/brand-2026-09/final/)가 오면 이 주소만 바꾼다.
+#    머리줄·서랍·바닥·폰 목업의 계정 사진이 전부 이 한 줄을 쓴다. 자리 크기는 CSS(.logo-slot)가 정한다.
+# 🔴 2026-09-25 4차 — 새 로고 «베어 문 원»(B안 계열 · 자국 하나)으로 바꿨다. 먹 원판 + 머스터드 원.
+#    옛 값: '/assets/brand/logo-256.png' (캐릭터 얼굴 배지). 되돌리려면 이 한 줄만 되돌린다.
+#    원본: assets/brand/badge.svg(원형) · icon.svg(네모 · 파비콘) · mark.svg(원만) — 색은 배너 토큰.
+LOGO_MARK = '/assets/brand/badge.svg'
+# 베어 문 원 한 개 — 제호 끝의 «마침표»로 쓴다 (본 저장소 assets/brand-2026-09/final/wordmark-fusion 의 생각)
+MARK_PATH = 'M69.5 9A96 96 0 1 1 9 69.5A44 44 0 0 0 69.5 9Z'
+
+
+def 캐릭터(cls='', alt=''):
+    """캐릭터 — assets/brand/character.svg 를 «페이지 안»에 넣는다 (판마다 색을 CSS 토큰으로 바꾸려고).
+
+    2026-09-25 4차: 본 저장소 assets/brand-2026-09/character/d1-refined-line 을 다듬은 판.
+    (선 굵기 통일 · 신문의 까만 사진 덩어리 → 테두리 칸 · 발밑 그림자 · 색은 배너 토큰)
+    🔴 실존 인물 얼굴이 아니다 — 브랜드 캐릭터 그림이다.
+    """
+    svg = open(os.path.join(HERE, 'assets/brand/character.svg'), encoding='utf-8').read()
+    svg = re.sub(r'<style>.*?</style>', '', svg, flags=re.S)
+    svg = re.sub(r'<title>.*?</title>', '', svg, flags=re.S)
+    svg = re.sub(r' width="\d+" height="\d+"', '', svg, count=1)
+    if alt:
+        svg = svg.replace('<svg ', '<svg role="img" aria-label="%s" class="ch %s" ' % (e(alt), cls), 1)
+    else:
+        svg = svg.replace('<svg ', '<svg aria-hidden="true" focusable="false" class="ch %s" ' % cls, 1)
+    return svg.strip()
 
 WD = ['월', '화', '수', '목', '금', '토', '일']
 # 영문 딱지용 — 유진님 2026-09-12 10:30 「홈페이지는 영어를 적절히 활용해줘」.
@@ -47,6 +76,8 @@ IC = {
  'bubble': '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linejoin="round" aria-hidden="true"><path d="M4 5.5h16a1 1 0 0 1 1 1v9a1 1 0 0 1-1 1h-8.4L7 21v-4.5H4a1 1 0 0 1-1-1v-9a1 1 0 0 1 1-1z"/></svg>',
  'share': '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linejoin="round" aria-hidden="true"><path d="M3 19c.6-5.2 4.4-8 10-8V6.4L21.5 13 13 19.6V15c-4.4 0-7.6 1.2-10 4z"/></svg>',
  'mark': '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linejoin="round" aria-hidden="true"><path d="M6.5 3.5h11a1 1 0 0 1 1 1v16l-6.5-4.4L5.5 20.5v-16a1 1 0 0 1 1-1z"/></svg>',
+ 'sun': '<svg class="ic-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="4.2"/><path d="M12 2.5v2.2M12 19.3v2.2M2.5 12h2.2M19.3 12h2.2M5.3 5.3l1.6 1.6M17.1 17.1l1.6 1.6M5.3 18.7l1.6-1.6M17.1 6.9l1.6-1.6"/></svg>',
+ 'moon': '<svg class="ic-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round" aria-hidden="true"><path d="M20 14.6A8.2 8.2 0 0 1 9.4 4a8.2 8.2 0 1 0 10.6 10.6z"/></svg>',
  'out': '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 4h6v6M20 4l-9 9M18 14v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h5"/></svg>',
 }
 
@@ -62,9 +93,9 @@ def pretty(d):
 
 
 def en_date(d):
-    """「SEP 11, 2026」·「FRI」 — 영문 딱지용."""
+    """「2026.09.11」·「FRI」 — 신문 지면식 날짜 (2026-09-24 · 옛 판 「SEP 11, 2026」)."""
     y, m, day = [int(x) for x in d.split('-')]
-    return '%s %d, %d' % (EN_MON[m - 1], day, y), EN_WD[datetime.date(y, m, day).weekday()]
+    return '%d.%02d.%02d' % (y, m, day), EN_WD[datetime.date(y, m, day).weekday()]
 
 
 # 🔴 「전체는 계정에서 봐요.」 띠는 2026-09-12 09:09 유진님 지시로 없앴다.
@@ -102,7 +133,7 @@ def 기기목업(그림, alt, 재생=False, 주소=None, 설명=None, 윗줄='',
                     <div class="dv-over" aria-hidden="true">
                       <div class="dv-rail">%(줄)s</div>
                       <div class="dv-foot">
-                        <p class="dv-who"><img src="/assets/brand/logo-256.png" alt="" width="40" height="40"><span>@yesterdigest</span><em>구독</em></p>
+                        <p class="dv-who"><img src="__LOGO__" alt="" width="40" height="40"><span>@yesterdigest</span><em>구독</em></p>
                         <p class="dv-title">%(윗줄)s<br>%(아랫줄)s</p>
                       </div>
                       <span class="dv-bar"><i></i></span>
@@ -117,7 +148,7 @@ def 기기목업(그림, alt, 재생=False, 주소=None, 설명=None, 윗줄='',
     else:
         # ── 피드 한 장 판 — 계정 줄 · 그림 · 동작 줄 · 설명란
         속 = """<div class="dv-top">
-                      <img src="/assets/brand/logo-256.png" alt="" width="40" height="40">
+                      <img src="__LOGO__" alt="" width="40" height="40">
                       <span>yesterdigest</span>
                       <i class="dv-dots" aria-hidden="true"></i>
                     </div>
@@ -134,7 +165,7 @@ def 기기목업(그림, alt, 재생=False, 주소=None, 설명=None, 윗줄='',
                     </div>
                     <div class="dv-peek" aria-hidden="true">
                       <div class="dv-top">
-                        <img src="/assets/brand/logo-256.png" alt="" width="40" height="40">
+                        <img src="__LOGO__" alt="" width="40" height="40">
                         <span>yesterdigest</span>
                         <i class="dv-dots"></i>
                       </div>
@@ -152,39 +183,94 @@ def 기기목업(그림, alt, 재생=False, 주소=None, 설명=None, 윗줄='',
                     %(속)s
                   </div>
                 </div>
-              %(겉닫)s""" % dict(겉=겉, 겉닫=겉닫, 릴=' device--reel' if 재생 else '', 속=속)
+              %(겉닫)s""" % dict(겉=겉, 겉닫=겉닫, 릴=' device--reel' if 재생 else '', 속=속.replace('__LOGO__', LOGO_MARK))
 
 
-def ticker():
-    """첫 화면 맨 아래 «흐르는 띠». 우리 말만 쓴다.
+def nameplate(editions, sc):
+    """첫 화면 맨 위 — «신문 제호(nameplate)».
 
-    🔴 같은 내용을 «두 번» 넣는다 — 애니메이션이 -50% 로 밀기 때문에 그래야 이음매가 안 보인다.
+    🔴 2026-09-24 유진님 16:3x (팀장 전달)
+       「웹색상은 밝은 크림시문지로 바꾸되 다크모드 기눙도 넣어줘」
+       「응 촤대한 고급스럽게, 지금은 너무 유치하니까 고급화하는쪽으로가자」
+       「응 한입이라는 것도 버려도 되니까 고급스럽게」
+    짜임 (위에서 아래로) — 신문 1면 머리 그대로:
+       날짜줄(호수 · 최신 편 날짜 · 게시 시각) → 귀(왼: 모토 · 오른: 게시 약속) + 큰 활자 제호 → 태그라인
+       → 가는 이중 괘선 → 배너 «아랫줄» 보도사진 띠
+    🔴 배너의 가운데 줄(옛 캐릭터 로고)은 쓰지 않는다 — 로고는 새로 만드는 중이고(logo-0924),
+       옛 로고가 첫 화면 주인공이면 안 된다 (팀장 지시).
+    🔴 글은 전부 «있던 말»이다: 모토 두 줄 = data/showcase.json 장 main(유진님 2026-09-06 「"시간은 금이다" 이게 내 모토야」),
+       태그라인 = 배너 안 글자, 호수 = data/editions.json 의 편 수, 날짜 = 최신 편 날짜. 지어낸 말 없음.
     """
-    한판 = ('어제한입 <b>&#183;</b> YESTERDIGEST <b>&#183;</b> 매일 아침 7시 '
-            '<b>&#183;</b> 시간은 금이다 <b>&#183;</b> ') * 3
-    return ('        <div class="ticker" aria-hidden="true"><div class="ticker-run">'
-            '<span>%s</span><span>%s</span></div></div>' % (한판, 한판))
+    편 = editions.get('편', [])
+    최신 = 편[0] if 편 else {}
+    d = 최신.get('날짜') or datetime.date.today().isoformat()
+    y, m, day = [int(x) for x in d.split('-')]
+    요일 = EN_WD[datetime.date(y, m, day).weekday()]
+    main = next((c for c in sc['장'] if c['id'] == 'main'), {})
+    모토 = (main.get('제목줄') or ['시간은 금이다'])[0]
+    받침 = main.get('받침', '')
+    return """      <section class="nameplate" aria-labelledby="np-title">
+        <div class="np-inner">
+          <p class="np-dateline">
+            <span>No. %(호)d</span>
+            <span class="np-date"><time datetime="%(d)s">%(점날짜)s</time> %(요일)s</span>
+            <span>DAILY 06:00 &#183; 08:00</span>
+          </p>
+          <div class="np-head">
+            <div class="np-ear np-ear-l">
+              <p class="np-ear-k">Motto</p>
+              <p class="np-ear-t">%(모토)s</p>
+              <p class="np-ear-s">%(받침)s</p>
+            </div>
+            <div class="np-mast">
+              <h1 id="np-title" class="np-title">어제한입<svg class="np-dot" viewBox="0 0 200 200" aria-hidden="true" focusable="false"><path d="%(mark)s"/></svg></h1>
+              <p class="np-tag" lang="en">Yesterday, digested.</p>
+            </div>
+            <div class="np-ear np-ear-r">
+              <p class="np-ear-k">Every morning</p>
+              <p class="np-ear-t">매일 아침 6시와 8시</p>
+              <p class="np-ear-s">Instagram &#183; YouTube</p>
+            </div>
+          </div>
+          <hr class="np-rule">
+          <figure class="np-strip">
+            <picture>
+              <!-- 🔴 WebP 먼저, JPG 받침. 이 기계 ffmpeg 에는 webp 인코더가 없어 크롬으로 만든다: node tools/make-banner-webp.mjs
+                   폰(≤640)은 가운데(서울 하늘)만 잘라낸 판 — 가로 6:1 띠를 그대로 줄이면 사진이 실처럼 가늘어진다 -->
+              <source media="(max-width: 640px)" type="image/webp" sizes="100vw"
+                      srcset="/assets/brand/strip-m-720.webp 720w, /assets/brand/strip-m-1080.webp 1080w" width="1080" height="386">
+              <source media="(max-width: 640px)" sizes="100vw"
+                      srcset="/assets/brand/strip-m-720.jpg 720w, /assets/brand/strip-m-1080.jpg 1080w" width="1080" height="386">
+              <source type="image/webp" sizes="min(100vw, 1680px)"
+                      srcset="/assets/brand/strip-1280.webp 1280w, /assets/brand/strip-1920.webp 1920w, /assets/brand/strip-2560.webp 2560w" width="2560" height="425">
+              <img src="/assets/brand/strip-1920.jpg" sizes="min(100vw, 1680px)"
+                   srcset="/assets/brand/strip-1280.jpg 1280w, /assets/brand/strip-1920.jpg 1920w, /assets/brand/strip-2560.jpg 2560w"
+                   width="2560" height="425" fetchpriority="high" decoding="async"
+                   alt="신문 더미, 남산타워가 보이는 서울 강변, 출근길 사람들 — 흑백 보도사진 띠">
+            </picture>
+          </figure>
+        </div>
+      </section>
+""" % dict(호=len(편), d=e(d), 점날짜='%d.%02d.%02d' % (y, m, day), 요일=요일,
+           모토=e(모토), 받침=e(받침), mark=MARK_PATH)
 
 
-def showcase(editions):
-    """첫 화면 — 가만히 두면 «일정 시간마다» 장이 바뀐다 (유진님 2026-09-12 09:26 · 09:48).
+def formats(editions, sc):
+    """두 판 — 카드뉴스(Instagram) · 세로 영상(YouTube)을 «나란히» 펼친다.
 
-    장은 data/showcase.json 에서 온다. 「보임: true」인 것만 나오고, 하나를 더하면
-    점 표시·자동 넘김·손가락 넘김이 «저절로» 따라온다 — 나중에 CV·자동화 매매를 한 장씩 붙이려고
-    이렇게 짰다. 한 장에는 그 계정 «하나»의 단추만 둔다(한 화면에 계정 단추가 겹치지 않게 · 09:09).
+    🔴 2026-09-24 — 3장이 4초마다 넘어가던 쇼케이스를 «고정된 두 판»으로 바꿨다.
+       스스로 움직이는 첫 화면은 «통통 튀는» 인상의 한 몫이었고(팀장 유치함 목록),
+       한입이 장(main)은 모토만 제호 «귀»로 옮기고 뺐다 (.review/뺀것.md).
+    🔴 §5 — 재생 버튼은 유튜브 판 폰 «안»에 그대로 있다. 누르면 이 웹에서 소개 영상 창(id=intro-open).
+       폰의 다른 곳은 그 편 게시물로 간다. 기기목업() 을 그대로 쓴다.
+    🔴 §1 — 한 판에 계정 단추 «하나»씩 (유진님 09:09 「둘중 하나만 살리자」).
     """
-    sc = json.load(open(os.path.join(HERE, 'data/showcase.json'), encoding='utf-8'))
-    장 = [c for c in sc['장'] if c.get('보임')]
-    if not 장:
-        raise SystemExit('data/showcase.json 에 보임:true 인 장이 없다.')
-
+    장 = {c['id']: c for c in sc['장']}
     최신 = editions['편'][0] if editions.get('편') else {}
     표지 = 최신.get('표지')
     릴스 = '/assets/reel/%s.jpg' % 최신.get('날짜', '')
     if not os.path.exists(os.path.join(HERE, 릴스.lstrip('/'))):
-        릴스 = 표지                       # 릴스 표지 그림이 없으면 카드 표지로 대신한다
-
-    # 🔴 목업 «안»에 들어갈 글 — 전부 그날 실제 편에서 온다 (지어낸 글씨 금지).
+        릴스 = 표지
     이슈 = 최신.get('이슈', [])
     _y, _m, _d = (최신.get('날짜') or '2026-01-01').split('-')
     날짜말 = '%d월 %d일' % (int(_m), int(_d))
@@ -192,129 +278,93 @@ def showcase(editions):
     나머지 = (' 외 %d건' % (len(이슈) - 1)) if len(이슈) > 1 else ''
 
     단추종류 = {
-        # 🔴 2026-09-12 유진님 16:07 「보러가기가 너무 짜쳐. 이런거 전부 영어로 고급스럽게」
-        #    누르는 것·꼬리표는 영어, 읽는 문장은 한글, 브랜드 이름은 한글 (팀장이 그은 선).
-        'youtube': ('btn-yt', IC['yt'], 'VIEW ON YOUTUBE', YT_CHANNEL),
         'instagram': ('btn-ig', IC['ig'], 'VIEW ON INSTAGRAM', IG_ACCOUNT),
+        'youtube': ('btn-yt', IC['yt'], 'VIEW ON YOUTUBE', YT_CHANNEL),
     }
-
-    패널 = []
-    for i, c in enumerate(장):
-        머리 = ''
-        if c.get('칩'):
-            머리 = ('<p class="name-chip"><img src="/assets/brand/logo-256.png" alt="">'
-                    '<span><b>%s</b></span></p>' % e(c['칩']))
-        elif c.get('눈금'):
-            머리 = '<p class="eyebrow">%s</p>' % e(c['눈금'])
-        if c.get('시각칩'):
-            # 「매일 아침 7시」는 «약속»이라 2·3장에만 작게 (1장 모토와 섞지 않는다)
-            머리 += '<p class="when-chip">%s</p>' % e(c['시각칩'])
-
+    판 = []
+    for n, key in enumerate(('instagram', 'youtube')):
+        c = 장.get(key)
+        if not c or not c.get('보임'):
+            continue
         줄 = []
-        for n, t in enumerate(c['제목줄']):
-            if not t:
-                continue
-            줄.append('<span class="accent">%s</span>' % e(t) if n == c.get('강조줄') else e(t))
-        제목 = '<br>'.join(줄)
-
-        # 🔴 모토는 «두 줄까지». 큰 줄은 제목(h1)이고, 이 받침이 둘째 줄이다.
-        #    근거는 data/showcase.json 의 _문구_근거 에 적어 뒀다 — 지어낸 말이 아니다.
-        모토 = ('<p class="motto-sub">%s</p>' % e(c['받침'])) if c.get('받침') else ''
-
-        단추 = ''
-        if c.get('단추'):
-            cls, icon, 글, 주소 = 단추종류[c['단추']]
-            단추 = ('<div class="hero-actions"><a class="btn %s btn-xl" href="%s" target="_blank" rel="noopener">'
-                    '%s <span>%s</span> %s</a></div>' % (cls, 주소, icon, e(글), IC['go']))
-
-        if c['그림'] == '로고':
-            그림 = ('<div class="hero-art"><img id="hero-char" src="/assets/brand/character-wave.png" '
-                    'data-motion="/assets/brand/character-wave.gif" width="780" height="780" '
-                    'alt="손을 흔드는 %s"></div>' % e(CHARACTER))
-        elif c['그림'] == '카드목업' and 표지:
-            # 🔴 누르면 «그 편» 게시물로 (유진님 11:19). 편별 주소가 없으면 계정으로 떨어진다.
-            그림 = ('<div class="hero-art hero-art-device">%s</div>'
-                    % 기기목업(표지, '가장 최근 편 카드뉴스 표지',
-                               주소=최신.get('인스타_카드') or IG_ACCOUNT,
-                               설명='가장 최근 편 카드뉴스를 Instagram에서 보기',
-                               윗줄='%s 어제 이슈 %d개를 카드 %d장으로 정리했어요.'
-                                    % (날짜말, len(이슈), 최신.get('카드수', 0)),
-                               아랫줄=첫이슈 + 나머지,
-                               캡션='DAILY 07:00'))
-        elif c['그림'] == '릴스목업' and 릴스:
-            그림 = ('<div class="hero-art hero-art-device">%s</div>'
-                    % 기기목업(릴스, '가장 최근 편 릴스 표지', 재생=True,
-                               주소=최신.get('유튜브') or YT_CHANNEL,
-                               설명='가장 최근 편 영상을 YouTube에서 보기',
-                               윗줄='%s 어제 이슈 %d개' % (날짜말, len(이슈)),
-                               아랫줄=첫이슈 + 나머지))
+        for k, t in enumerate(c['제목줄']):
+            if t:
+                줄.append('<span class="accent">%s</span>' % e(t) if k == c.get('강조줄') else e(t))
+        cls, icon, 글, 주소 = 단추종류[key]
+        if key == 'instagram' and 표지:
+            그림 = 기기목업(표지, '가장 최근 편 카드뉴스 표지',
+                          주소=최신.get('인스타_카드') or IG_ACCOUNT,
+                          설명='가장 최근 편 카드뉴스를 Instagram에서 보기',
+                          윗줄='%s 어제 이슈 %d개를 카드 %d장으로 정리했어요.'
+                               % (날짜말, len(이슈), 최신.get('카드수', 0)),
+                          아랫줄=첫이슈 + 나머지, 캡션='DAILY 06:00 · 08:00')
+        elif key == 'youtube' and 릴스:
+            그림 = 기기목업(릴스, '가장 최근 편 릴스 표지', 재생=True,
+                          주소=최신.get('유튜브') or YT_CHANNEL,
+                          설명='가장 최근 편 영상을 YouTube에서 보기',
+                          윗줄='%s 어제 이슈 %d개' % (날짜말, len(이슈)),
+                          아랫줄=첫이슈 + 나머지)
         else:
             그림 = ''
-
-        패널.append("""          <article class="sc-panel%(on)s" id="sc-%(id)s" data-sc="%(id)s"%(hidden)s>
-            <div class="hero-inner">
-              <div class="hero-text">
-                %(머리)s
-                <h1>%(제목)s</h1>
-                %(모토)s
-                <p class="hero-lead">%(설명)s</p>
-                %(단추)s
-              </div>
-              %(그림)s
+        판.append("""          <article class="fmt fmt-%(key)s reveal" aria-labelledby="fmt-%(key)s-title">
+            <div class="fmt-art">%(그림)s</div>
+            <div class="fmt-text">
+              <p class="fmt-k"><span>No. %(no)02d</span><span>%(눈금)s</span><span>%(시각)s</span></p>
+              <h2 id="fmt-%(key)s-title">%(제목)s</h2>
+              <p class="fmt-lead">%(설명)s</p>
+              <a class="btn %(cls)s" href="%(주소)s" target="_blank" rel="noopener">%(icon)s <span>%(글)s</span> %(go)s</a>
             </div>
-          </article>""" % dict(on=' is-on' if i == 0 else '', id=e(c['id']),
-                                hidden='' if i == 0 else ' aria-hidden="true"',
-                                머리=머리, 제목=제목, 설명=e(c['설명']), 모토=모토,
-                                단추=단추, 그림=그림))
+          </article>""" % dict(key=key, 그림=그림, no=n + 1, 눈금=e(c.get('눈금', '')),
+                                시각=e(c.get('시각칩', '')), 제목='<br>'.join(줄),
+                                설명=e(c['설명']), cls=cls, 주소=주소, icon=icon, 글=e(글), go=IC['go']))
 
-    return """      <section class="hero showcase" data-interval="%(초d)d" aria-roledescription="carousel" aria-label="어제한입 소개">
-        <div class="sc-stack">
-%(패널)s
-        </div>
-        <div class="sc-foot">
-          <div class="sc-dots" role="tablist" aria-label="소개 화면 고르기"></div>
-          <!-- 🔴 2026-09-12 유진님 15:17 — 「아래에 intro는 없애줘.
-                 재생버튼을 누를때만 소개영상을 띄울거야」
-               소개 영상으로 들어가는 문은 «유튜브 장 폰 안의 재생 단추» 하나뿐이다.
-               창(.intro-modal)은 그대로 둔다 — 그 재생 단추가 이 창을 연다. -->
+    return """      <section class="formats" aria-label="어제한입 두 판">
+        <div class="fmt-inner">
+          <p class="sec-k"><span>The daily edition</span><span>Two formats</span></p>
+          <div class="fmt-grid">
+%(판)s
+          </div>
+          <!-- 🔴 2026-09-12 유진님 15:17 — 소개 영상으로 들어가는 문은 «유튜브 판 폰 안의 재생 단추» 하나뿐이다.
+               INTRO 단추는 없앤 그대로다. 창(.intro-modal)은 그대로 둔다. -->
           <p class="hero-sub">
-            <a href="#editions" data-view="editions">Latest drops <span aria-hidden="true">&#8595;</span></a>
+            <a href="#editions" data-view="editions">Latest drops <span aria-hidden="true">&#8594;</span></a>
           </p>
         </div>
-%(띠)s
-      </section>""" % dict(초d=int(sc.get('넘김초', 4)) * 1000, 패널='\n'.join(패널),
-                            띠=ticker())   # 🔴 A안 — 배경 장식을 «만들지 않는다» (유진님 13:37)
+      </section>
+""" % dict(판='\n'.join(판))
 
 
 # ── 화면(칸) ───────────────────────────────────────────────────────
 def view_yesterdigest(cfg, data):
-    """들어오면 처음 보이는 화면 — 첫 화면(자동으로 바뀌는 장) + 하는 일 + 문의."""
-    return showcase(data['editions']) + """
-
-      <section class="section" aria-labelledby="about-title">
+    """들어오면 처음 보이는 화면 — 제호 + 두 판 + 하는 일. (문의는 맨 아래 oauth_note)"""
+    sc = json.load(open(os.path.join(HERE, 'data/showcase.json'), encoding='utf-8'))
+    return nameplate(data['editions'], sc) + formats(data['editions'], sc) + """
+      <section class="section section--about" aria-labelledby="about-title">
         <div class="section-inner">
           <div class="section-heading reveal">
             <p class="eyebrow">What we do</p>
             <h2 id="about-title">고르고,<br>확인하고,<br>한입 크기로.</h2>
             <!-- 🔴 여기 있던 구글 OAuth 두 문장은 «맨 아래» oauth_note() 로 옮겼다
-                 (유진님 2026-09-12 08:53 「어디에 좀 안보이는곳에 둘 순없어?」 ·
-                  09:48 「소개가 너무 정직해」). 지운 것이 아니라 «옮긴» 것이다 — 되돌리지 마라. -->
-            <p>어제 하루를 한입 크기로 잘라, 아침 7시에 놓아둡니다.
-               무엇을 골랐는지와 어떻게 확인했는지를 먼저 챙기고요.</p>
+                 (유진님 2026-09-12 08:53 · 09:48). 지운 것이 아니라 «옮긴» 것이다 — 되돌리지 마라. -->
+            <div class="about-side">
+              <figure class="about-figure">""" + 캐릭터('about-ch', '신문을 들고 선 어제한입 캐릭터') + """</figure>
+              <p>어제 하루를 한입 크기로 잘라, 아침 6시와 8시에 놓아둡니다.
+                 무엇을 골랐는지와 어떻게 확인했는지를 먼저 챙기고요.</p>
+            </div>
           </div>
           <div class="steps reveal">
             <article class="card">
-              <span class="step-number" aria-hidden="true">1</span>
+              <span class="step-number" aria-hidden="true">01</span>
               <h3>주요 이슈 선별</h3>
               <p>공식 자료와 복수의 보도를 바탕으로 전날의 핵심 이슈를 선별하고 사실관계를 확인합니다.</p>
             </article>
             <article class="card">
-              <span class="step-number" aria-hidden="true">2</span>
+              <span class="step-number" aria-hidden="true">02</span>
               <h3>콘텐츠 제작</h3>
               <p>선별한 이슈를 세로형 영상과 카드뉴스에 맞춰 간결하고 이해하기 쉬운 형식으로 제작합니다.</p>
             </article>
             <article class="card">
-              <span class="step-number" aria-hidden="true">3</span>
+              <span class="step-number" aria-hidden="true">03</span>
               <h3>검토 후 게시</h3>
               <p>사람이 정확성·저작권·표현을 최종 확인한 뒤 공식 API를 통해 채널에 게시하고 관리합니다.</p>
             </article>
@@ -340,7 +390,9 @@ def view_editions(cfg, data):
         d = ed['날짜']
         title, wd = pretty(d)
         엔날짜, 엔요일 = en_date(d)
-        color = ed.get('요일색') or '#FCB424'
+        # 🔴 2026-09-24 — 편마다 다른 «요일색»을 홈페이지에서는 안 쓴다(색 가짓수 = 유치함의 한 몫).
+        #    먹·크림·머스터드 한 벌로 간다. 요일색은 카드·영상 쪽 규칙이라 data 에는 그대로 둔다.
+        호 = len(data['editions']['편']) - i
         이슈 = ed.get('이슈', [])
         줄 = ''.join('<li><span>%02d</span>%s</li>' % (n + 1, e(t)) for n, t in enumerate(이슈))
         ig = ed.get('인스타_카드') or ed.get('인스타_릴스') or IG_ACCOUNT
@@ -349,7 +401,7 @@ def view_editions(cfg, data):
         더보기 = ('카드 %d장 전체와 릴스 1편은 계정에서 봅니다.' if 릴스있음
                   else '카드 %d장 전체는 계정에서 봅니다.') % ed.get('카드수', 0)
 
-        panels.append("""            <article class="ed" style="--accent: %(color)s">
+        panels.append("""            <article class="ed">
               <a class="ed-cover" href="%(ig)s" target="_blank" rel="noopener"
                  aria-label="%(title)s 카드뉴스를 Instagram에서 보기">
                 <!-- 이 화면은 처음엔 숨어 있다. display:none 이어도 브라우저는 src 를 받아버리므로
@@ -359,7 +411,7 @@ def view_editions(cfg, data):
                 <noscript><img src="%(cover)s" width="720" height="900" alt="%(title)s 어제한입 카드뉴스 표지"></noscript>
               </a>
               <div class="ed-text">
-                <p class="ed-day"><span class="ed-dot" aria-hidden="true"></span>%(엔날짜)s<i>%(엔요일)s</i></p>
+                <p class="ed-day"><span class="ed-no">No. %(호)d</span><time datetime="%(d)s">%(엔날짜)s</time><i>%(엔요일)s</i></p>
                 <ol class="ed-topics">%(줄)s</ol>
                 <p class="ed-more">%(more)s</p>
                 <div class="ed-cta">
@@ -370,7 +422,7 @@ def view_editions(cfg, data):
                 </div>
                 <p class="sr-only">%(title)s (%(wd)s)</p>
               </div>
-            </article>""" % dict(color=color, ig=ig, yt=yt, cover=ed['표지'], title=title, wd=wd,
+            </article>""" % dict(호=호, d=d, ig=ig, yt=yt, cover=ed['표지'], title=title, wd=wd,
                                  엔날짜=엔날짜, 엔요일=엔요일, 줄=줄, more=더보기,
                                  icig=IC['ig'], icyt=IC['yt']))
 
@@ -417,49 +469,54 @@ SECTION_BUILDERS = {
 }
 
 
-# Jua 가 실제로 그리는 자리 (assets/home.css 의 --title-font 선택자와 «짝»이다.
-# 거기에 선택자를 더하면 여기에도 더해야 한다 — 안 그러면 그 글자만 본문 글씨로 튄다)
-JUA_자리 = [r'<h1[^>]*>(.*?)</h1>', r'<h2[^>]*>(.*?)</h2>', r'<h3[^>]*>(.*?)</h3>',
-            r'class="brand-link"[^>]*>.*?<span>(.*?)</span>',
-            r'class="name-chip"[^>]*>(.*?)</p>']
+# 🔴 한글 «제목» 글씨 = 배달의민족 주아 — 홈페이지-규칙 §3 (유진님 2026-09-12 09:01 「배달의 민족 주아로 가자」).
+#    2026-09-24 3차에 명조를 시험했으나 팀장 정리: «정본은 §3 이고 명조는 제안이다» → 기본을 주아로 되돌렸다.
+#    제목 글꼴은 CSS 변수 하나(--font-display · assets/styles.css)가 정한다. 명조 판은 <html data-font="serif"> 로
+#    «바꿔 찍는» 제안일 뿐이고, 이 페이지는 명조를 받지 않는다 (.review/shot3.mjs 가 찍을 때만 붙인다).
+#    «이 페이지가 실제로 제목 글꼴로 그리는 글자»만 받는다 (Google Fonts text=).
+#    아래 자리는 assets/home.css 의 --font-display 선택자와 «짝»이다. 거기에 선택자를 더하면 여기도 더한다 —
+#    안 그러면 그 글자만 대체 글꼴로 튄다.
+제목글꼴_자리 = [r'<h1[^>]*>(.*?)</h1>', r'<h2[^>]*>(.*?)</h2>', r'<h3[^>]*>(.*?)</h3>',
+            r'class="brand-name"[^>]*>(.*?)</span>',
+            r'class="np-ear-t"[^>]*>(.*?)</p>']
 
 # 날마다 바뀌는 것 — 오늘 페이지에 없어도 반드시 넣는다
-JUA_바탕 = ('0123456789년월일()' + '월화수목금토일'
+제목글꼴_바탕 = ('0123456789년월일()' + '월화수목금토일'
             + 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz' + ' .,·-~!?:')
 
 
-def jua_글자(page):
-    """이 페이지에서 Jua 가 그릴 글자를 모은다 → Google Fonts text= 로 넘긴다."""
-    글자 = set(JUA_바탕)
-    for pat in JUA_자리:
+def 제목글꼴_글자(page):
+    """이 페이지에서 제목 글꼴(주아)이 그릴 글자를 모은다 → Google Fonts text= 로 넘긴다."""
+    글자 = set(제목글꼴_바탕)
+    for pat in 제목글꼴_자리:
         for m in re.findall(pat, page, re.S):
-            글자 |= set(re.sub(r'<[^>]+>', '', m))
+            글자 |= set(html.unescape(re.sub(r'<[^>]+>', '', m)))
     글자 -= set('\n\r\t')
     return ''.join(sorted(글자))
 
 
 def intro_modal():
-    """소개 영상 «틀» — 영상은 아직 없다. 움직임만 미리 만들어 둔다.
+    """소개 영상 «틀» — 영상은 아직 없다. 움직임과 자리만 미리 만들어 둔다.
 
-    유진님 2026-09-12 11:19 「짧은 어제한입 소개 영상을 만들어줘」 →
-    팀장 판단으로 «영상 만들기»는 오늘 안 한다(렌더가 이 기계의 메모리를 크게 쓴다).
-    🔴 대신 «누르면 커졌다가 끝나면 줄어드는» 움직임과 자리를 오늘 만들어 둔다.
-       영상이 생기면 .intro-slot 안의 내용만 <video src=... playsinline> 로 바꾸면 된다.
-    🔴 자리를 비워 두되 «빈 네모»를 보여주지 않는다 — 우리 캐릭터가 대신 서 있는다.
+    유진님 2026-09-12 11:19 「짧은 어제한입 소개 영상을 만들어줘」 · 15:17 「재생버튼을 누르면 이 웹에서 소개영상을 띄워야지」
+    🔴 «누르면 커졌다가 끝나면 줄어드는» 움직임은 그대로. 영상이 생기면 .intro-slot 안만 <video> 로 바꾼다.
+    🔴 2026-09-24 — 캐릭터 그림을 뺐다(「한입이 버려도 된다」). 크림 종이 한 장에 활자만 둔다.
+       빈 창으로 두지 않는다 — 반응이 없으면 «고장»으로 보인다(§5).
     """
     return """  <div class="intro-modal" id="intro-modal" hidden>
     <div class="intro-box" role="dialog" aria-modal="true" aria-labelledby="intro-title">
       <button class="intro-close" type="button" id="intro-close" aria-label="닫기">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>
       </button>
       <div class="intro-slot">
-        <img src="/assets/brand/character-wave.png" alt="" width="380" height="380">
+        <div class="intro-ch">%s</div>
+        <p class="intro-k">Intro film</p>
         <p id="intro-title">COMING SOON</p>
         <p class="intro-sub">10초 안에 어제한입이 어떤 곳인지 보여드릴게요.</p>
       </div>
     </div>
   </div>
-"""
+""" % 캐릭터('intro-chr')
 
 
 def oauth_note():
@@ -525,7 +582,7 @@ def 자산판번호(page):
     """
     import hashlib
     붙인것 = []
-    for 주소 in ('/assets/styles.css', '/assets/home.css', '/assets/home.js',
+    for 주소 in ('/assets/styles.css', '/assets/home.css', '/assets/home.js', '/assets/theme.js',
                '/assets/og/home.png'):
         f = os.path.join(HERE, 주소.lstrip('/'))
         if not os.path.exists(f):
@@ -602,80 +659,82 @@ def build():
             % (c['id'], c['제목']) for c in sections['칸'] if not c.get('보임')]
 
     page = PAGE % dict(
-        YT=YT_CHANNEL, IG=IG_ACCOUNT, CH=CHARACTER, 기본=기본,
+        YT=YT_CHANNEL, IG=IG_ACCOUNT, CH=BRAND, LOGO=LOGO_MARK, 기본=기본,
+        icsun=IC['sun'], icmoon=IC['moon'],
         icyt=IC['yt'], icig=IC['ig'], icmenu=IC['menu'], icx=IC['x'],
         menu='\n'.join(menu), views='\n\n'.join(views), 자리='\n'.join(자리),
         intro=intro_modal(), oauth=oauth_note())
-    글자 = jua_글자(page)
-    page = page.replace('__JUA_TEXT__', urllib.parse.quote(글자, safe=''))
+    글자 = 제목글꼴_글자(page)
+    page = page.replace('__DISPLAY_TEXT__', urllib.parse.quote(글자, safe=''))
     page = 자산판번호(page)
     open(os.path.join(HERE, 'index.html'), 'w', encoding='utf-8').write(page)
     print('index.html — 화면 %d개 · 메뉴 %d줄 · 자리만 %d개 (기본 화면: %s)'
           % (len(views), len(menu), len(자리), 기본))
-    print('  Jua 는 글자 %d자만 받는다 (text=)' % len(글자))
+    print('  제목 글꼴(주아 Jua)은 글자 %d자만 받는다 (text=)' % len(글자))
     sitemap()
 
 
 PAGE = """<!doctype html>
-<html lang="ko">
+<html lang="ko" data-theme="light">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- 🔴 판(밝은 크림 / 어두운 먹)을 «그리기 전에» 박는다 — 다크를 고른 사람이 새로고침할 때 크림이 번쩍이지 않게.
+       첫 방문은 OS 설정과 상관없이 «크림»이다 (유진님 2026-09-24 「웹색상은 밝은 크림시문지로 바꾸되 다크모드 기눙도 넣어줘」).
+       저장소가 막혀 있으면(사생활 창 등) 조용히 크림으로 간다. 누르는 단추는 /assets/theme.js 가 맡는다. -->
+  <script>(function(){var t='light';try{if(localStorage.getItem('yd-theme')==='dark')t='dark';}catch(e){}document.documentElement.setAttribute('data-theme',t);})();</script>
   <title>%(CH)s | YesterDigest</title>
-  <meta name="description" content="캐릭터 %(CH)s가 전하는 이야기. 어제의 뉴스를 한입 크기로 — 매일 아침 7시 Instagram과 YouTube에 올라갑니다.">
-  <meta name="theme-color" content="#0C3054">
+  <meta name="description" content="어제의 뉴스를 한입 크기로. 매일 아침 6시와 8시, Instagram과 YouTube에 올라갑니다.">
+  <meta name="theme-color" content="#F8F3E9">
   <link rel="canonical" href="https://yesterdigest.com/">
 
   <!-- 카톡·트위터·페북에 «주소를 붙였을 때» 뜨는 것.
-       🔴 그림은 1200x630 이어야 «큰 카드»로 뜬다 — 2026-09-12 전까지 256x256 로고를 가리키고 있었고,
-          그 크기로는 어느 곳에서도 큰 카드가 안 나온다 (트위터 요구 300x157↑ · 카카오 권장 800x400↑).
-          그림 원본은 tools/og-card.html · 다시 만들기는 `python3 tools/make-assets.py`.
-       🔴 주소 뒤 ?v= 는 build.py 가 «파일 내용 해시»로 붙인다. 카카오·페북은 og 그림을 오래 캐시해서,
-          그림을 바꿔도 주소가 그대로면 «옛 그림»이 계속 뜬다. -->
+       🔴 그림은 1200x630 이어야 «큰 카드»로 뜬다. 그림 원본은 tools/og-card.html · 다시 만들기는 `python3 tools/make-assets.py`.
+       🔴 주소 뒤 ?v= 는 build.py 가 «파일 내용 해시»로 붙인다 (카카오·페북 캐시 대비).
+       ⚠️ 2026-09-24 — 새 로고가 나온 뒤 팀장 지시로 그림을 바꾼다. 지금 그림은 옛 판이다. -->
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="YesterDigest">
   <meta property="og:locale" content="ko_KR">
   <meta property="og:title" content="%(CH)s | YesterDigest">
-  <meta property="og:description" content="어제의 뉴스를 한입 크기로. 매일 아침 7시.">
+  <meta property="og:description" content="어제의 뉴스를 한입 크기로. 매일 아침 6시와 8시.">
   <meta property="og:url" content="https://yesterdigest.com/">
   <meta property="og:image" content="https://yesterdigest.com/assets/og/home.png">
   <meta property="og:image:width" content="1200">
   <meta property="og:image:height" content="630">
-  <meta property="og:image:alt" content="어제의 뉴스를 한입 크기로 — 매일 아침 7시">
+  <meta property="og:image:alt" content="어제의 뉴스를 한입 크기로 — 매일 아침 6시와 8시">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="%(CH)s | YesterDigest">
-  <meta name="twitter:description" content="어제의 뉴스를 한입 크기로. 매일 아침 7시.">
+  <meta name="twitter:description" content="어제의 뉴스를 한입 크기로. 매일 아침 6시와 8시.">
   <meta name="twitter:image" content="https://yesterdigest.com/assets/og/home.png">
 
-  <!-- 🔴 /favicon.ico 는 «선언과 상관없이» 브라우저·크롤러가 알아서 받아 간다. 없으면 404 가 난다.
-       그 전까지는 460x460 짜리 /assets/logo.png(72KB)를 탭 아이콘으로 받고 있었다 — 아이콘 하나에 72KB.
-       셋 다 tools/make-assets.py 가 같은 로고에서 만든다. -->
+  <!-- 🔴 /favicon.ico 는 «선언과 상관없이» 받아 간다. 셋 다 tools/make-assets.py 가 같은 로고에서 만든다.
+       (2026-09-24 — 새 로고가 오면 팀장 지시로 바꾼다. 지금 손대지 않는다) -->
   <link rel="icon" href="/favicon.ico" sizes="32x32">
+  <link rel="icon" href="/assets/brand/icon.svg" type="image/svg+xml">
   <link rel="icon" href="/assets/brand/logo-256.png" type="image/png" sizes="256x256">
   <link rel="apple-touch-icon" href="/apple-touch-icon.png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <!-- 글씨체 — 유진님 2026-09-12 09:01 「배달의 민족 주아로 가자」
-       제목·강조 Jua · 본문 Gothic A1. 둘 다 SIL OFL 1.1 (google/fonts ofl/jua · ofl/gothica1 · METADATA license=OFL).
-       🔴 배민 배포본이 아니라 «Google Fonts» 에서 받는다 — 배포처가 다르면 약관이 다르다 (CLAUDE.md §3.6).
-       🔴 홈페이지에만 쓴다. 영상·카드뉴스 글씨체는 안 건드린다 (유진님 08:41). -->
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Gothic+A1:wght@400;700&display=swap">
-  <!-- 영문 전용 (유진님 2026-09-12 10:30 「영어를 적절히 활용해줘」).
-       🔴 주아는 한글 글씨체다 — 영문을 주아로 찍으면 어색해서 영문에만 따로 물린다.
-       Inter · SIL OFL 1.1 (google/fonts ofl/inter · METADATA license=OFL) · Google Fonts 배포본.
-       라틴 문자만 받는다 (latin subset) — 무게는 셋뿐이라 가볍다. -->
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@500;700;800&display=swap">
-  <!-- Jua 는 «이 페이지가 실제로 쓰는 글자»만 받는다 (text=). 제목·이름·날짜에만 쓰므로 글자가 정해져 있다.
-       아래 글자 목록은 build.py 가 만들어진 HTML 에서 «세어» 넣는다 — 손으로 고치지 않는다.
-       숫자·년월일·요일 일곱 자는 날마다 바뀌므로 «반드시» 바탕 묶음으로 넣는다. -->
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Jua&display=swap&text=__JUA_TEXT__">
+  <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+  <!-- 글씨체 — 2026-09-24 에디토리얼 판 (유진님 「최대한 고급스럽게」)
+       · 한글 제목  배달의민족 주아(Jua) 400 — 홈페이지-규칙 §3 정본 · SIL OFL 1.1 · Google Fonts 배포본 · «이 페이지가 쓰는 글자만» text= 로 받는다
+                    (명조 Noto Serif KR 은 «제안» — data-font="serif" 로 바꿔 찍을 때만 붙인다. 이 페이지는 받지 않는다)
+       · 한글 본문  Pretendard — SIL OFL 1.1 · jsDelivr(orioncactus/pretendard v1.3.9) «dynamic subset»: 화면에 나온 글자 조각만 받는다
+       · 영문 꼬리표 Inter 500·600·700 — SIL OFL 1.1 · Google Fonts (라틴만)
+       · 태그라인 한 곳 Cormorant Garamond 기울임 500 — SIL OFL 1.1 · Google Fonts · 「Yesterday, digested.」 글자만 받는다
+       🔴 넷 다 font-display: swap — 글씨체가 늦어도 글은 먼저 보인다.
+       🔴 Gothic A1 은 뺐다(본문은 Pretendard). 주아는 규칙 §3 이라 그대로 둔다 — 바꾸려면 유진님이 §3 을 바꾸셔야 한다.
+       🔴 홈페이지에만 쓴다. 영상·카드뉴스 글씨체는 안 건드린다. -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@500;600;700&display=swap">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Jua&display=swap&text=__DISPLAY_TEXT__">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@1,500&display=swap&text=Yesterday%%2C%%20digested.">
   <link rel="stylesheet" href="/assets/styles.css">
   <link rel="stylesheet" href="/assets/home.css">
 
   <!-- 검색엔진에게 «우리가 누구이고 계정이 어디인지»를 그대로 알려준다 (schema.org).
        🔴 이 홈페이지의 뜻이 «인스타·유튜브로 보내는 대문»이라 sameAs 가 핵심이다 (유진님 07:54).
-          구글이 이걸 읽고 검색 결과에 계정을 함께 붙인다.
-       🔴 화면에 없는 것을 지어내지 않는다 — 여기 적힌 것은 전부 페이지에 실제로 있는 것이다. -->
+       🔴 화면에 없는 것을 지어내지 않는다. -->
   <script type="application/ld+json">
   {"@context":"https://schema.org","@graph":[
     {"@type":"Organization","@id":"https://yesterdigest.com/#org",
@@ -683,7 +742,7 @@ PAGE = """<!doctype html>
      "url":"https://yesterdigest.com/",
      "email":"yesterdigest@gmail.com",
      "logo":{"@type":"ImageObject","url":"https://yesterdigest.com/assets/brand/logo-256.png","width":256,"height":256},
-     "description":"어제의 뉴스를 한입 크기로. 매일 아침 7시 Instagram과 YouTube에 올라갑니다.",
+     "description":"어제의 뉴스를 한입 크기로. 매일 아침 6시와 8시 Instagram과 YouTube에 올라갑니다.",
      "sameAs":["%(IG)s","%(YT)s"]},
     {"@type":"WebSite","@id":"https://yesterdigest.com/#site",
      "name":"%(CH)s | YesterDigest","url":"https://yesterdigest.com/",
@@ -698,14 +757,15 @@ PAGE = """<!doctype html>
     <nav class="nav" aria-label="주요 메뉴">
       <button class="menu-btn" type="button" id="menu-open"
               aria-label="메뉴 열기" aria-expanded="false" aria-controls="drawer">%(icmenu)s</button>
-      <!-- 🔴 aria-label 을 «안» 붙인다. 보이는 글씨가 「한입이 YesterDigest」인데 이름표를
-           「처음 화면으로」로 덮으면, 음성으로 조작하는 사람이 «보이는 대로» 말했을 때 안 눌린다
-           (WCAG 2.5.3 Label in Name · Lighthouse label-content-name-mismatch 로 실제로 걸렸다). -->
+      <!-- 🔴 aria-label 을 «안» 붙인다 — 보이는 글씨가 이름이다 (WCAG 2.5.3 Label in Name).
+           🔴 로고 자리(.logo-slot)는 크기가 정해진 틀이다. 새 로고는 build.py 의 LOGO_MARK 한 줄만 바꾼다. -->
       <a class="brand-link" href="#%(기본)s" data-view="%(기본)s">
-        <img src="/assets/brand/logo-256.png" alt="">
-        <span>%(CH)s<small>YesterDigest</small></span>
+        <span class="logo-slot"><img src="%(LOGO)s" alt="" width="36" height="36"></span>
+        <span class="brand-name">%(CH)s<small>YESTERDIGEST</small></span>
       </a>
       <div class="nav-actions">
+        <!-- 🔴 판 바꾸기 — 보이는 글씨(DARK/LIGHT)가 이름의 앞머리다. 44px 이상 · 초점 보임 · theme.js 가 글씨를 바꾼다 -->
+        <button class="theme-btn" type="button" data-theme-toggle>%(icmoon)s%(icsun)s<span class="theme-label">DARK</span><span class="sr-only"> 모드로 바꾸기</span></button>
         <a class="icon-link ig" href="%(IG)s" target="_blank" rel="noopener" aria-label="Instagram 계정 열기">%(icig)s</a>
         <a class="icon-link yt" href="%(YT)s" target="_blank" rel="noopener" aria-label="YouTube 채널 열기">%(icyt)s</a>
       </div>
@@ -738,7 +798,7 @@ PAGE = """<!doctype html>
 %(oauth)s
   <footer class="site-footer">
     <div class="footer-inner">
-      <p>© 2026 YesterDigest</p>
+      <p class="footer-brand"><span class="logo-slot logo-slot--sm"><img src="%(LOGO)s" alt="" width="24" height="24"></span>© 2026 YesterDigest</p>
       <div class="footer-links">
         <a href="%(IG)s" target="_blank" rel="noopener">Instagram</a>
         <a href="%(YT)s" target="_blank" rel="noopener">YouTube</a>
@@ -749,6 +809,7 @@ PAGE = """<!doctype html>
     </div>
   </footer>
 
+  <script src="/assets/theme.js" defer></script>
   <script src="/assets/home.js" defer></script>
 </body>
 </html>

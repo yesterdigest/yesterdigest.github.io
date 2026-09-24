@@ -100,7 +100,9 @@
       document.documentElement.style.setProperty('--header-h', header.offsetHeight + 'px');
       /* 🔴 투명 + 밝은 글자는 «어두운 첫 화면 위에 있을 때»만 쓴다.
          지난 편 화면은 위가 살구색이라, 거기서 투명하게 두면 흰 글자가 안 보인다. */
-      var 어두운첫화면 = !!document.querySelector('.view.is-active .showcase');
+      /* 2026-09-24 — 첫 화면 맨 위는 이제 «제호»(.nameplate)다. 제호 위에서는 머리줄이 바탕과 한 몸(투명),
+         내려가면 가는 선 한 줄로 갈라진다. 제호가 없는 화면(지난 편)에서는 처음부터 갈라진다. */
+      var 어두운첫화면 = !!document.querySelector('.view.is-active .nameplate');
       header.classList.toggle('is-stuck', window.scrollY > 문턱() || !어두운첫화면);
     };
     window.addEventListener('scroll', 상단바, { passive: true });

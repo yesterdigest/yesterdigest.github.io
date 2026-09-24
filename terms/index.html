@@ -1,11 +1,13 @@
 <!doctype html>
-<html lang="ko">
+<html lang="ko" data-theme="light">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- 판(밝은 크림 / 어두운 먹)을 «그리기 전에» 박는다 — 홈과 같은 한 줄. 누르는 단추는 /assets/theme.js -->
+  <script>(function(){var t='light';try{if(localStorage.getItem('yd-theme')==='dark')t='dark';}catch(e){}document.documentElement.setAttribute('data-theme',t);})();</script>
   <title>이용약관 | YesterDigest</title>
   <meta name="description" content="YesterDigest 공식 홈페이지와 콘텐츠에 적용되는 이용약관입니다.">
-  <meta name="theme-color" content="#0C3054">
+  <meta name="theme-color" content="#F8F3E9">
   <link rel="canonical" href="https://yesterdigest.com/terms/">
   <meta property="og:type" content="article">
   <meta property="og:site_name" content="YesterDigest">
@@ -17,22 +19,27 @@
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:image" content="https://yesterdigest.com/assets/og/home.png">
   <link rel="icon" href="/favicon.ico" sizes="32x32">
+  <link rel="icon" href="/assets/brand/icon.svg" type="image/svg+xml">
   <link rel="icon" href="/assets/brand/logo-256.png" type="image/png" sizes="256x256">
   <link rel="apple-touch-icon" href="/apple-touch-icon.png">
   <link rel="stylesheet" href="/assets/styles.css">
+  <script src="/assets/theme.js" defer></script>
 </head>
 <body>
   <a class="skip-link" href="#main">본문으로 건너뛰기</a>
   <header class="site-header">
     <nav class="nav" aria-label="주요 메뉴">
       <a class="brand-link" href="/">
-        <img src="/assets/logo.png" alt="">
+        <img src="/assets/brand/badge.svg" alt="">
         <span>어제한입<small>YesterDigest</small></span>
       </a>
-      <div class="nav-links">
-        <a href="/">홈</a>
-        <a href="/privacy/">개인정보처리방침</a>
-        <a href="/terms/" aria-current="page">이용약관</a>
+      <div class="nav-tail">
+        <div class="nav-links">
+          <a href="/">홈</a>
+          <a href="/privacy/">개인정보처리방침</a>
+          <a href="/terms/" aria-current="page">이용약관</a>
+        </div>
+        <button class="theme-btn" type="button" data-theme-toggle><svg class="ic-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round" aria-hidden="true"><path d="M20 14.6A8.2 8.2 0 0 1 9.4 4a8.2 8.2 0 1 0 10.6 10.6z"/></svg><svg class="ic-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="4.2"/><path d="M12 2.5v2.2M12 19.3v2.2M2.5 12h2.2M19.3 12h2.2M5.3 5.3l1.6 1.6M17.1 17.1l1.6 1.6M5.3 18.7l1.6-1.6M17.1 6.9l1.6-1.6"/></svg><span class="theme-label">DARK</span><span class="sr-only"> 모드로 바꾸기</span></button>
       </div>
     </nav>
   </header>

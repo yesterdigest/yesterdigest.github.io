@@ -38,12 +38,27 @@ python3 build.py
 
 ## 아이콘과 공유 그림
 
-`favicon.ico` · `apple-touch-icon.png` · `assets/og/home.png` 는 **전부 `assets/logo.png` 한 장에서 나온다.**
+`favicon.ico` · `apple-touch-icon.png` · `assets/brand/logo-256.png` 는 **전부 `assets/brand/icon.svg` 한 장에서 나온다.**
+`assets/og/home.png` 는 `tools/og-card.html`(캐릭터 `assets/brand/character.svg` · 로고 `badge.svg` 를 씀)에서 나온다.
+로고 원본(2026-09-25 · 베어 문 원): `assets/brand/badge.svg`(원형 · 머리줄·바닥·폰 목업) · `icon.svg`(먹 네모 · 파비콘) · `mark.svg`(원만 · 제호 끝 마침표).
+머리줄 로고는 `build.py` 의 `LOGO_MARK` 한 줄이 정한다. 옛 캐릭터 배지 `assets/logo.png` 는 이제 안 쓴다(바깥 링크 대비로 남겨 둠).
 로고나 `tools/og-card.html` 을 고쳤으면:
 
 ```bash
 python3 tools/make-assets.py
 python3 build.py          # og 그림 주소 뒤의 ?v= 를 다시 붙인다
+```
+
+첫 화면 제호 아래 **사진 띠**(`assets/brand/strip-*`)는 유튜브 채널 배너(2560×1440)의 «아랫줄»(y 1015~1440)만 잘라 만든다.
+🔴 배너 원본은 이 공개 저장소에 두지 않는다 — 작업 저장소 `~/projects/yesterdigest/assets/brand-2026-09/_banner/` 에 있다.
+원본을 바꿨으면 JPG(받침)·WebP 를 다시 만든다 — 폰용 `strip-m-*` 는 가운데(x 800~1990)만 잘라낸 판이다:
+
+```bash
+FF=~/projects/yesterdigest/render/node_modules/@remotion/compositor-linux-x64-gnu/ffmpeg
+SRC=~/projects/yesterdigest/assets/brand-2026-09/_banner/youtube-banner-2026-09-24-2560x1440.png
+for w in 1280 1920 2560; do $FF -y -i $SRC -vf "crop=2560:425:0:1015,scale=$w:-2:flags=lanczos" -q:v 4 assets/brand/strip-$w.jpg; done
+for w in 720 1080; do $FF -y -i $SRC -vf "crop=1190:425:800:1015,scale=$w:-2:flags=lanczos" -q:v 4 assets/brand/strip-m-$w.jpg; done
+node tools/make-banner-webp.mjs $SRC     # WebP — 이 ffmpeg 에는 webp 인코더가 없어 크롬으로 만든다
 ```
 
 `assets/og/home.png` (1200×630) 가 **카톡·트위터·페북에 주소를 붙였을 때 뜨는 그림**이다.

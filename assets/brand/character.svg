@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="128 60 344 810" width="344" height="810"><title>어제한입 캐릭터</title><style>.ch-l,.ch-s{fill:none;stroke-linecap:round;stroke-linejoin:round}
+.ch-l{stroke:#12161C;stroke-width:6.5}
+.ch-t{stroke-width:3.6}.ch-h{stroke-width:10}
+.ch-b{fill:#F8F3E9;stroke:#12161C;stroke-width:6.5;stroke-linejoin:round}
+.ch-ao,.ch-ai{fill:none;stroke-linecap:round}.ch-ao{stroke:#12161C;stroke-width:40}.ch-ai{stroke:#F8F3E9;stroke-width:27}
+.ch-p{fill:#FDB92E;stroke:#12161C;stroke-width:6.5;stroke-linejoin:round}
+.ch-s{stroke:#B87308;stroke-width:6.5}
+.ch-g{fill:#12161C;opacity:.08}</style>
+<ellipse class="ch-g" cx="300" cy="852" rx="118" ry="11"/>
+<path class="ch-b" d="M246 424C220 432 204 452 202 486C200 546 203 600 206 648C208 700 212 760 216 806C196 812 190 846 222 848L278 848C292 848 292 826 290 800L288 716Q300 692 312 716L310 800C308 826 308 848 322 848L378 848C410 846 404 812 384 806C388 760 392 700 394 648C397 600 400 546 398 486C396 452 380 432 354 424Z"/>
+<path class="ch-ao" d="M216 500C182 508 166 536 188 562"/><path class="ch-ai" d="M216 500C182 508 166 536 188 562"/>
+<path class="ch-ao" d="M384 500C418 508 434 536 412 562"/><path class="ch-ai" d="M384 500C418 508 434 536 412 562"/>
+<ellipse class="ch-b" cx="300" cy="290" rx="158" ry="150"/>
+<g class="ch-sprout"><path class="ch-s" d="M300 141C298 116 284 96 258 86"/><path class="ch-s" d="M300 141C302 118 318 100 344 94"/></g>
+<path class="ch-l" d="M227 311A20 20 0 0 1 261 311"/><path class="ch-l" d="M339 311A20 20 0 0 1 373 311"/>
+<path class="ch-l" d="M288 372Q300 381 312 372"/>
+<path class="ch-p" d="M194 430L359.4 430A21 21 0 0 0 368.19 450.39A21 21 0 0 0 391.08 472.49A21 21 0 0 0 410 480.82L410 576Q410 580 406 580L194 580Q190 580 190 576L190 434Q190 430 194 430Z"/>
+<path class="ch-l ch-h" d="M212 457L336 457"/>
+<path class="ch-l ch-t" d="M212 477L352 477"/>
+<rect class="ch-l ch-t" x="212" y="494" width="70" height="52" rx="1"/>
+<path class="ch-l ch-t" d="M226 532L244 514L256 526L266 518L268 532"/>
+<path class="ch-l ch-t" d="M298 498L390 498M298 512L390 512M298 526L390 526M298 540L360 540M212 562L390 562"/>
+<ellipse class="ch-b" cx="194" cy="556" rx="19" ry="22" transform="rotate(14 194 556)"/>
+<ellipse class="ch-b" cx="406" cy="556" rx="19" ry="22" transform="rotate(-14 406 556)"/>
+</svg>
