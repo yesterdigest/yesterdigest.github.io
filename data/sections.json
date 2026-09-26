@@ -14,9 +14,15 @@
     {
       "id": "editions",
       "제목": "지난 편",
-      "메뉴이름": "EDITIONS",
       "보임": true,
       "종류": "화면"
+    },
+    {
+      "id": "growth",
+      "제목": "채널 성장",
+      "보임": true,
+      "종류": "화면",
+      "_비고": "2026-09-26 7차 시안 — 유튜브·인스타 성장 그래프. 수는 data/growth.json(tools/make-growth.py)."
     },
     {
       "id": "privacy",

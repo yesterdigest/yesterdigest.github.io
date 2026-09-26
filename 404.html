@@ -1,23 +1,49 @@
 <!doctype html>
-<html lang="ko">
+<html lang="ko" data-theme="light">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- 5차 — 법문과 같은 머리: 주소창 색 → 판 한 줄 → 글꼴 → styles.css · theme.js. 먹 판을 고른 사람은 404 에서도 먹 판이다 -->
+  <meta name="theme-color" content="#F3EEE3">
+  <script>(function(){var d=document.documentElement,t='light';try{if(localStorage.getItem('yd-theme')==='dark')t='dark';}catch(e){}d.setAttribute('data-theme',t);if(t==='dark'){var m=document.querySelector('meta[name="theme-color"]');if(m)m.setAttribute('content','#14171C');}})();</script>
   <title>페이지를 찾을 수 없습니다 | YesterDigest</title>
-  <meta name="theme-color" content="#0C3054">
   <meta name="robots" content="noindex">
-  <link rel="icon" href="/favicon.ico" sizes="32x32">
-  <link rel="icon" href="/assets/brand/logo-256.png" type="image/png" sizes="256x256">
+  <link rel="icon" href="/favicon.ico" sizes="16x16 32x32 48x48">
+  <link rel="icon" href="/assets/brand/icon-16.svg" type="image/svg+xml">
+  <link rel="icon" href="/assets/brand/icon-192.png" type="image/png" sizes="192x192">
   <link rel="apple-touch-icon" href="/apple-touch-icon.png">
-  <link rel="stylesheet" href="/assets/styles.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+  <link rel="preload" as="style" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
+  <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Inter:wght@500;600;700&display=swap">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css" media="print" onload="this.media='all'">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@500;600;700&display=swap" media="print" onload="this.media='all'">
+  <noscript><link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css"><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@500;600;700&display=swap"></noscript>
+  <link rel="stylesheet" href="/assets/styles.css?v=b3287d63">
+  <script src="/assets/theme.js?v=00039303" defer></script>
 </head>
 <body>
-  <main class="not-found">
+  <a class="skip-link" href="#main">본문으로 건너뛰기</a>
+  <header class="site-header">
+    <nav class="nav" aria-label="주요 메뉴">
+      <a class="brand-link" href="/">
+        <img class="brand-lockup on-light" src="/assets/brand/lockup-h.svg" alt="어제한입 YesterDigest" width="107" height="34">
+        <img class="brand-lockup on-dark" src="/assets/brand/lockup-h-dark.svg" alt="어제한입 YesterDigest" width="107" height="34">
+      </a>
+      <div class="nav-tail">
+        <button class="theme-btn" type="button" data-theme-toggle aria-label="DARK · 다크 모드로 바꾸기"><svg class="ic-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round" aria-hidden="true"><path d="M20 14.6A8.2 8.2 0 0 1 9.4 4a8.2 8.2 0 1 0 10.6 10.6z"/></svg><svg class="ic-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="4.2"/><path d="M12 2.5v2.2M12 19.3v2.2M2.5 12h2.2M19.3 12h2.2M5.3 5.3l1.6 1.6M17.1 17.1l1.6 1.6M5.3 18.7l1.6-1.6M17.1 6.9l1.6-1.6"/></svg><span class="theme-label">DARK</span></button>
+      </div>
+    </nav>
+  </header>
+  <main class="not-found" id="main">
     <div>
-      <img src="/assets/logo.png" alt="어제한입">
+      <!-- 캐릭터 «편집자» 인사 판 — 크림·먹 두 장을 판에 따라 번갈아 보인다. 장식이라 읽지 않는다(alt="") -->
+      <img class="on-light" src="/assets/brand/character-greet.svg" alt="" width="80" height="160">
+      <img class="on-dark" src="/assets/brand/character-greet-dark.svg" alt="" width="80" height="160">
       <h1>페이지를 찾을 수 없습니다.</h1>
       <p>주소가 변경됐거나 존재하지 않는 페이지입니다.</p>
-      <a class="button button-primary" href="/">홈으로 돌아가기</a>
+      <a class="button button-primary" href="/">Back to home</a>
     </div>
   </main>
 </body>

@@ -1,4 +1,4 @@
-/* 홈 — 화면 전환 · 목록(햄버거) · 편 캐러셀 · 맞이하는 캐릭터
+/* 홈 — 화면 전환 · 목록(햄버거) · 지난 편 넘기기 · 소개 창
    JS 가 안 돌면 모든 화면이 «그냥 다 보인다» (검색엔진·심사자도 전부 읽는다).
    🔴 카드를 다 보여주는 장치(라이트박스·영상 재생)는 일부러 두지 않는다 —
       더 보려면 Instagram·YouTube 로 넘어가야 한다 (유진님 2026-09-12 07:54). */
@@ -55,6 +55,17 @@
   window.addEventListener('popstate', function () { show(location.hash.slice(1) || 기본, false); });
   show(location.hash.slice(1) || 기본, false);
 
+  /* ── 창이 열린 동안 «바깥»을 막는다 (5차 · A11Y-05) ──
+     서랍·소개 창은 진짜 «창»이다(role=dialog · aria-modal). 열린 동안 머리줄·본문·구글 칸·바닥에 inert 를 걸어
+     Tab 이 창 밖으로 새지 않게 하고, 닫으면 풀고 «연 단추»로 초점을 돌려준다. 지난 편 칸의 p.inert 와 같은 방식이다. */
+  var 바깥 = ['.skip-link', '.site-header', '#main', '.oauth-note', '.site-footer'];   /* 5차 검수: 건너뛰기 링크로 초점이 샜다 */
+  function 막기(on) {
+    바깥.forEach(function (sel) {
+      var el = document.querySelector(sel);
+      if (el) el.inert = on;
+    });
+  }
+
   /* ── 2. 목록(햄버거) ────────────────────────── */
   var drawer = document.getElementById('drawer');
   var backdrop = document.getElementById('drawer-backdrop');
@@ -68,6 +79,7 @@
     });
     openBtn.setAttribute('aria-expanded', 'true');
     document.body.style.overflow = 'hidden';
+    막기(true);
     closeBtn.focus();
   }
 
@@ -76,6 +88,7 @@
     drawer.classList.remove('is-open'); backdrop.classList.remove('is-open');
     openBtn.setAttribute('aria-expanded', 'false');
     document.body.style.overflow = '';
+    막기(false);                       /* 🔴 풀고 나서 초점을 준다 — inert 인 단추에는 초점이 안 간다 */
     setTimeout(function () { drawer.hidden = true; backdrop.hidden = true; }, 280);
     openBtn.focus();
   }
@@ -100,7 +113,9 @@
       document.documentElement.style.setProperty('--header-h', header.offsetHeight + 'px');
       /* 🔴 투명 + 밝은 글자는 «어두운 첫 화면 위에 있을 때»만 쓴다.
          지난 편 화면은 위가 살구색이라, 거기서 투명하게 두면 흰 글자가 안 보인다. */
-      var 어두운첫화면 = !!document.querySelector('.view.is-active .showcase');
+      /* 2026-09-24 — 첫 화면 맨 위는 이제 «제호»(.nameplate)다. 제호 위에서는 머리줄이 바탕과 한 몸(투명),
+         내려가면 가는 선 한 줄로 갈라진다. 제호가 없는 화면(지난 편)에서는 처음부터 갈라진다. */
+      var 어두운첫화면 = !!document.querySelector('.view.is-active .nameplate');
       header.classList.toggle('is-stuck', window.scrollY > 문턱() || !어두운첫화면);
     };
     window.addEventListener('scroll', 상단바, { passive: true });
@@ -108,98 +123,8 @@
     상단바();
   }
 
-  /* ── 4. 첫 화면 쇼케이스 — 가만히 두면 저절로 바뀐다 ──
-     유진님 2026-09-12 09:26. 장 수는 data/showcase.json 이 정하므로 여기서는 «세어서» 쓴다. */
-  var sc = document.querySelector('.showcase');
-  if (sc) {
-    var 장 = [].slice.call(sc.querySelectorAll('.sc-panel'));
-    var dotBox = sc.querySelector('.sc-dots');
-    var 간격 = parseInt(sc.getAttribute('data-interval'), 10) || 7000;
-    var 지금 = 0, 타이머 = null, 멈춤 = false;
-
-    var scDots = 장.map(function (p, i) {
-      var b = document.createElement('button');
-      b.type = 'button';
-      b.setAttribute('role', 'tab');
-      b.setAttribute('aria-label', (i + 1) + '번째 소개 화면');
-      b.addEventListener('click', function () { 보이기(i); 세우기(); 돌리기(); });
-      dotBox.appendChild(b);
-      return b;
-    });
-
-    function 보이기(i) {
-      지금 = (i + 장.length) % 장.length;
-      장.forEach(function (p, k) {
-        var on = k === 지금;
-        p.classList.toggle('is-on', on);
-        p.setAttribute('aria-hidden', on ? 'false' : 'true');
-        if (on) {
-          /* 이 장의 그림은 «처음 보일 때» 받는다 — 첫 그림이 늦지 않게 */
-          p.querySelectorAll('img[data-src]').forEach(function (im) {
-            im.src = im.getAttribute('data-src');
-            im.removeAttribute('data-src');
-          });
-        }
-      });
-      scDots.forEach(function (d, k) {
-        d.classList.toggle('is-on', k === 지금);
-        d.setAttribute('aria-selected', k === 지금 ? 'true' : 'false');
-      });
-    }
-
-    function 돌리기() {
-      if (타이머 || 멈춤 || reduce || 장.length < 2) return;
-      타이머 = setInterval(function () { 보이기(지금 + 1); }, 간격);
-    }
-
-    function 세우기() {
-      if (타이머) { clearInterval(타이머); 타이머 = null; }
-    }
-
-    /* 마우스를 올리거나 초점이 들어오면 멈춘다 — 읽는 중에 넘어가지 않게.
-       🔴 pointerenter 가 아니라 mouseenter 를 쓴다. 손가락은 pointerenter 는 일으키고
-          pointerleave 는 «안 일으킬 때»가 있어, 폰에서 한 번 만지면 영영 멈춰버린다. */
-    ['mouseenter', 'focusin'].forEach(function (ev) {
-      sc.addEventListener(ev, function () { 멈춤 = true; 세우기(); });
-    });
-    ['mouseleave', 'focusout'].forEach(function (ev) {
-      sc.addEventListener(ev, function () { 멈춤 = false; 돌리기(); });
-    });
-    document.addEventListener('visibilitychange', function () {
-      if (document.hidden) 세우기(); else 돌리기();
-    });
-
-    /* 손가락으로 넘기기 */
-    var sx = 0, sy = 0, 끌기 = false;
-    sc.addEventListener('touchstart', function (ev) {
-      sx = ev.touches[0].clientX; sy = ev.touches[0].clientY; 끌기 = true; 세우기();
-    }, { passive: true });
-    sc.addEventListener('touchend', function (ev) {
-      if (!끌기) return;
-      끌기 = false;
-      var dx = ev.changedTouches[0].clientX - sx;
-      var dy = ev.changedTouches[0].clientY - sy;
-      if (Math.abs(dx) > 45 && Math.abs(dx) > Math.abs(dy)) 보이기(지금 + (dx < 0 ? 1 : -1));
-      돌리기();
-    }, { passive: true });
-
-    보이기(0);
-    돌리기();     /* prefers-reduced-motion 이면 돌리기()가 스스로 아무것도 안 한다 */
-  }
-
-  /* ── 5. 맞이하는 캐릭터 ─────────────────────── */
-  /* 정지 PNG(105KB)가 먼저 뜨고, 그 위에 GIF(350KB)를 «따로 받아» 다 받은 뒤에만 바꾼다.
-     첫 그림이 늦어지지 않고, 못 받으면 PNG 그대로 남는다.
-     움직임을 마다하는 설정이면 아예 받지 않는다. */
-  var 캐릭터 = document.getElementById('hero-char');
-  if (캐릭터 && !reduce) {
-    var 움직임 = 캐릭터.getAttribute('data-motion');
-    if (움직임) {
-      var pre = new Image();
-      pre.onload = function () { 캐릭터.src = 움직임; 캐릭터.classList.add('is-waving'); };
-      pre.src = 움직임;      /* onerror 는 두지 않는다 — 실패하면 PNG 가 그대로 있으면 된다 */
-    }
-  }
+  /* ── 4·5. (옛) 첫 화면 쇼케이스 · 맞이하는 캐릭터 — 5차에 지웠다.
+     쇼케이스 장(.showcase)과 움직이는 캐릭터(#hero-char · GIF)는 이미 페이지에 없다(4차 제호 판). 남은 코드만 걷었다. */
 
   /* ── 6. 지난 편 — 한 번 밀면 한 편 ─────────────
      🔴 2026-09-12 유진님 12:39.
@@ -284,13 +209,24 @@
       return true;
     }
 
+    /* 안내 글 — 마우스(fine)면 「DRAG · ← →」, 손가락(coarse)이면 「SWIPE」 (5차 · 옛 TAP TO BROWSE) */
+    var 손가락 = window.matchMedia ? window.matchMedia('(pointer: coarse)') : null;
+    function 안내() {
+      if (!hint) return;
+      hint.textContent = hint.getAttribute(잡힘 ? 'data-on' : (손가락 && 손가락.matches ? 'data-coarse' : 'data-fine'));
+    }
+    if (손가락 && 손가락.addEventListener) 손가락.addEventListener('change', 안내);
+
     function 잡기(on) {
+      var 바뀜 = 잡힘 !== on;
       잡힘 = on;
       stage.classList.toggle('is-held', on);
       /* 🔴 머리줄은 z-index 20 이라 무대의 «주변 음영»(box-shadow) 위에 뜬다.
-         CSS 가 위로 못 올라가므로 여기서 body 에 표시를 남긴다 (유진님 16:05 「위 아래는 음영처리」). */
+         CSS 가 위로 못 올라가므로 여기서 body 에 표시를 남긴다 (유진님 16:05 「위 아래는 음영처리」).
+         🔴 5차 — 잡힌 동안 머리줄은 흐리게(.3) 두지 않고 inert 로 막는다(누를 수 없는 것이 흐린 글자로 남지 않게) */
       document.body.classList.toggle('ed-held', on);
-      if (hint) hint.textContent = hint.getAttribute(on ? 'data-on' : 'data-off');
+      if (바뀜 && header) header.inert = on;
+      안내();
     }
 
     /* 🔴 누른 칸을 «화면 세로 가운데»로 (유진님 2026-09-12 14:52 「딱 화면 중앙으로 이동」).
@@ -361,6 +297,7 @@
     if (next) next.addEventListener('click', function () { 가기(1); });
 
     그리기();
+    안내();
   });
 
   /* ── 7. 소개 영상 «틀» — 커졌다 줄어든다 ────────
@@ -377,6 +314,7 @@
       introBox.hidden = false;
       requestAnimationFrame(function () { introBox.classList.add('is-open'); });
       document.body.style.overflow = 'hidden';
+      막기(true);
       introClose.focus();
     }
 
@@ -384,25 +322,16 @@
       if (introBox.hidden) return;
       introBox.classList.remove('is-open');          /* 줄어든다 */
       document.body.style.overflow = '';
+      막기(false);                                   /* 🔴 풀고 나서 초점을 «연 단추»로 돌려준다 */
       setTimeout(function () { introBox.hidden = true; }, 340);
       if (되돌릴곳 && 되돌릴곳.focus) 되돌릴곳.focus();
     }
 
     /* 🔴 2026-09-12 유진님 15:17 — 「유튜브 소개 페이지에서 재생버튼을 누르면 이 웹에서
        소개영상을 띄워야지 유튜브 채널로 가는거 아니야. 기억해.」
-
-       재생 단추는 «폰 전체를 감싼 링크(.device-link)» 안에 있다. 그래서 그냥 두면
-       단추를 눌러도 링크가 따라 열려 유튜브로 가버린다.
-       → preventDefault 로 «감싼 링크의 이동»을 막고, stopPropagation 으로
-         폰 다른 곳을 눌렀을 때의 처리와도 갈라놓는다.
-       🔴 폰의 «다른 곳»은 그대로 그 편 게시물로 이동한다 (유진님 지시). */
-    if (introBtn) {
-      introBtn.addEventListener('click', function (ev) {
-        ev.preventDefault();
-        ev.stopPropagation();
-        열기();
-      });
-    }
+       🔴 5차 — 재생 단추는 이제 링크 «밖»(덮개 링크 .dv-cover 의 형제)이다. 이동을 막는 꼼수
+       (preventDefault · stopPropagation)가 필요 없어 지웠다. 폰의 «다른 곳»은 덮개 링크라 그 편 게시물로 간다. */
+    if (introBtn) introBtn.addEventListener('click', 열기);
     introClose.addEventListener('click', 닫기);
     introBox.addEventListener('click', function (ev) { if (ev.target === introBox) 닫기(); });
     document.addEventListener('keydown', function (ev) { if (ev.key === 'Escape') 닫기(); });
@@ -464,4 +393,145 @@
     setInterval(훑기, 600);
     훑기();
   }
+
+  /* ── 분야 탭 셋 (2026-09-26 업그레이드) ─────────────────────
+     WAI-ARIA 탭 짜임: 누르거나 ← → Home End 로 고른다. 고르지 않은 판은 hidden.
+     🔴 JS 가 없으면 세 판이 «전부» 보인다(data-hidden 은 JS 가 있을 때만 hidden 으로 바뀐다).
+     🔴 탭은 data-view 를 달지 않는다 — 화면 전환(closest('a[data-view], button[data-view]'))과 안 엉킨다. */
+  document.querySelectorAll('[role="tablist"]').forEach(function (list) {
+    var tabs = [].slice.call(list.querySelectorAll('[role="tab"]'));
+    function 고르기(t, focus) {
+      tabs.forEach(function (x) {
+        var on = x === t;
+        x.setAttribute('aria-selected', on ? 'true' : 'false');
+        x.tabIndex = on ? 0 : -1;
+        var panel = document.getElementById(x.getAttribute('aria-controls'));
+        if (panel) {
+          panel.hidden = !on;
+          if (on) panel.querySelectorAll('img[data-src]').forEach(function (im) {
+            im.src = im.getAttribute('data-src'); im.removeAttribute('data-src');
+          });
+        }
+      });
+      if (focus) t.focus();
+    }
+    tabs.forEach(function (t, i) {
+      var panel = document.getElementById(t.getAttribute('aria-controls'));
+      if (panel && panel.hasAttribute('data-hidden')) { panel.hidden = true; panel.removeAttribute('data-hidden'); }
+      t.addEventListener('click', function () { 고르기(t, false); });
+      t.addEventListener('keydown', function (ev) {
+        var n = { ArrowRight: i + 1, ArrowLeft: i - 1, Home: 0, End: tabs.length - 1 }[ev.key];
+        if (n === undefined) return;
+        ev.preventDefault();
+        고르기(tabs[(n + tabs.length) % tabs.length], true);
+      });
+    });
+  });
+  /* ── 채널 성장 그래프 (GROWTH · 2026-09-26 7차 시안) ─────────
+     수는 build.py 가 실은 #growth-data(= data/growth.json)에서만 읽는다. 손으로 적은 수 0.
+     그래프 하나 = 계열 하나 · 선 2px · 점 8px · 빠진 날(null)은 선을 «끊고» 옅은 띠.
+     폭은 figure 의 실제 폭으로 그린다(viewBox 늘이기 없음 → 글자가 폰에서 안 작아진다). 숨은 화면(폭 0)은 ResizeObserver 가 열릴 때 그린다.
+     마우스·손가락: 가까운 날에 세로선 + 말풍선 · 키보드: 그래프에 초점 → ← → Home End. */
+  (function () {
+    var src = document.getElementById('growth-data');
+    if (!src) return;
+    var G; try { G = JSON.parse(src.textContent); } catch (e) { return; }
+    var NS = 'http://www.w3.org/2000/svg';
+    function el(n, a, p) { var x = document.createElementNS(NS, n); for (var k in a) x.setAttribute(k, a[k]); if (p) p.appendChild(x); return x; }
+    function 수(v) { return v == null ? '—' : v.toLocaleString('en-US'); }
+    function 날(d) { return (+d.slice(5, 7)) + '.' + (+d.slice(8, 10)); }
+    function 눈금(max) {                         /* 0 부터 «보기 좋은» 간격 3~5칸 */
+      if (max <= 0) max = 1;
+      var raw = max / 4, p = Math.pow(10, Math.floor(Math.log10(raw))), s = [1, 2, 2.5, 5, 10].map(function (m) { return m * p; })
+        .filter(function (v) { return v >= raw; })[0];
+      if (s < 1) s = 1;
+      var t = []; for (var v = 0; v <= max + 1e-9 || t.length < 2; v += s) t.push(Math.round(v * 100) / 100);
+      if (t[t.length - 1] < max) t.push(t[t.length - 1] + s);
+      return t;
+    }
+    function draw(fig) {
+      var S = G.그래프[+fig.getAttribute('data-series')], W = Math.round(fig.clientWidth), H = 190;
+      if (!S || W < 40) return;
+      if (fig._w === W) return; fig._w = W;
+      var old = fig.querySelector('svg'); if (old) old.remove();
+      var tipOld = fig.querySelector('.gr-tip'); if (tipOld) tipOld.remove();
+      var vals = S.값, n = vals.length, have = vals.filter(function (v) { return v != null; });
+      var ticks = 눈금(Math.max.apply(null, have)), top = ticks[ticks.length - 1];
+      var svg = el('svg', { width: W, height: H, viewBox: '0 0 ' + W + ' ' + H, 'aria-hidden': 'true', focusable: 'false' });
+      fig.insertBefore(svg, fig.firstChild);
+      /* 왼쪽 눈금 글자 폭은 «재서» 정한다(짐작 폭은 글꼴이 바뀌면 그림 밖으로 샌다 — 7차 첫 측정에서 잡힘) */
+      var yl = Math.max.apply(null, ticks.map(function (t) {
+        var m = el('text', {}, svg); m.textContent = 수(t); var w = m.getComputedTextLength(); m.remove(); return w;
+      })) + 10;
+      var L = Math.ceil(yl) + 2, R = 14, T = 10, B = 24, pw = W - L - R, ph = H - T - B;
+      var X = function (i) { return L + (n === 1 ? pw / 2 : pw * i / (n - 1)); };
+      var Y = function (v) { return T + ph - ph * v / top; };
+      ticks.forEach(function (t) {
+        el('line', { x1: L, x2: W - R, y1: Y(t), y2: Y(t), 'class': t === 0 ? 'gr-axis' : 'gr-gridline' }, svg);
+        var tx = el('text', { x: L - 8, y: Y(t) + 4, 'text-anchor': 'end' }, svg); tx.textContent = 수(t);
+      });
+      var step = n > 1 ? pw / (n - 1) : pw;
+      vals.forEach(function (v, i) {                     /* 빠진 날 띠 */
+        if (v == null) el('rect', { x: X(i) - step / 2, y: T, width: step, height: ph, 'class': 'gr-gapband' }, svg);
+      });
+      var every = Math.max(1, Math.ceil(n / Math.max(2, Math.floor(pw / 38))));
+      var show = []; for (var q = 0; q < n; q += every) show.push(q);
+      if (show[show.length - 1] !== n - 1) { if (n - 1 - show[show.length - 1] < every) show.pop(); show.push(n - 1); }
+      G.날짜.forEach(function (d, i) {
+        if (show.indexOf(i) < 0) return;
+        var tx = el('text', { x: X(i), y: H - 6, 'text-anchor': i === 0 ? 'start' : (i === n - 1 ? 'end' : 'middle') }, svg);
+        tx.textContent = 날(d);
+      });
+      var d = '', pen = false;                            /* 선 — null 에서 끊는다 */
+      vals.forEach(function (v, i) {
+        if (v == null) { pen = false; return; }
+        d += (pen ? 'L' : 'M') + X(i).toFixed(1) + ' ' + Y(v).toFixed(1); pen = true;
+      });
+      el('path', { d: d, 'class': 'gr-line' }, svg);
+      vals.forEach(function (v, i) { if (v != null) el('circle', { cx: X(i), cy: Y(v), r: 4, 'class': 'gr-dot' }, svg); });
+      var li = -1; vals.forEach(function (v, i) { if (v != null) li = i; });
+      var lt = el('text', { x: X(li) - 6, y: Y(vals[li]) - 10, 'text-anchor': 'end', 'class': 'gr-last' }, svg);
+      lt.textContent = 수(vals[li]);                       /* 마지막 값만 직접 적는다(점마다 숫자 금지) */
+      var cross = el('line', { y1: T, y2: T + ph, 'class': 'gr-cross', visibility: 'hidden' }, svg);
+      var hot = el('circle', { r: 5.5, 'class': 'gr-hot', visibility: 'hidden' }, svg);
+      var tip = document.createElement('div'); tip.className = 'gr-tip'; tip.hidden = true; fig.appendChild(tip);
+      var cur = -1;
+      function pick(i) {
+        cur = i; var v = vals[i];
+        cross.setAttribute('x1', X(i)); cross.setAttribute('x2', X(i)); cross.setAttribute('visibility', 'visible');
+        if (v != null) { hot.setAttribute('cx', X(i)); hot.setAttribute('cy', Y(v)); hot.setAttribute('visibility', 'visible'); }
+        else hot.setAttribute('visibility', 'hidden');
+        tip.innerHTML = '';
+        tip.appendChild(document.createTextNode(날(G.날짜[i]) + '  '));
+        var b = document.createElement('b'); b.textContent = v == null ? '기록 없음' : 수(v) + S.단위; tip.appendChild(b);
+        tip.hidden = false;
+        var tw = tip.offsetWidth, x = X(i) - tw / 2; x = Math.max(0, Math.min(W - tw, x));
+        tip.style.left = x + 'px';
+        tip.style.top = (v == null ? T : Math.max(0, Y(v) - 44)) + 'px';
+      }
+      function clear() { cur = -1; cross.setAttribute('visibility', 'hidden'); hot.setAttribute('visibility', 'hidden'); tip.hidden = true; }
+      function near(ev) {
+        var r = svg.getBoundingClientRect(), x = ev.clientX - r.left;
+        return Math.max(0, Math.min(n - 1, Math.round((x - L) / (n > 1 ? pw / (n - 1) : 1))));
+      }
+      svg.addEventListener('pointermove', function (ev) { pick(near(ev)); });
+      svg.addEventListener('pointerdown', function (ev) { pick(near(ev)); });
+      svg.addEventListener('pointerleave', function (ev) { if (ev.pointerType === 'mouse') clear(); });
+      fig._key = function (ev) {
+        var k = { ArrowRight: cur + 1, ArrowLeft: cur < 0 ? n - 1 : cur - 1, Home: 0, End: n - 1 }[ev.key];
+        if (k === undefined) return; ev.preventDefault(); pick(Math.max(0, Math.min(n - 1, k)));
+      };
+      fig._clear = clear;
+    }
+    var figs = [].slice.call(document.querySelectorAll('.gr-fig[data-series]'));
+    figs.forEach(function (f) {
+      f.tabIndex = 0;
+      f.addEventListener('keydown', function (ev) { if (f._key) f._key(ev); });
+      f.addEventListener('blur', function () { if (f._clear) f._clear(); });
+    });
+    if ('ResizeObserver' in window) {
+      var ro = new ResizeObserver(function (es) { es.forEach(function (e) { draw(e.target); }); });
+      figs.forEach(function (f) { ro.observe(f); });
+    } else { window.addEventListener('resize', function () { figs.forEach(draw); }); figs.forEach(draw); }
+  })();
 })();

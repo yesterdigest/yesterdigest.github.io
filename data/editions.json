@@ -4,8 +4,26 @@
   "편": [
     {
       "날짜": "2026-09-24",
-      "유튜브": "https://youtube.com/watch?v=nklt47HOwvo",
-      "인스타_릴스": "https://www.instagram.com/reel/DdsBIL2jOg5/",
+      "편별": {
+        "경제세계": {
+          "유튜브": "https://youtube.com/watch?v=0qN7ZT9jI0c",
+          "인스타_릴스": "https://www.instagram.com/reel/DdsA5e6kglZ/"
+        },
+        "종합": {
+          "유튜브": "https://youtube.com/watch?v=V6Y32gmg4i0",
+          "인스타_릴스": "https://www.instagram.com/reel/DdrzUZWDPC6/"
+        },
+        "연예스포츠": {
+          "유튜브": "https://youtube.com/watch?v=qNnhHd_SHP4",
+          "인스타_릴스": "https://www.instagram.com/reel/DdsBIL2jOg5/"
+        },
+        "정치사회": {
+          "유튜브": "https://youtube.com/watch?v=nklt47HOwvo",
+          "인스타_릴스": "https://www.instagram.com/reel/DdsAvidF2j-/"
+        }
+      },
+      "유튜브": "https://youtube.com/watch?v=V6Y32gmg4i0",
+      "인스타_릴스": "https://www.instagram.com/reel/DdrzUZWDPC6/",
       "인스타_카드": "https://www.instagram.com/p/DdrzfIQE9f4/",
       "이슈": [
         "연휴 첫날 귀성길 정체",
@@ -19,6 +37,12 @@
     },
     {
       "날짜": "2026-09-23",
+      "편별": {
+        "종합": {
+          "유튜브": "https://youtube.com/watch?v=xTBTBvNpfCM",
+          "인스타_릴스": "https://www.instagram.com/reel/Ddp5YYXjtsG/"
+        }
+      },
       "유튜브": "https://youtube.com/watch?v=xTBTBvNpfCM",
       "인스타_릴스": "https://www.instagram.com/reel/Ddp5YYXjtsG/",
       "인스타_카드": "https://www.instagram.com/p/DdqAP-ek8Gj/",
@@ -34,8 +58,26 @@
     },
     {
       "날짜": "2026-09-22",
-      "유튜브": "https://youtube.com/watch?v=IFMmdWpkzNc",
-      "인스타_릴스": "https://www.instagram.com/reel/Ddm8cvRk5bq/",
+      "편별": {
+        "종합": {
+          "유튜브": "https://youtube.com/watch?v=z0qi-oWTQyg",
+          "인스타_릴스": "https://www.instagram.com/reel/Ddmpg0NEpFs/"
+        },
+        "경제세계": {
+          "유튜브": "https://youtube.com/watch?v=UjQwmAPXIW4",
+          "인스타_릴스": "https://www.instagram.com/reel/Ddm7oGSgk0x/"
+        },
+        "정치사회": {
+          "유튜브": "https://youtube.com/watch?v=G8zCu0_fKzc",
+          "인스타_릴스": "https://www.instagram.com/reel/Ddm5FYqkSVq/"
+        },
+        "연예스포츠": {
+          "유튜브": "https://youtube.com/watch?v=IFMmdWpkzNc",
+          "인스타_릴스": "https://www.instagram.com/reel/Ddm8cvRk5bq/"
+        }
+      },
+      "유튜브": "https://youtube.com/watch?v=z0qi-oWTQyg",
+      "인스타_릴스": "https://www.instagram.com/reel/Ddmpg0NEpFs/",
       "인스타_카드": "https://www.instagram.com/p/DdmwB02E8OG/",
       "이슈": [
         "야구 대표팀, 대만에 5대 0",
@@ -49,8 +91,26 @@
     },
     {
       "날짜": "2026-09-21",
-      "유튜브": "https://youtube.com/watch?v=6R3m1BFqlwQ",
-      "인스타_릴스": "https://www.instagram.com/reel/DdkTIdKG1CJ/",
+      "편별": {
+        "종합": {
+          "유튜브": "https://youtube.com/watch?v=QaM92etqkP4",
+          "인스타_릴스": "https://www.instagram.com/reel/DdkKmVNDOyg/"
+        },
+        "정치사회": {
+          "유튜브": "https://youtube.com/watch?v=gKbYZMRP63A",
+          "인스타_릴스": "https://www.instagram.com/reel/DdkSlIKkhId/"
+        },
+        "경제세계": {
+          "유튜브": "https://youtube.com/watch?v=q3LLVTIjQSo",
+          "인스타_릴스": "https://www.instagram.com/reel/DdkTIdKG1CJ/"
+        },
+        "연예스포츠": {
+          "유튜브": "https://youtube.com/watch?v=6R3m1BFqlwQ",
+          "인스타_릴스": "https://www.instagram.com/reel/DdkS6FFE1Pi/"
+        }
+      },
+      "유튜브": "https://youtube.com/watch?v=QaM92etqkP4",
+      "인스타_릴스": "https://www.instagram.com/reel/DdkKmVNDOyg/",
       "인스타_카드": "https://www.instagram.com/p/DdkKw0xE3U2/",
       "이슈": [
         "강훈식 비서실장 사의 표명",
@@ -64,9 +124,27 @@
     },
     {
       "날짜": "2026-09-20",
-      "인스타_릴스": "https://www.instagram.com/reel/DdhuqT1gCJ0/",
+      "편별": {
+        "종합": {
+          "인스타_릴스": "https://www.instagram.com/reel/DdhfzEVgN3w/",
+          "유튜브": "https://youtube.com/watch?v=PLdKFDsnIoc"
+        },
+        "정치사회": {
+          "유튜브": "https://youtube.com/watch?v=QXwYlWuQkIg",
+          "인스타_릴스": "https://www.instagram.com/reel/Ddht7E1AErR/"
+        },
+        "경제세계": {
+          "유튜브": "https://youtube.com/watch?v=qyfM1VVZ-EI",
+          "인스타_릴스": "https://www.instagram.com/reel/DdhuTOjiFmF/"
+        },
+        "연예스포츠": {
+          "유튜브": "https://youtube.com/watch?v=u2fYJxZWHeY",
+          "인스타_릴스": "https://www.instagram.com/reel/DdhuqT1gCJ0/"
+        }
+      },
+      "인스타_릴스": "https://www.instagram.com/reel/DdhfzEVgN3w/",
       "인스타_카드": "https://www.instagram.com/p/DdhgR3Yk8Qb/",
-      "유튜브": "https://youtube.com/watch?v=u2fYJxZWHeY",
+      "유튜브": "https://youtube.com/watch?v=PLdKFDsnIoc",
       "이슈": [
         "성승민, 아시안게임 첫 금메달",
         "농구 대표팀 훈련버스 노쇼",
@@ -79,8 +157,26 @@
     },
     {
       "날짜": "2026-09-19",
-      "유튜브": "https://youtube.com/watch?v=XgHzugXVYbo",
-      "인스타_릴스": "https://www.instagram.com/reel/DdfwGArkxaB/",
+      "편별": {
+        "종합": {
+          "유튜브": "https://youtube.com/watch?v=2MmPFI1RVcs",
+          "인스타_릴스": "https://www.instagram.com/reel/Dde7FXIGJJU/"
+        },
+        "경제세계": {
+          "유튜브": "https://youtube.com/watch?v=weBv94QJnDk",
+          "인스타_릴스": "https://www.instagram.com/reel/Ddfu75xD5It/"
+        },
+        "연예스포츠": {
+          "유튜브": "https://youtube.com/watch?v=o07WvRHvtCM",
+          "인스타_릴스": "https://www.instagram.com/reel/Ddfv8CjCjnF/"
+        },
+        "정치사회": {
+          "유튜브": "https://youtube.com/watch?v=XgHzugXVYbo",
+          "인스타_릴스": "https://www.instagram.com/reel/DdfwGArkxaB/"
+        }
+      },
+      "유튜브": "https://youtube.com/watch?v=2MmPFI1RVcs",
+      "인스타_릴스": "https://www.instagram.com/reel/Dde7FXIGJJU/",
       "인스타_카드": "https://www.instagram.com/p/Dde7gfBH00E/",
       "이슈": [
         "아시안게임 조직위, 공식 사과",
@@ -94,6 +190,12 @@
     },
     {
       "날짜": "2026-09-18",
+      "편별": {
+        "종합": {
+          "유튜브": "https://youtube.com/watch?v=_6SViQk9EWw",
+          "인스타_릴스": "https://www.instagram.com/reel/DdciFCAjW9G/"
+        }
+      },
       "유튜브": "https://youtube.com/watch?v=_6SViQk9EWw",
       "인스타_릴스": "https://www.instagram.com/reel/DdciFCAjW9G/",
       "인스타_카드": "https://www.instagram.com/p/DdciYaDmISc/",
@@ -109,6 +211,12 @@
     },
     {
       "날짜": "2026-09-17",
+      "편별": {
+        "종합": {
+          "유튜브": "https://youtube.com/watch?v=GZPvPYeyNqg",
+          "인스타_릴스": "https://www.instagram.com/reel/DdZxkgBiLyc/"
+        }
+      },
       "유튜브": "https://youtube.com/watch?v=GZPvPYeyNqg",
       "인스타_릴스": "https://www.instagram.com/reel/DdZxkgBiLyc/",
       "인스타_카드": "https://www.instagram.com/p/DdZx1sPk3hx/",
@@ -124,6 +232,12 @@
     },
     {
       "날짜": "2026-09-16",
+      "편별": {
+        "종합": {
+          "유튜브": "https://youtube.com/watch?v=o8XJ0OwKg_A",
+          "인스타_릴스": "https://www.instagram.com/reel/DdXMvATEpVw/"
+        }
+      },
       "유튜브": "https://youtube.com/watch?v=o8XJ0OwKg_A",
       "인스타_릴스": "https://www.instagram.com/reel/DdXMvATEpVw/",
       "인스타_카드": "https://www.instagram.com/p/DdXNFNNkiRz/",
@@ -139,6 +253,12 @@
     },
     {
       "날짜": "2026-09-15",
+      "편별": {
+        "종합": {
+          "유튜브": "https://youtube.com/watch?v=ukYWhIT8Sks",
+          "인스타_릴스": "https://www.instagram.com/reel/DdUvvWBjUZf/"
+        }
+      },
       "유튜브": "https://youtube.com/watch?v=ukYWhIT8Sks",
       "인스타_릴스": "https://www.instagram.com/reel/DdUvvWBjUZf/",
       "이슈": [
@@ -153,9 +273,15 @@
     },
     {
       "날짜": "2026-09-14",
+      "편별": {
+        "종합": {
+          "유튜브": "https://youtube.com/watch?v=PKgtYE6kLxk",
+          "인스타_릴스": "https://www.instagram.com/reel/DdSLbsQDBsL/"
+        }
+      },
       "유튜브": "https://youtube.com/watch?v=PKgtYE6kLxk",
-      "인스타_릴스": "https://www.instagram.com/reel/DdSLbsQDBsL/",
       "인스타_카드": "https://www.instagram.com/p/DdSI7G_EyWP/",
+      "인스타_릴스": "https://www.instagram.com/reel/DdSLbsQDBsL/",
       "이슈": [
         "모레노호 1기 명단 발표",
         "서울 버스 16일 파업 예고",
@@ -168,6 +294,12 @@
     },
     {
       "날짜": "2026-09-13",
+      "편별": {
+        "종합": {
+          "유튜브": "https://youtube.com/watch?v=OeVKAIpwx10",
+          "인스타_릴스": "https://www.instagram.com/reel/DdPoBInDmgs/"
+        }
+      },
       "유튜브": "https://youtube.com/watch?v=OeVKAIpwx10",
       "인스타_릴스": "https://www.instagram.com/reel/DdPoBInDmgs/",
       "인스타_카드": "https://www.instagram.com/p/DdPpjogkmbh/",
@@ -183,6 +315,12 @@
     },
     {
       "날짜": "2026-09-12",
+      "편별": {
+        "종합": {
+          "인스타_릴스": "https://www.instagram.com/reel/DdM-YnJFboC/",
+          "유튜브": "https://youtube.com/watch?v=cuLCymWmmeQ"
+        }
+      },
       "인스타_릴스": "https://www.instagram.com/reel/DdM-YnJFboC/",
       "유튜브": "https://youtube.com/watch?v=cuLCymWmmeQ",
       "이슈": [
@@ -198,6 +336,12 @@
     {
       "날짜": "2026-09-11",
       "인스타_카드": "https://www.instagram.com/p/DdKYg43Ek-b/",
+      "편별": {
+        "종합": {
+          "유튜브": "https://youtube.com/watch?v=c-uiBQKFP5U",
+          "인스타_릴스": "https://www.instagram.com/reel/DdKZlk2iIA7/"
+        }
+      },
       "유튜브": "https://youtube.com/watch?v=c-uiBQKFP5U",
       "인스타_릴스": "https://www.instagram.com/reel/DdKZlk2iIA7/",
       "이슈": [
@@ -212,6 +356,12 @@
     },
     {
       "날짜": "2026-09-10",
+      "편별": {
+        "종합": {
+          "유튜브": "https://youtube.com/watch?v=_ccVpJCycj4",
+          "인스타_릴스": "https://www.instagram.com/reel/DdJXHuSgG5h/"
+        }
+      },
       "유튜브": "https://youtube.com/watch?v=_ccVpJCycj4",
       "인스타_카드": "https://www.instagram.com/p/DdJT4ZymnGI/",
       "인스타_릴스": "https://www.instagram.com/reel/DdJXHuSgG5h/",
@@ -227,6 +377,11 @@
     },
     {
       "날짜": "2026-09-09",
+      "편별": {
+        "종합": {
+          "유튜브": "https://youtube.com/watch?v=l2fiycxdPzY"
+        }
+      },
       "유튜브": "https://youtube.com/watch?v=l2fiycxdPzY",
       "인스타_카드": "https://www.instagram.com/p/DdF-RQOGsuS/",
       "이슈": [

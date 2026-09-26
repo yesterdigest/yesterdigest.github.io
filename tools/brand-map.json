@@ -1,0 +1,179 @@
+{
+ "_설명": [
+  "사이트는 assets/brand/ 의 «정식 이름»만 부른다 (build.py LOCKUP·SEAL·LOGO_ICON · tools/make-assets.py · 404.html). 방향을 바꾸려면 아래 표에서 고른 방향의 파일을 정식 이름으로 복사한 뒤 python3 tools/make-assets.py → python3 build.py.",
+  "🔴 표의 원본은 작업본 .review/brand5/ 에만 있다 (공개 저장소에는 안 올라간다).",
+  "🔴 D4v2 가 아닌 방향은 «복사만으로 끝나지 않는다» — 아래 '갈아끼울때_같이_볼것' 을 먼저 본다.",
+  "2026-09-25 5차 작업본 — 유진님 「다 보고 고를게요」(09-25 05:1x). 고르시기 전까지 D4v2."
+ ],
+ "현재": "D4v2",
+ "정식이름": [
+  "lockup-h.svg",
+  "lockup-h-dark.svg",
+  "seal.svg",
+  "seal-dark.svg",
+  "icon.svg",
+  "icon-dark.svg",
+  "icon-16.svg",
+  "wordmark.svg",
+  "wordmark-dark.svg",
+  "wordmark-text.svg",
+  "wordmark-text-dark.svg",
+  "wordmark-stack.svg",
+  "wordmark-stack-dark.svg",
+  "character.svg",
+  "character-greet.svg",
+  "character-greet-dark.svg"
+ ],
+ "갈아끼울때_같이_볼것": [
+  "머리줄 lockup 가로:세로 = 3.164 가 assets/home.css .brand-lockup 에 박혀 있다 (width: calc(var(--lockup-h)*3.164)). 첫 화면에서는 왼쪽 정사각(인장)만 보이게 자른다 — 다른 방향은 비율과 «인장이 왼쪽 정사각에 있는가»를 다시 잰다.",
+  "캐릭터는 build.py 캐릭터() 가 페이지 안에 넣고 색은 home.css --ch-line·--ch-coat·--ch-face·--ch-dot 이 칠한다 (클래스 .ch-l·.ch-c·.ch-f·.ch-fc·.ch-d·.ch-ls·.ch-ko). 다른 방향 캐릭터는 색이 파일 안에 박혀 있어 클래스를 입혀야 한다. .about-figure·.intro-ch 의 aspect-ratio 1/2 도 viewBox 에 맞춘다.",
+  "레터링 제안(?masthead=lettering)은 build.py 레터링() 이 워드마크의 <path> 가 «정확히 두 개»(글자 · ㅎ 꼭지 점)라고 가정한다.",
+  "tools/og-card.html 은 D4v2 og.svg 를 통째로 품었다 — 방향을 바꾸면 그 방향의 og 그림으로 다시 짠다.",
+  "바꾼 뒤 §0-7 확인: .review/shot3.mjs · .review/contrast.mjs 를 다시 돌려 전후를 나란히 본다."
+ ],
+ "방향": {
+  "D4v2": {
+   "이름": "D4 한글 레터링 v2 (추천)",
+   "원본폴더": ".review/brand5/D4v2/",
+   "파일": {
+    "lockup-h.svg": "lockup-h.svg",
+    "lockup-h-dark.svg": "lockup-h-dark.svg",
+    "seal.svg": "seal.svg",
+    "seal-dark.svg": "seal-dark.svg",
+    "icon.svg": "icon.svg",
+    "icon-dark.svg": "icon-dark.svg",
+    "icon-16.svg": "icon-16.svg",
+    "wordmark.svg": "wordmark.svg",
+    "wordmark-dark.svg": "wordmark-dark.svg",
+    "wordmark-text.svg": "wordmark-text.svg",
+    "wordmark-text-dark.svg": "wordmark-text-dark.svg",
+    "wordmark-stack.svg": "wordmark-stack.svg",
+    "wordmark-stack-dark.svg": "wordmark-stack-dark.svg",
+    "character.svg": "character/read.svg",
+    "character-greet.svg": "character/wave.svg",
+    "character-greet-dark.svg": "character/wave-dark.svg",
+    "_og": "og/og.svg",
+    "_배너": "channel/youtube-banner-cream.svg",
+    "_프로필": "channel/profile-800-cream.svg"
+   }
+  },
+  "D1": {
+   "이름": "D1 신문 제호",
+   "원본폴더": ".review/brand5/D1-masthead/",
+   "파일": {
+    "lockup-h.svg": "lockup-h.svg",
+    "lockup-h-dark.svg": "lockup-h-dark.svg",
+    "seal.svg": "symbol.svg",
+    "seal-dark.svg": "symbol-dark.svg",
+    "icon.svg": null,
+    "icon-dark.svg": null,
+    "icon-16.svg": "symbol-small.svg",
+    "wordmark.svg": "wordmark.svg",
+    "wordmark-dark.svg": "wordmark-dark.svg",
+    "wordmark-text.svg": "wordmark-en.svg",
+    "wordmark-text-dark.svg": "wordmark-en-dark.svg",
+    "wordmark-stack.svg": null,
+    "wordmark-stack-dark.svg": null,
+    "character.svg": "pose-read.svg",
+    "character-greet.svg": "pose-wave.svg",
+    "character-greet-dark.svg": "pose-wave-dark.svg",
+    "_배너": "channel/youtube-banner.svg",
+    "_프로필": "channel/profile.svg"
+   }
+  },
+  "D2": {
+   "이름": "D2 기하 도형",
+   "원본폴더": ".review/brand5/D2-geometric/",
+   "파일": {
+    "lockup-h.svg": "lockup-h.svg",
+    "lockup-h-dark.svg": "lockup-h-dark.svg",
+    "seal.svg": "symbol.svg",
+    "seal-dark.svg": "symbol-dark.svg",
+    "icon.svg": "icon.svg",
+    "icon-dark.svg": null,
+    "icon-16.svg": "icon-16.svg",
+    "wordmark.svg": "wordmark.svg",
+    "wordmark-dark.svg": "wordmark-dark.svg",
+    "wordmark-text.svg": "wordmark-en.svg",
+    "wordmark-text-dark.svg": "wordmark-en-dark.svg",
+    "wordmark-stack.svg": "wordmark-stack.svg",
+    "wordmark-stack-dark.svg": "wordmark-stack-dark.svg",
+    "character.svg": "pose-read.svg",
+    "character-greet.svg": "pose-wave.svg",
+    "character-greet-dark.svg": "pose-wave-dark.svg",
+    "_배너": "youtube-banner-2560x1440.png",
+    "_프로필": "profile-800.png"
+   }
+  },
+  "D3": {
+   "이름": "D3 손맛 인장",
+   "원본폴더": ".review/brand5/D3-crafted/",
+   "파일": {
+    "lockup-h.svg": "lockup-h.svg",
+    "lockup-h-dark.svg": "lockup-h-dark.svg",
+    "seal.svg": "symbol.svg",
+    "seal-dark.svg": "symbol-dark.svg",
+    "icon.svg": "symbol-tile.svg",
+    "icon-dark.svg": null,
+    "icon-16.svg": "symbol-16px.svg",
+    "wordmark.svg": "wordmark.svg",
+    "wordmark-dark.svg": "wordmark-dark.svg",
+    "wordmark-text.svg": "wordmark-en.svg",
+    "wordmark-text-dark.svg": "wordmark-en-dark.svg",
+    "wordmark-stack.svg": null,
+    "wordmark-stack-dark.svg": null,
+    "character.svg": "pose-read.svg",
+    "character-greet.svg": "pose-wave.svg",
+    "character-greet-dark.svg": "pose-wave-dark.svg",
+    "_배너": "youtube-banner-2560x1440.png",
+    "_프로필": "profile-800.png"
+   }
+  },
+  "D4": {
+   "이름": "D4 한글 레터링 v1 (심사판)",
+   "원본폴더": ".review/brand5/D4-hangul-type/",
+   "파일": {
+    "lockup-h.svg": "lockup-h.svg",
+    "lockup-h-dark.svg": "lockup-h-dark.svg",
+    "seal.svg": "symbol.svg",
+    "seal-dark.svg": "symbol-dark.svg",
+    "icon.svg": "symbol-icon.svg",
+    "icon-dark.svg": null,
+    "icon-16.svg": "symbol-16px.svg",
+    "wordmark.svg": "wordmark.svg",
+    "wordmark-dark.svg": "wordmark-dark.svg",
+    "wordmark-text.svg": "wordmark-text.svg",
+    "wordmark-text-dark.svg": "wordmark-text-dark.svg",
+    "wordmark-stack.svg": null,
+    "wordmark-stack-dark.svg": null,
+    "character.svg": "pose-read.svg",
+    "character-greet.svg": "pose-wave.svg",
+    "character-greet-dark.svg": "pose-wave-dark.svg"
+   }
+  },
+  "D5": {
+   "이름": "D5 잡지 편집",
+   "원본폴더": ".review/brand5/D5-editorial-magazine/",
+   "파일": {
+    "lockup-h.svg": "logo/lockup-h-light.svg",
+    "lockup-h-dark.svg": "logo/lockup-h-dark.svg",
+    "seal.svg": "logo/symbol-light.svg",
+    "seal-dark.svg": "logo/symbol-dark.svg",
+    "icon.svg": "logo/icon.svg",
+    "icon-dark.svg": null,
+    "icon-16.svg": "logo/icon-16.svg",
+    "wordmark.svg": "logo/wordmark-light.svg",
+    "wordmark-dark.svg": "logo/wordmark-dark.svg",
+    "wordmark-text.svg": "logo/wordmark-en-light.svg",
+    "wordmark-text-dark.svg": "logo/wordmark-en-dark.svg",
+    "wordmark-stack.svg": "logo/wordmark-stack-light.svg",
+    "wordmark-stack-dark.svg": "logo/wordmark-stack-dark.svg",
+    "character.svg": "character/pose-read-light.svg",
+    "character-greet.svg": "character/pose-wave-light.svg",
+    "character-greet-dark.svg": "character/pose-wave-dark.svg",
+    "_배너": "channel/youtube-banner.svg",
+    "_프로필": "channel/profile.svg"
+   }
+  }
+ }
+}

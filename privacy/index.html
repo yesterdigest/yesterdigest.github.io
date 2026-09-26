@@ -1,11 +1,14 @@
 <!doctype html>
-<html lang="ko">
+<html lang="ko" data-theme="light">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- 주소창 색을 스크립트보다 먼저 둔다 — 아래 한 줄이 먹 판이면 곧바로 #12161C 로 바꾼다 (5차) -->
+  <meta name="theme-color" content="#F3EEE3">
+  <!-- 판(밝은 크림 / 어두운 먹)을 «그리기 전에» 박는다 — 홈과 같은 한 줄. 누르는 단추는 /assets/theme.js -->
+  <script>(function(){var d=document.documentElement,t='light';try{if(localStorage.getItem('yd-theme')==='dark')t='dark';}catch(e){}d.setAttribute('data-theme',t);if(t==='dark'){var m=document.querySelector('meta[name="theme-color"]');if(m)m.setAttribute('content','#14171C');}})();</script>
   <title>개인정보처리방침 | YesterDigest</title>
   <meta name="description" content="YesterDigest의 개인정보 및 Google 사용자 데이터 처리방침입니다.">
-  <meta name="theme-color" content="#0C3054">
   <link rel="canonical" href="https://yesterdigest.com/privacy/">
   <meta property="og:type" content="article">
   <meta property="og:site_name" content="YesterDigest">
@@ -13,26 +16,41 @@
   <meta property="og:title" content="개인정보처리방침 | YesterDigest">
   <meta property="og:description" content="YesterDigest의 개인정보 및 Google 사용자 데이터 처리방침입니다.">
   <meta property="og:url" content="https://yesterdigest.com/privacy/">
-  <meta property="og:image" content="https://yesterdigest.com/assets/og/home.png">
+  <meta property="og:image" content="https://yesterdigest.com/assets/og/home.png?v=2471284a">
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:image" content="https://yesterdigest.com/assets/og/home.png">
-  <link rel="icon" href="/favicon.ico" sizes="32x32">
-  <link rel="icon" href="/assets/brand/logo-256.png" type="image/png" sizes="256x256">
+  <meta name="twitter:image" content="https://yesterdigest.com/assets/og/home.png?v=2471284a">
+  <link rel="icon" href="/favicon.ico" sizes="16x16 32x32 48x48">
+  <link rel="icon" href="/assets/brand/icon-16.svg" type="image/svg+xml">
+  <link rel="icon" href="/assets/brand/icon-192.png" type="image/png" sizes="192x192">
   <link rel="apple-touch-icon" href="/apple-touch-icon.png">
-  <link rel="stylesheet" href="/assets/styles.css">
+  <!-- 글씨체 — 홈과 같은 링크 (5차). 본문 Pretendard · 영문 꼬리표 Inter — 둘 다 SIL OFL 1.1 · 렌더를 막지 않게 받는다.
+       주아(제목 글꼴)는 이 쪽의 제목이 Pretendard 라 받지 않는다. -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+  <link rel="preload" as="style" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
+  <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Inter:wght@500;600;700&display=swap">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css" media="print" onload="this.media='all'">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@500;600;700&display=swap" media="print" onload="this.media='all'">
+  <noscript><link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css"><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@500;600;700&display=swap"></noscript>
+  <link rel="stylesheet" href="/assets/styles.css?v=b3287d63">
+  <script src="/assets/theme.js?v=00039303" defer></script>
 </head>
 <body>
   <a class="skip-link" href="#main">본문으로 건너뛰기</a>
   <header class="site-header">
     <nav class="nav" aria-label="주요 메뉴">
       <a class="brand-link" href="/">
-        <img src="/assets/logo.png" alt="">
-        <span>어제한입<small>YesterDigest</small></span>
+        <img class="brand-lockup on-light" src="/assets/brand/lockup-h.svg" alt="어제한입 YesterDigest" width="107" height="34">
+        <img class="brand-lockup on-dark" src="/assets/brand/lockup-h-dark.svg" alt="어제한입 YesterDigest" width="107" height="34">
       </a>
-      <div class="nav-links">
-        <a href="/">홈</a>
-        <a href="/privacy/" aria-current="page">개인정보처리방침</a>
-        <a href="/terms/">이용약관</a>
+      <div class="nav-tail">
+        <div class="nav-links">
+          <a href="/">홈</a>
+          <a href="/privacy/" aria-current="page">개인정보처리방침</a>
+          <a href="/terms/">이용약관</a>
+        </div>
+        <button class="theme-btn" type="button" data-theme-toggle aria-label="DARK · 다크 모드로 바꾸기"><svg class="ic-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round" aria-hidden="true"><path d="M20 14.6A8.2 8.2 0 0 1 9.4 4a8.2 8.2 0 1 0 10.6 10.6z"/></svg><svg class="ic-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="4.2"/><path d="M12 2.5v2.2M12 19.3v2.2M2.5 12h2.2M19.3 12h2.2M5.3 5.3l1.6 1.6M17.1 17.1l1.6 1.6M5.3 18.7l1.6-1.6M17.1 6.9l1.6-1.6"/></svg><span class="theme-label">DARK</span></button>
       </div>
     </nav>
   </header>
