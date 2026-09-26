@@ -1703,6 +1703,7 @@ html:not(.js) .ed-nav { display: none; }
    🔴 수·그래프는 data/growth.json 에서만(build.py 가 표·큰 수를, home.js 가 SVG 를). 색은 styles.css 두 벌의 --chart-*.
    🔴 그래프 하나 = 계열 하나(두 축 그래프 금지). 빠진 날은 선을 «끊고» 옅은 띠만 둔다. */
 .sec-links { display: inline-flex; flex-wrap: wrap; gap: 4px 18px; }
+.sec-links a { letter-spacing: normal; }   /* 링크 글자가 한글(지난 편·채널 성장)이라 꼬리표용 영문 자간을 푼다 · 09-26 */
 .section--growth { padding-bottom: var(--sp-section); }
 .gr-grid {
   display: grid;
