@@ -3,6 +3,72 @@
   "_출처": "docs/records/publish-log.jsonl (결과.상태=올림)",
   "편": [
     {
+      "날짜": "2026-09-26",
+      "편별": {
+        "정치사회": {
+          "유튜브": "https://youtube.com/watch?v=yqvE1yLNUHQ",
+          "인스타_릴스": "https://www.instagram.com/reel/DdxKjwLjJYz/"
+        },
+        "연예스포츠": {
+          "유튜브": "https://youtube.com/watch?v=XKT9qq61VKU",
+          "인스타_릴스": "https://www.instagram.com/reel/DdxKzrXjRHl/"
+        },
+        "종합": {
+          "유튜브": "https://youtube.com/watch?v=r8zr1OkYMSk",
+          "인스타_릴스": "https://www.instagram.com/reel/Ddw80e_Dr6Q/"
+        },
+        "경제세계": {
+          "유튜브": "https://youtube.com/watch?v=je3igZ7u0QE",
+          "인스타_릴스": "https://www.instagram.com/reel/DdxKsNnDsOg/"
+        }
+      },
+      "유튜브": "https://youtube.com/watch?v=r8zr1OkYMSk",
+      "인스타_릴스": "https://www.instagram.com/reel/Ddw80e_Dr6Q/",
+      "인스타_카드": "https://www.instagram.com/p/Ddw8_M-kwqc/",
+      "이슈": [
+        "뿌요뿌요 강동신 은메달",
+        "DMZ 지뢰 현장 첫 합동 진입",
+        "암살자(들) 개봉 4일 100만",
+        "안세영 32강 20분 완승"
+      ],
+      "카드수": 6,
+      "요일색": "#FDB426",
+      "표지": "/assets/cover/2026-09-26.jpg"
+    },
+    {
+      "날짜": "2026-09-25",
+      "편별": {
+        "종합": {
+          "유튜브": "https://youtube.com/watch?v=EEBsoOVAqbY",
+          "인스타_릴스": "https://www.instagram.com/reel/DdugbHnjKyk/"
+        },
+        "정치사회": {
+          "유튜브": "https://youtube.com/watch?v=6rivYiFn-ZQ",
+          "인스타_릴스": "https://www.instagram.com/reel/DdvLYUUjvDC/"
+        },
+        "연예스포츠": {
+          "유튜브": "https://youtube.com/watch?v=0HXzjrGxuiU",
+          "인스타_릴스": "https://www.instagram.com/reel/DdvMnI3DVum/"
+        },
+        "경제세계": {
+          "유튜브": "https://youtube.com/watch?v=u61z9hJ5DkQ",
+          "인스타_릴스": "https://www.instagram.com/reel/DdvRWEbk0cD/"
+        }
+      },
+      "유튜브": "https://youtube.com/watch?v=EEBsoOVAqbY",
+      "인스타_릴스": "https://www.instagram.com/reel/DdugbHnjKyk/",
+      "인스타_카드": "https://www.instagram.com/p/Ddugmu-k9Z7/",
+      "이슈": [
+        "부산 상어 부캉이 방문객 10만",
+        "황서현 평균대 금메달 · 40년 만",
+        "양주 빌라 화재 · 1명 사망",
+        "박지현 국제에미상 후보"
+      ],
+      "카드수": 6,
+      "요일색": "#FDB426",
+      "표지": "/assets/cover/2026-09-25.jpg"
+    },
+    {
       "날짜": "2026-09-24",
       "편별": {
         "경제세계": {
