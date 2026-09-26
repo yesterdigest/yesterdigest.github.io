@@ -354,7 +354,10 @@ def 편집자(slug, alt='', cls='', 자세=''):
        어느 판에서도 캐릭터가 바탕에 묻히지 않는다(먹 옷이 먹 바탕에 사라지는 일이 없다).
     🔴 실존 인물이 아니다 — 브랜드 캐릭터 그림이다. 장식이면 alt 를 비운다.
     """
-    파일 = '/assets/brand/editor-%s%s.svg' % (slug, 자세)
+    # 🔴 2026-09-27 유진님 08:35 「팔이나 어깨부분이 끊기듯이 부자연스러워 … 이걸로 기존것들을 모두 대체해줘」 · 08:39 「1, 3,4」
+    #    → 보정본(yesterdigest assets/brand-video/2026-09-26-newlogo)에서 오려낸 투명 PNG. 옛 svg 와 같은 200:400 틀·같은 발 자리.
+    #    보정본에 «point» 자세가 없어 point 자리도 stand 로 간다(옛 editor-*.svg 는 남겨둔다).
+    파일 = '/assets/brand/editor-%s.png' % slug
     return ('<span class="plate plate--%s %s"><img src="%s" alt="%s" width="200" height="400" decoding="async"></span>'
             % (slug, cls, 파일, e(alt)))
 
