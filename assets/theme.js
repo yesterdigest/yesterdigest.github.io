@@ -20,18 +20,26 @@
     var bg = getComputedStyle(root).getPropertyValue('--bg').trim();
     if (meta && bg) meta.setAttribute('content', bg);
     [].forEach.call(document.querySelectorAll('[data-theme-toggle]'), function (b) {
-      /* 단추에는 «누르면 갈 판»을 적는다 — 크림일 때 DARK, 먹일 때 LIGHT */
+      /* 단추에는 «누르면 갈 판»을 적는다 — 크림일 때 DARK, 먹일 때 LIGHT.
+         🔴 5차 — 이름(aria-label)도 같이 바꾼다. 보이는 글씨로 시작한다(WCAG 2.5.3) · 폰에서는 글씨가 숨어도 이름은 남는다 */
       var 갈곳 = t === 'dark' ? 'LIGHT' : 'DARK';
       var l = b.querySelector('.theme-label');
       if (l) l.textContent = 갈곳;
+      b.setAttribute('aria-label', t === 'dark' ? 'LIGHT · 라이트 모드로 바꾸기' : 'DARK · 다크 모드로 바꾸기');
       b.setAttribute('data-now', t);
     });
   }
 
   function 바꾸기(t) {
+    /* 🔴 5차 — 바꾸는 «그 한 순간»만 움직임을 끈다(.theme-switching → styles.css). 색마다 늦게 따라와 얼룩지지 않게.
+       다음 프레임에 뗀다 — 그 뒤의 hover·열림 움직임은 그대로다 */
+    root.classList.add('theme-switching');
     root.setAttribute('data-theme', t);
     try { localStorage.setItem(KEY, t); } catch (e) { /* 막혀 있으면 기억만 못 한다 */ }
     칠하기();
+    var 떼기 = function () { root.classList.remove('theme-switching'); };
+    if (window.requestAnimationFrame) requestAnimationFrame(function () { requestAnimationFrame(떼기); });
+    else setTimeout(떼기, 50);
   }
 
   document.addEventListener('click', function (ev) {
@@ -59,6 +67,12 @@
       document.head.appendChild(l);
       root.setAttribute('data-font', 'serif');
     }
+  } catch (e) { /* 주소를 못 읽으면 주아 그대로 */ }
+
+  /* 🔴 레터링 제호 «제안» 스위치 (5차) — 홈 <head> 의 인라인 한 줄이 먼저 켠다(번쩍임 없이). 여기는 받침이다.
+     ?font=serif 처럼 기억하지 않는다. 기본 제호는 주아 활자(규칙 §3) — 유진님이 §3 을 바꾸시기 전에는 기본으로 켜지 않는다. */
+  try {
+    if (/[?&]masthead=lettering(&|$)/.test(location.search)) root.setAttribute('data-masthead', 'lettering');
   } catch (e) { /* 주소를 못 읽으면 주아 그대로 */ }
 
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', 칠하기);

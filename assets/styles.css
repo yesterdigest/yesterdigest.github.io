@@ -14,75 +14,80 @@
    색의 뿌리 — 유튜브 채널 배너(원본: 본 저장소 assets/brand-2026-09/_banner/)에서 뽑은 네 토큰 (팀장 전달):
      먹 #12161C · 크림 #F8F3E9 · 머스터드 #FDB92E · 짙은 머스터드 #B87308
    대비(WCAG, 계산값)는 토큰 옆 괄호 — 크림/먹 바탕 위. 4.5 밑인 색은 «글자»에 쓰지 않는다
-   (짙은 머스터드 3.46 은 24px 이상 큰 제목과 선에만). */
+   (짙은 머스터드 3.46 은 24px 이상 큰 제목과 선에만).
+   🔴 5차(2026-09-25) — 머스터드는 «세 곳»에만: 로고 점(--logo-dot) · 진행 막대 · 누를 때(hover·focus).
+      작은 꼬리표·번호는 --muted, 제목 둘째 줄은 --ink-2. (--accent-ink · --accent-head 는 남은 자리가 없어 지웠다) */
 
 :root,
 :root[data-theme="light"] {
   color-scheme: light;
-  --bg: #f8f3e9;              /* 배너의 크림 지면 그대로 */
-  --bg-2: #efe8db;            /* 한 단 가라앉은 띠 — 구글 칸 · 바닥 */
-  --surface: #fcfaf5;         /* 떠오르는 종이 — 서랍 · 창 */
-  --ink: #12161c;             /* 먹 — 배너의 먹 네모(살짝 푸른 차콜) 그대로 · 크림 위 16.4 */
+  --bg: #f3eee3;              /* 배너의 크림 지면 그대로 */
+  --bg-2: #ebe4d6;            /* 한 단 가라앉은 띠 — 구글 칸 · 바닥 */
+  --surface: #f8f4ec;         /* 떠오르는 종이 — 서랍 · 창 */
+  --ink: #14171c;             /* 먹 — 배너의 먹 네모(살짝 푸른 차콜) 그대로 · 크림 위 16.4 */
   --ink-2: #363a40;           /* 10.3 */
   --muted: #585b60;           /* 6.2 (bg-2 위 5.6) */
   --faint: #5f6166;           /* 가장 작은 꼬리표 — 이 밑으로 글자색을 내리지 않는다 (bg-2 위 4.9) */
   --rule: rgba(18, 22, 28, .14);      /* 머리카락 선 */
   --rule-2: rgba(18, 22, 28, .3);
-  --rule-ink: #12161c;                /* 굵은 괘선 */
-  --accent: #fdb92e;          /* 머스터드 — «면·선»에만. 크림 위 글자로는 대비가 모자란다(1.6) */
-  --mustard-deep: #b87308;    /* 짙은 머스터드 — 배너 토큰. 크림 위 3.46 → «큰 글자(24px↑)·선»에만 */
-  --accent-head: var(--mustard-deep);  /* 큰 제목의 강조 줄 */
-  --accent-ink: #7a5000;      /* 머스터드의 «작은 글자판» — 크림 위 6.4 */
-  --on-accent: #12161c;
-  --btn-bg: #12161c;
-  --btn-ink: #f8f3e9;
+  --rule-ink: #14171c;                /* 굵은 괘선 */
+  --accent: #c9a227;          /* 머스터드 — «면·선»에만. 크림 위 글자로는 대비가 모자란다(1.6) */
+  --mustard-deep: #9c7a10;    /* 짙은 머스터드 — 배너 토큰. 크림 위 3.46 → «그래픽(3:1)»에만 */
+  --logo-dot: #9c7a10;        /* 로고의 ㅎ 꼭지 점 — 크림 위 짙은 머스터드(그래픽 대비 3.46) */
+  --on-accent: #14171c;
+  --btn-bg: #14171c;
+  --btn-ink: #f3eee3;
   --btn-bg-hover: #363a40;
-  --focus: #12161c;           /* 초점 고리 — 크림 위에서 머스터드는 안 보인다 */
+  --focus: #14171c;           /* 초점 고리 — 크림 위에서 머스터드는 안 보인다 */
   --scrim: rgba(18, 22, 28, .55);
-  --header-bg: rgba(248, 243, 233, .94);
+  --header-bg: rgba(243, 238, 227, .94);
   --shadow-pop: 0 18px 50px rgba(18, 22, 28, .14);
   --shadow-device: 0 0 0 1px rgba(18, 22, 28, .1), 0 34px 60px -22px rgba(18, 22, 28, .42);
-  --shadow-cover: 0 22px 48px -18px rgba(18, 22, 28, .38);
-  --strip-filter: none;
   --callout-bg: #f3ead3;
   --code-bg: #efe8da;
-  /* 캐릭터(4차) — 몸·선은 두 판 모두 «크림 몸 + 먹 선»이다(캐릭터 색이 판마다 뒤집히면 다른 인물로 보인다).
-     판마다 바뀌는 것은 새싹(크림: 짙은 머스터드 / 먹: 머스터드)과 발밑 그림자뿐 */
-  --ch-sprout: #b87308;
-  --ch-ground: rgba(18, 22, 28, .09);
+  --chart-line: #9c7a10;      /* 성장 그래프 선·점 — 짙은 머스터드(크림 위 3.46 · 그래픽 3:1) · 7차 */
+  --chart-grid: rgba(18, 22, 28, .1);
+  --chart-gap: rgba(18, 22, 28, .05);   /* 기록이 없는 날의 옅은 띠 */
+  /* 캐릭터 «편집자»(5차) — 로고와 같은 짝: 크림 판은 먹 선·먹 외투·크림 얼굴, 먹 판은 뒤집는다. 점 하나만 머스터드 */
+  --ch-line: #12161c;
+  --ch-coat: #12161c;
+  --ch-face: #f8f3e9;
+  --ch-dot: #b87308;
 }
 
 :root[data-theme="dark"] {
   color-scheme: dark;
-  --bg: #12161c;              /* 먹 — 배너의 먹 그대로. 남색은 쓰지 않는다 */
-  --bg-2: #0c0f14;
-  --surface: #191e25;         /* 배너의 먹 네모 */
-  --ink: #f8f3e9;             /* 크림 글씨 16.4 */
+  --bg: #14171c;              /* 먹 — 배너의 먹 그대로. 남색은 쓰지 않는다 */
+  --bg-2: #0e1014;
+  --surface: #1b1f25;         /* 배너의 먹 네모 */
+  --ink: #f3eee3;             /* 크림 글씨 16.4 */
   --ink-2: #d9d3c7;           /* 12.2 */
   --muted: #b3ada2;           /* 8.1 */
   --faint: #a39d93;           /* 6.7 */
   --rule: rgba(248, 243, 233, .14);
   --rule-2: rgba(248, 243, 233, .3);
-  --rule-ink: #f8f3e9;
-  --accent: #fdb92e;
-  --mustard-deep: #b87308;
-  --accent-head: var(--accent);        /* 먹 위에서는 머스터드가 글자로도 선다 (10.5) */
-  --accent-ink: #fdb92e;
-  --on-accent: #12161c;
-  --btn-bg: #f8f3e9;
-  --btn-ink: #12161c;
+  --rule-ink: #f3eee3;
+  --accent: #c9a227;
+  --mustard-deep: #9c7a10;
+  --logo-dot: #c9a227;        /* 먹 위 머스터드 (10.5) */
+  --on-accent: #14171c;
+  --btn-bg: #f3eee3;
+  --btn-ink: #14171c;
   --btn-bg-hover: #d9d3c7;
-  --focus: #fdb92e;
+  --focus: #c9a227;
   --scrim: rgba(6, 8, 10, .74);
-  --header-bg: rgba(18, 22, 28, .92);
+  --header-bg: rgba(20, 23, 28, .92);
   --shadow-pop: 0 18px 50px rgba(0, 0, 0, .5);
   --shadow-device: 0 0 0 1px rgba(248, 243, 233, .1), 0 40px 80px -24px rgba(0, 0, 0, .8);
-  --shadow-cover: 0 24px 56px -18px rgba(0, 0, 0, .7);
-  --strip-filter: brightness(.88);    /* 밝은 사진 띠가 먹 바탕에서 튀지 않게 한 단 누른다 */
   --callout-bg: #1c2129;
   --code-bg: #222832;
-  --ch-sprout: #fdb92e;
-  --ch-ground: rgba(248, 243, 233, .08);
+  --chart-line: #c9a227;      /* 먹 위 머스터드 (10.5) */
+  --chart-grid: rgba(248, 243, 233, .12);
+  --chart-gap: rgba(248, 243, 233, .06);
+  --ch-line: #f8f3e9;         /* 윤곽 — 먹 바탕 위 16.4 (그래픽 3:1 넉넉) */
+  --ch-coat: #f8f3e9;
+  --ch-face: #12161c;
+  --ch-dot: #fdb92e;
 }
 
 /* 판과 무관한 것 — 폰 목업 속 화면(늘 어두운 앱 화면) · 가림막 · 글씨체 · 치수 */
@@ -102,8 +107,16 @@
   --dv-bar: rgba(244, 241, 234, .22);
   --dv-play-bg: rgba(12, 12, 12, .42);
   --dv-play-ring: rgba(244, 241, 234, .9);
-  --dv-accent: #fdb92e;
+  --dv-accent: #c9a227;
   --dv-on-accent: #1a1814;
+  /* 🔴 2026-09-26 업그레이드 — 분야 색(브랜드 시트 docs/drafts/redesign-0925/brand · 팀장 14:1x 확정 · 유진님 위임).
+     칩·탭 표시·캐릭터 판에만 쓴다. 바탕 무늬 아님(규칙 §3 A안). 흰/흑연 10.6 · 흰/청록 7.7 · 흰/자두 9.7 · 흰/산호 5.4 */
+  --sec-jonghap: #14171c;  --sec-jonghap-dot: #c9a227;  --sec-jonghap-paper: #f3eee3;
+  --sec-jeongchi: #3a3f45; --sec-jeongchi-dot: #c3c7cc; --sec-jeongchi-paper: #14171c;
+  --sec-gyeongje: #0d5c63; --sec-gyeongje-dot: #f3eee3; --sec-gyeongje-paper: #f6e6d9;
+  --sec-yeonye: linear-gradient(90deg, #6b2d5c, #b8404f); --sec-yeonye-dot: #e59a3b; --sec-yeonye-paper: #14171c;
+  --sec-yeonye-flat: #b8404f;
+  --sec-on: #ffffff;
   --mask-on: #000;            /* 가림(mask) 전용 — 색이 아니라 «보임»의 뜻이다 */
 
   /* 글씨체 — 2026-09-24 (build.py 머리 주석 참조) */
@@ -118,7 +131,11 @@
   --sans: "Pretendard Variable", Pretendard, -apple-system, "Apple SD Gothic Neo", "Noto Sans KR", "Malgun Gothic", system-ui, sans-serif;
   /* 🔴 영문 뒤에 한글 대체를 붙여 둔다 — 영문·한글이 섞인 자리에서 한글이 엉뚱한 글씨체로 안 떨어지게 */
   --en: "Inter", "Helvetica Neue", Arial, "Pretendard Variable", Pretendard, "Apple SD Gothic Neo", sans-serif;
-  --tag: "Cormorant Garamond", "Cormorant", Georgia, "Times New Roman", serif;
+  /* 🔴 5차 — 꼬리표 타이포는 «두 벌»뿐이다 (여섯 크기 · 일곱 자간을 통일). 2000px 이상에서는 --tag-fs 만 12.5px */
+  --tag-fs: 11px;  --tag-ls: .14em;  --tag-fw: 500;   /* 꼬리표 · 날짜줄 · 번호 */
+  --btn-fs: 12px;  --btn-ls: .12em;  --btn-fw: 600;   /* 누르는 것 */
+  /* 절 사이 간격 하나 — 어느 두 절 사이도 이 값 (5차) */
+  --sp-section: clamp(72px, 8vw, 128px);
 
   --r: 2px;                   /* 모서리 — 각지게. 알약·큰 둥글림을 쓰지 않는다 */
   --content: 1320px;
@@ -138,7 +155,12 @@
 
 * { box-sizing: border-box; }
 
-html { scroll-behavior: smooth; }
+html { scroll-behavior: smooth; scroll-padding-top: 72px; }   /* 머리줄(64px) 밑에 초점·닻이 숨지 않게 */
+
+/* 🔴 로고 두 장(크림 판 · 먹 판) 중 지금 판의 것만 보인다 — 머리줄 lockup · 바닥 인장 · 404 캐릭터 (5차) */
+img.on-dark { display: none; }
+:root[data-theme="dark"] img.on-light { display: none; }
+:root[data-theme="dark"] img.on-dark { display: block; }
 
 body {
   margin: 0;
@@ -195,15 +217,14 @@ h1, h2, h3 {
   align-items: center;
   gap: 10px;
   margin: 0 0 18px;
-  color: var(--accent-ink);
+  color: var(--muted);
   font-family: var(--en);
-  font-size: 11px;
-  font-weight: 600;
-  letter-spacing: .2em;
+  font-size: var(--tag-fs);
+  font-weight: var(--tag-fw);
+  letter-spacing: var(--tag-ls);
   line-height: 1.2;
   text-transform: uppercase;
 }
-.eyebrow::before { content: ""; width: 22px; height: 1px; background: currentColor; }
 
 /* ── 머리줄 (법문 페이지 · 홈은 home.css 가 덮어쓴다) ── */
 .site-header {
@@ -237,17 +258,9 @@ h1, h2, h3 {
   letter-spacing: -.01em;
   line-height: 1.15;
 }
-.brand-link img { width: 36px; height: 36px; border-radius: 50%; }
-.brand-link small {
-  display: block;
-  margin-top: 3px;
-  color: var(--faint);
-  font-family: var(--en);
-  font-size: 10px;
-  font-weight: 600;
-  letter-spacing: .2em;
-  text-transform: uppercase;
-}
+.brand-link img:not(.brand-lockup) { width: 36px; height: 36px; border-radius: 50%; }   /* 5차 검수: lockup 은 빼야 한다 — 이 규칙이 더 세서 인장이 원으로 깎이고 높이 36 에 폭 28 로 잘려 「어ㅈ」로 보였다 */
+/* 5차 — 법문·404 머리줄도 홈과 같은 lockup(인장 + 작은 판 워드마크 · 316.4:100) */
+.brand-lockup { width: auto; height: 34px; border-radius: 0; }   /* 홈은 home.css 가 뒤에서 덮는다 */
 
 .nav-links {
   display: flex;
@@ -258,7 +271,7 @@ h1, h2, h3 {
   font-weight: 600;
 }
 .nav-links a { text-decoration: none; padding: 10px 0; }
-.nav-links a[aria-current="page"] { color: var(--ink); box-shadow: inset 0 -2px 0 var(--accent); }
+.nav-links a[aria-current="page"] { color: var(--ink); box-shadow: inset 0 -2px 0 var(--rule-ink); }
 .nav-links a:hover, .nav-links a:focus-visible { color: var(--ink); }
 .nav-tail { display: flex; align-items: center; gap: 18px; }
 
@@ -273,17 +286,17 @@ h1, h2, h3 {
   padding: 0 12px;
   color: var(--ink);
   background: transparent;
-  border: 1px solid var(--rule-2);
+  border: 1px solid transparent;      /* 5차 — 가만히 있을 때 선 없음 · 누를 때만 */
   border-radius: var(--r);
   font-family: var(--en);
-  font-size: 10.5px;
-  font-weight: 600;
-  letter-spacing: .18em;
+  font-size: var(--btn-fs);
+  font-weight: var(--btn-fw);
+  letter-spacing: var(--btn-ls);
   cursor: pointer;
   transition: background .2s var(--ease), color .2s var(--ease), border-color .2s var(--ease);
 }
 .theme-btn svg { width: 17px; height: 17px; flex: none; }
-.theme-btn:hover { border-color: var(--rule-ink); }
+.theme-btn:hover, .theme-btn:focus-visible { border-color: var(--rule-2); }
 /* 지금 판의 «반대» 그림을 보여준다 — 크림일 때 달(DARK로), 먹일 때 해(LIGHT로) */
 .theme-btn .ic-sun { display: none; }
 :root[data-theme="dark"] .theme-btn .ic-sun { display: block; }
@@ -304,7 +317,7 @@ h1, h2, h3 {
 }
 .footer-inner p { margin: 0; }
 .footer-links { display: flex; flex-wrap: wrap; gap: 6px 22px; }
-.footer-links a { color: var(--ink-2); text-decoration-color: var(--rule-2); padding: 6px 0; }
+.footer-links a { color: var(--ink-2); text-decoration-color: var(--rule-2); padding: 11px 0; }
 .footer-links a:hover { color: var(--ink); text-decoration-color: var(--accent); }
 
 /* ── 법문 (개인정보처리방침 · 이용약관) — 문구는 한 글자도 안 바꿨다. 모양만 ── */
@@ -332,7 +345,8 @@ h1, h2, h3 {
 .legal-section p, .legal-section li { color: var(--ink-2); }
 .legal-section ul { padding-left: 1.2rem; }
 .legal-section li + li { margin-top: 8px; }
-.legal-main a { text-decoration-color: var(--accent); text-decoration-thickness: 2px; }
+.legal-main a { text-decoration-color: var(--muted); text-decoration-thickness: 2px; }
+.legal-main a:hover { text-decoration-color: var(--accent); }
 .scope {
   display: inline-block;
   max-width: 100%;
@@ -349,14 +363,15 @@ h1, h2, h3 {
   padding: 18px 22px;
   color: var(--ink-2);
   background: var(--callout-bg);
-  border-left: 3px solid var(--accent);
+  border-left: 3px solid var(--rule-ink);
   border-radius: 0 var(--r) var(--r) 0;
 }
 
-/* ── 404 ── */
-.not-found { min-height: 100vh; display: grid; place-items: center; padding: 40px 20px; text-align: center; }
-.not-found img { width: 120px; margin: 0 auto 22px; }
-.not-found h1 { margin-bottom: 10px; font-size: 2.4rem; }
+/* ── 404 ── (5차 — 법문과 같은 머리줄 · 캐릭터 «인사» 판 하나) */
+.not-found { min-height: calc(100vh - 64px); display: grid; place-items: center; padding: 40px 20px; text-align: center; }
+.not-found img { width: auto; height: 160px; margin: 0 auto 22px; }
+.not-found h1 { margin-bottom: 10px; font-family: var(--sans); font-size: 2.1rem; font-weight: 800; letter-spacing: -.03em; }
+.not-found p { color: var(--ink-2); }
 .button {
   display: inline-flex;
   min-height: 48px;
@@ -364,22 +379,41 @@ h1, h2, h3 {
   justify-content: center;
   padding: 0 22px;
   border-radius: var(--r);
-  font-weight: 600;
+  font-family: var(--en);
+  font-size: var(--btn-fs);
+  font-weight: var(--btn-fw);
+  letter-spacing: var(--btn-ls);
+  text-transform: uppercase;
   text-decoration: none;
 }
 .button-primary { color: var(--btn-ink); background: var(--btn-bg); }
 .button-primary:hover { background: var(--btn-bg-hover); }
 
 @media (max-width: 640px) {
-  body { word-break: normal; overflow-wrap: break-word; }
+  /* 5차 — 한글은 낱말 단위로 줄을 바꾸고(keep-all), 긴 주소·영문만 아무 데서나 끊는다(anywhere) */
+  body { word-break: keep-all; overflow-wrap: anywhere; }
   .nav, .footer-inner, .legal-main { width: min(calc(100% - 32px), var(--content)); }
   .nav { gap: 10px; }
-  .brand-link small { display: none; }
+  .brand-lockup { height: 30px; width: 30px; object-fit: cover; object-position: left center; }   /* 인장 네모만 */
   .nav-links { gap: 12px; font-size: 13px; }
   .nav-links a:first-child { display: none; }
-  .theme-btn .theme-label { display: none; }
+  /* 5차 — display:none 이 아니라 «보이지만 않게» (읽기 도구에는 남는다 · 이름은 aria-label 이 말한다) */
+  .theme-btn .theme-label {
+    position: absolute;
+    width: 1px; height: 1px;
+    margin: -1px; padding: 0;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+  }
+  .theme-btn { position: relative; padding: 0; }
   .footer-inner { flex-direction: column; align-items: flex-start; }
 }
+
+/* 🔴 판을 바꾸는 한 순간만 움직임을 끈다 (theme.js) */
+.theme-switching *,
+.theme-switching *::before,
+.theme-switching *::after { transition: none !important; }
 
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
