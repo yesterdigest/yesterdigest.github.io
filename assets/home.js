@@ -429,7 +429,7 @@
   });
   /* ── 채널 성장 그래프 (GROWTH · 2026-09-26 7차 시안) ─────────
      수는 build.py 가 실은 #growth-data(= data/growth.json)에서만 읽는다. 손으로 적은 수 0.
-     그래프 하나 = 계열 하나 · 선 2px · 점 8px · 빠진 날(null)은 선을 «끊고» 옅은 띠.
+     그래프 하나 = 계열 하나 · 선 2px · 점 8px · 빠진 날(null)은 점 없이 옅은 띠 · 선은 앞뒤를 «이어» 그린다(유진님 2026-09-27 08:32 「그냥 지우지말고 선이라도 이어줘」 — 값을 지어내지 않는다: 점·말풍선은 「기록 없음」).
      폭은 figure 의 실제 폭으로 그린다(viewBox 늘이기 없음 → 글자가 폰에서 안 작아진다). 숨은 화면(폭 0)은 ResizeObserver 가 열릴 때 그린다.
      마우스·손가락: 가까운 날에 세로선 + 말풍선 · 키보드: 그래프에 초점 → ← → Home End. */
   (function () {
@@ -482,9 +482,9 @@
         var tx = el('text', { x: X(i), y: H - 6, 'text-anchor': i === 0 ? 'start' : (i === n - 1 ? 'end' : 'middle') }, svg);
         tx.textContent = 날(d);
       });
-      var d = '', pen = false;                            /* 선 — null 에서 끊는다 */
+      var d = '', pen = false;                            /* 선 — null 은 건너뛰고 앞뒤를 잇는다 */
       vals.forEach(function (v, i) {
-        if (v == null) { pen = false; return; }
+        if (v == null) return;
         d += (pen ? 'L' : 'M') + X(i).toFixed(1) + ' ' + Y(v).toFixed(1); pen = true;
       });
       el('path', { d: d, 'class': 'gr-line' }, svg);
