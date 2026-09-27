@@ -313,6 +313,8 @@
       되돌릴곳 = document.activeElement;
       introBox.hidden = false;
       requestAnimationFrame(function () { introBox.classList.add('is-open'); });
+      var v = document.getElementById('intro-video');   /* 🔴 2026-09-27 — 열면 처음부터 재생 */
+      if (v) { try { v.currentTime = 0; var p = v.play(); if (p && p.catch) p.catch(function () {}); } catch (e) {} }
       document.body.style.overflow = 'hidden';
       막기(true);
       introClose.focus();
@@ -321,6 +323,8 @@
     function 닫기() {
       if (introBox.hidden) return;
       introBox.classList.remove('is-open');          /* 줄어든다 */
+      var v = document.getElementById('intro-video');   /* 닫으면 멈춘다 */
+      if (v) v.pause();
       document.body.style.overflow = '';
       막기(false);                                   /* 🔴 풀고 나서 초점을 «연 단추»로 돌려준다 */
       setTimeout(function () { introBox.hidden = true; }, 340);

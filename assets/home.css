@@ -1091,6 +1091,8 @@ html:not(.js) .ed-nav { display: none; }
 
 .intro-slot { display: grid; justify-items: center; gap: 8px; text-align: center; }
 .intro-slot p { margin: 0; }
+/* 🔴 2026-09-27 소개 영상 — 세로 9:16 · 화면 높이의 78% 안 */
+.intro-video { display: block; width: min(100%, calc(78vh * 9 / 16)); aspect-ratio: 9 / 16; border-radius: 12px; background: #000; }
 .intro-k { color: var(--muted); }
 #intro-title {
   padding-block: 8px 10px;

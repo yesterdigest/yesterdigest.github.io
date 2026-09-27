@@ -696,7 +696,7 @@ def 제목글꼴_글자(page):
 
 
 def intro_modal():
-    """소개 영상 «틀» — 영상은 아직 없다. 움직임과 자리만 미리 만들어 둔다.
+    """소개 영상 창 — 🔴 2026-09-27 영상이 생겼다(유진님 08:54 소개영상 · 팀장 창 「올려」). 열면 재생, 닫으면 멈춘다(home.js).
 
     유진님 2026-09-12 11:19 「짧은 어제한입 소개 영상을 만들어줘」 · 15:17 「재생버튼을 누르면 이 웹에서 소개영상을 띄워야지」
     🔴 «누르면 커졌다가 끝나면 줄어드는» 움직임은 그대로. 영상이 생기면 .intro-slot 안만 <video> 로 바꾼다.
@@ -709,14 +709,13 @@ def intro_modal():
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>
       </button>
       <div class="intro-slot">
-        <div class="intro-ch">%s</div>
-        <p class="intro-k">Intro film</p>
-        <p id="intro-title">COMING SOON</p>
-        <p class="intro-sub">10초 안에 어제한입이 어떤 곳인지 보여드릴게요.</p>
+        <p class="intro-k" id="intro-title">어제한입 소개</p>
+        <video class="intro-video" id="intro-video" src="/assets/intro/intro.mp4" poster="/assets/intro/intro-cover.jpg"
+               controls playsinline preload="none"></video>
       </div>
     </div>
   </div>
-""" % 편집자('jonghap', cls='intro-chr', 자세='-point')
+"""
 
 
 def oauth_note():
