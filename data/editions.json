@@ -3,6 +3,39 @@
   "_출처": "docs/records/publish-log.jsonl (결과.상태=올림)",
   "편": [
     {
+      "날짜": "2026-09-29",
+      "편별": {
+        "종합": {
+          "유튜브": "https://youtube.com/watch?v=B9JoDVqfw7w",
+          "인스타_릴스": "https://www.instagram.com/reel/Dd4rYbcgJSO/"
+        },
+        "정치사회": {
+          "유튜브": "https://youtube.com/watch?v=387MRS5PKVY",
+          "인스타_릴스": "https://www.instagram.com/reel/Dd44_RYj6MD/"
+        },
+        "경제세계": {
+          "유튜브": "https://youtube.com/watch?v=Xzl9NAXFuCU",
+          "인스타_릴스": "https://www.instagram.com/reel/Dd46fwXleDH/"
+        },
+        "연예스포츠": {
+          "유튜브": "https://youtube.com/watch?v=2AeP-9Q7S1E",
+          "인스타_릴스": "https://www.instagram.com/reel/Dd5FLO9Dde3/"
+        }
+      },
+      "유튜브": "https://youtube.com/watch?v=B9JoDVqfw7w",
+      "인스타_릴스": "https://www.instagram.com/reel/Dd4rYbcgJSO/",
+      "인스타_카드": "https://www.instagram.com/p/Dd4rkMTE_O0/",
+      "이슈": [
+        "안세영, AG 여자단식 사상 첫 2연패",
+        "DMZ 지뢰, 대통령 첫 공식 지시",
+        "암살자(들), 재단 가처분 검토·제작사 반박",
+        "젠슨 황·이재용·최태원 뉴욕 회동"
+      ],
+      "카드수": 6,
+      "요일색": "#FDB426",
+      "표지": "/assets/cover/2026-09-29.jpg"
+    },
+    {
       "날짜": "2026-09-28",
       "편별": {
         "경제세계": {
