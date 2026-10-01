@@ -3,6 +3,39 @@
   "_출처": "docs/records/publish-log.jsonl (결과.상태=올림)",
   "편": [
     {
+      "날짜": "2026-10-01",
+      "편별": {
+        "종합": {
+          "유튜브": "https://youtube.com/watch?v=JtGGvNO-mQQ",
+          "인스타_릴스": "https://www.instagram.com/reel/Dd904HBAKtv/"
+        },
+        "정치사회": {
+          "유튜브": "https://youtube.com/watch?v=AlT2oeasBpw",
+          "인스타_릴스": "https://www.instagram.com/reel/Dd-CiQdgNBU/"
+        },
+        "경제세계": {
+          "유튜브": "https://youtube.com/watch?v=hq2L2VzUZAM",
+          "인스타_릴스": "https://www.instagram.com/reel/Dd-CxLQj3Lp/"
+        },
+        "연예스포츠": {
+          "유튜브": "https://youtube.com/watch?v=cuuxARkUTZM",
+          "인스타_릴스": "https://www.instagram.com/reel/Dd-C5a9D7Kp/"
+        }
+      },
+      "유튜브": "https://youtube.com/watch?v=JtGGvNO-mQQ",
+      "인스타_릴스": "https://www.instagram.com/reel/Dd904HBAKtv/",
+      "인스타_카드": "https://www.instagram.com/p/Dd91EQgE-ZP/",
+      "이슈": [
+        "구교환·이옥섭, 이미 부부였다",
+        "송민호 1심, 징역 1년 집유 2년",
+        "광화문 120m 슬랙라인",
+        "허미미, AG 유도 첫 금메달"
+      ],
+      "카드수": 6,
+      "요일색": "#FDB426",
+      "표지": "/assets/cover/2026-10-01.jpg"
+    },
+    {
       "날짜": "2026-09-30",
       "편별": {
         "경제세계": {
