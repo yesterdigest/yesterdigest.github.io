@@ -600,6 +600,12 @@ def view_growth(cfg, data):
     def 수(v):
         return '—' if v is None else '{:,}'.format(v)
 
+    def 기준(t):                       # '2026-10-02 10:32 KST' → '10-02 10:32 KST'
+        return t[5:]
+
+    def 점날(d):                       # '2026-09-10' → '2026.09.10'
+        return d[:10].replace('-', '.')
+
     칸 = []
     for i, c in enumerate(g['그래프']):
         차 = c['최근']['값'] - c['처음']['값']
@@ -613,8 +619,9 @@ def view_growth(cfg, data):
               <figure class="gr-fig" data-series="%(i)d" role="img" aria-label="%(이름)s — %(첫)s %(처음값)s%(단위)s에서 %(끝)s %(최근)s%(단위)s">
                 <p class="gr-nojs">그래프는 스크립트가 켜져 있을 때 그려집니다. 같은 수가 아래 표에 있습니다.</p>
               </figure>
+              <p class="gr-asof">%(기준)s 기준 · 하루 한 번 잰 공개 수치</p>
               %(주의)s
-            </article>""" % dict(i=i, tag=e(c['tag']), 이름=e(c['이름']), 단위=e(c['단위']),
+            </article>""" % dict(i=i, tag=e(c['tag']), 기준=e(기준(g.get('기록시각') or g['만든때'])), 이름=e(c['이름']), 단위=e(c['단위']),
                                  최근=수(c['최근']['값']), 끝=짧은날(c['최근']['날짜']),
                                  첫=짧은날(c['처음']['날짜']), 처음값=수(c['처음']['값']),
                                  부호=부호, 차='{:,}'.format(abs(차)), 주의=주의))
@@ -625,27 +632,126 @@ def view_growth(cfg, data):
                 for k, d in enumerate(날짜))
     빠진 = ', '.join(짧은날(d) for d in g['빠진날'])
     빠진말 = ('<p class="gr-gap">%s 은 기록이 없어 점을 찍지 않고 앞뒤 선만 이었습니다.</p>' % e(빠진)) if 빠진 else ''
+    실을그래프 = [{'이름': c['이름'], '단위': c['단위'], '값': c['값']} for c in g['그래프']]
+    a = g.get('분석') or {}
+    분석칸, 시작줄, 분석표 = '', '', ''
+    soon = """
+            <article class="gr-card gr-card--soon" aria-labelledby="gr-h-soon">
+              <p class="gr-k"><span>YouTube</span><span class="gr-tag">SOON</span></p>
+              <h3 id="gr-h-soon">평균 시청 시간 · 이탈 구간</h3>
+              <p class="gr-soon">준비 중입니다. 영상마다 어디까지 보고 넘기는지는 유튜브 분석 데이터를 연결한 뒤에 보여 드립니다.</p>
+            </article>"""
+    if a.get('있음'):
+        soon = ''
+        ch = a['채널']; 첫 = ch['첫게시']
+        # 🔴 «첫 공개 게시» = 인스타 첫 게시(2026-09-10 13:24 카드뉴스). 근거 셋:
+        #   ① 인스타 API 에는 비공개 게시가 없다 — 올리면 바로 보인다(작업로그 2026-09-10 ㉙)
+        #   ② 그때 계정은 공개였다 — 유진님 09-10 11:31 「인스타는 공개로 하면돼, 공개전환은 계정을 공개라고 한거맞아」
+        #   ③ 유튜브 첫 영상(09-10 12:38)은 «비공개» 업로드 → 공개 전환은 09-11 20:42(2026-09-11-진행.md:472) — 인스타보다 늦다
+        시작줄 = ('<p class="gr-since"><span class="gr-since-k">Since</span>'
+                '<span>채널 개설 <b>%s</b></span><span>첫 공개 게시 <b>%s</b></span></p>'
+                % (점날(ch['개설']), 점날(첫['instagram']['시각'])))
+        a기준 = '%s 기준 · 마지막 집계일 %s' % (기준(a['가져온때']), a['마지막집계일'][5:])
+        n0 = len(실을그래프)
+        카드 = []
+        for j, c in enumerate(a['그래프']):
+            k = n0 + j
+            실을그래프.append({'이름': c['이름'], '단위': c['단위'], '값': c['값'], '날짜': a['날짜']})
+            마지막 = c['값'][-1]
+            카드.append("""            <article class="gr-card" aria-labelledby="gr-h-%(k)d">
+              <p class="gr-k"><span>YouTube Analytics</span><span>%(끝)s</span></p>
+              <h3 id="gr-h-%(k)d">%(이름)s</h3>
+              <p class="gr-big"><b>%(최근)s</b><span>%(단위)s</span></p>
+              <p class="gr-delta">%(첫)s–%(끝)s %(기간말)s <b>%(기간값)s%(단위)s</b></p>
+              <figure class="gr-fig" data-series="%(k)d" role="img" aria-label="%(이름)s — %(끝)s %(최근)s%(단위)s · %(기간말)s %(기간값)s%(단위)s">
+                <p class="gr-nojs">그래프는 스크립트가 켜져 있을 때 그려집니다. 같은 수가 아래 표에 있습니다.</p>
+              </figure>
+              <p class="gr-asof">%(기준)s</p>
+            </article>""" % dict(k=k, 이름=e(c['이름']), 단위=e(c['단위']), 최근=수(마지막),
+                                 끝=짧은날(a['날짜'][-1]), 첫=짧은날(a['날짜'][0]), 기간말=e(c['기간말']),
+                                 기간값='{:,}'.format(c['기간값']), 기준=e(a기준)))
+        sb = a['구독증감']; k = n0 + len(a['그래프'])
+        실을그래프.append({'이름': sb['이름'], '단위': sb['단위'], '모양': '증감', '얻음': sb['얻음'], '잃음': sb['잃음'], '날짜': a['날짜']})
+        카드.append("""            <article class="gr-card" aria-labelledby="gr-h-%(k)d">
+              <p class="gr-k"><span>YouTube Analytics</span><span>%(끝)s</span></p>
+              <h3 id="gr-h-%(k)d">구독자 증감 (얻음 · 잃음)</h3>
+              <p class="gr-big"><b>+%(얻)s</b><span>명</span><b class="gr-big-lost">−%(잃)s</b><span>명</span></p>
+              <p class="gr-delta">%(첫)s–%(끝)s 얻음 %(얻)s · 잃음 %(잃)s</p>
+              <p class="gr-legend"><span class="gr-key gr-key--up"></span>얻음<span class="gr-key gr-key--down"></span>잃음</p>
+              <figure class="gr-fig" data-series="%(k)d" role="img" aria-label="구독자 증감 — %(첫)s–%(끝)s 얻음 %(얻)s명 잃음 %(잃)s명">
+                <p class="gr-nojs">그래프는 스크립트가 켜져 있을 때 그려집니다. 같은 수가 아래 표에 있습니다.</p>
+              </figure>
+              <p class="gr-asof">%(기준)s</p>
+            </article>""" % dict(k=k, 얻=sb['기간얻음'], 잃=sb['기간잃음'], 첫=짧은날(a['날짜'][0]),
+                                 끝=짧은날(a['날짜'][-1]), 기준=e(a기준)))
+        # 유입 경로 — 기간 합계의 막대(HTML 만 · 스크립트 없이 보인다)
+        유입줄 = ''.join('<li><span class="gr-bar-k">%s</span><span class="gr-bar"><i style="width:%.1f%%"></i></span>'
+                       '<span class="gr-bar-v">%s%%<small>%s회</small></span></li>'
+                       % (e(r['이름']), r['비율'], ('%.1f' % r['비율']) if r['비율'] >= 0.1 else '<0.1', '{:,}'.format(r['조회']))
+                       for r in a['유입'])
+        카드.append("""            <article class="gr-card" aria-labelledby="gr-h-src">
+              <p class="gr-k"><span>YouTube Analytics</span><span>%(첫)s–%(끝)s</span></p>
+              <h3 id="gr-h-src">유입 경로</h3>
+              <p class="gr-delta">조회가 어디서 들어왔나 · 기간 합계</p>
+              <ul class="gr-bars">%(줄)s</ul>
+              <p class="gr-asof">%(기준)s</p>
+            </article>""" % dict(첫=짧은날(a['유입_기간'][0]), 끝=짧은날(a['유입_기간'][1]), 줄=유입줄, 기준=e(a기준)))
+        최대 = max([max(r['여성'], r['남성']) for r in a['연령성별']] or [1]) or 1
+        연령줄 = ''.join('<li><span class="gr-bar-k">%s</span><span class="gr-bar2">'
+                       '<span class="gr-bar gr-bar--m"><i style="width:%.1f%%"></i></span><span class="gr-bar-v">남 %s%%</span>'
+                       '<span class="gr-bar gr-bar--f"><i style="width:%.1f%%"></i></span><span class="gr-bar-v">여 %s%%</span></span></li>'
+                       % (e(r['연령']), 100 * r['남성'] / 최대, r['남성'], 100 * r['여성'] / 최대, r['여성'])
+                       for r in a['연령성별'])
+        성 = a['성별']
+        카드.append("""            <article class="gr-card" aria-labelledby="gr-h-demo">
+              <p class="gr-k"><span>YouTube Analytics</span><span>%(첫)s–%(끝)s</span></p>
+              <h3 id="gr-h-demo">시청자 연령 · 성별</h3>
+              <p class="gr-delta">남성 <b>%(남)s%%</b> · 여성 <b>%(여)s%%</b> · 로그인한 시청자 기준 비율</p>
+              <ul class="gr-bars gr-bars--demo">%(줄)s</ul>
+              <p class="gr-asof">%(기준)s</p>
+            </article>""" % dict(첫=짧은날(a['날짜'][0]), 끝=짧은날(a['날짜'][-1]), 줄=연령줄,
+                                 남=성.get('male', 0), 여=성.get('female', 0), 기준=e(a기준)))
+        카드.append("""            <article class="gr-card gr-card--soon" aria-labelledby="gr-h-na">
+              <p class="gr-k"><span>YouTube Analytics</span><span class="gr-tag">N/A</span></p>
+              <h3 id="gr-h-na">노출수 · 노출 클릭률 · Shorts 본 비율</h3>
+              <p class="gr-soon">유튜브 분석 API 가 이 값들을 주지 않습니다(API 미제공). 유튜브 스튜디오에서만 볼 수 있어 여기에는 싣지 않습니다.</p>
+            </article>""")
+        분석칸 = """
+          <div class="gr-sub">
+            <p class="sec-k"><span>YouTube Analytics</span><span>%(기준)s</span></p>
+            <p class="gr-sub-lead">유튜브 분석에서 가져온 채널 전체 수치입니다. 유튜브는 하루 이틀 늦게 집계해, 마지막 집계일까지만 보입니다. 날짜는 유튜브 분석 기준(미국 태평양 시간)입니다.</p>
+          </div>
+          <div class="gr-grid">
+%(카드)s
+          </div>""" % dict(기준=e(a기준), 카드='\n'.join(카드))
+        머리2 = ''.join('<th scope="col">%s</th>' % e(c['이름']) for c in a['그래프']) + '<th scope="col">구독 얻음</th><th scope="col">구독 잃음</th>'
+        줄2 = ''.join('<tr><th scope="row"><time datetime="%s">%s</time></th>%s<td>%d</td><td>%d</td></tr>'
+                     % (d, 짧은날(d), ''.join('<td>%s</td>' % 수(c['값'][k]) for c in a['그래프']), sb['얻음'][k], sb['잃음'][k])
+                     for k, d in enumerate(a['날짜']))
+        분석표 = """
+          <div class="gr-table-wrap">
+            <table class="gr-table">
+              <caption>유튜브 분석 날짜별 수치 · %s–%s · %s</caption>
+              <thead><tr><th scope="col">날짜</th>%s</tr></thead>
+              <tbody>%s</tbody>
+            </table>
+          </div>""" % (짧은날(a['날짜'][0]), 짧은날(a['날짜'][-1]), e(a기준), 머리2, 줄2)
     # 🔴 JSON 을 그대로 싣는다 — «</» 만 막는다(스크립트 태그가 끊기지 않게)
-    실을것 = json.dumps({'날짜': 날짜, '빠진날': g['빠진날'],
-                       '그래프': [{'이름': c['이름'], '단위': c['단위'], '값': c['값']} for c in g['그래프']]},
+    실을것 = json.dumps({'날짜': 날짜, '빠진날': g['빠진날'], '그래프': 실을그래프},
                       ensure_ascii=False).replace('</', '<\\/')
 
     return """      <section class="section section--growth" aria-labelledby="growth-title">
         <div class="section-inner">
-          <p class="sec-k"><span>Channel growth</span><span>Since %(첫영)s</span></p>
+          <p class="sec-k"><span>Channel growth</span><span>Records since %(첫영)s</span></p>
           <div class="section-heading">
             <h2 id="growth-title">%(제목)s</h2>
             <div class="about-side">
               <p>유튜브와 인스타그램이 날마다 얼마나 자랐는지 그대로 보여 드립니다. 하루 한 번 잰 공개 수치이고, 빠진 날은 비워 둡니다.</p>
             </div>
           </div>
+          %(시작줄)s
           <div class="gr-grid">
-%(칸)s
-            <article class="gr-card gr-card--soon" aria-labelledby="gr-h-soon">
-              <p class="gr-k"><span>YouTube</span><span class="gr-tag">SOON</span></p>
-              <h3 id="gr-h-soon">평균 시청 시간 · 이탈 구간</h3>
-              <p class="gr-soon">준비 중입니다. 영상마다 어디까지 보고 넘기는지는 유튜브 분석 데이터를 연결한 뒤에 보여 드립니다.</p>
-            </article>
+%(칸)s%(soon)s
           </div>
           %(빠진말)s
           <div class="gr-table-wrap">
@@ -654,10 +760,10 @@ def view_growth(cfg, data):
               <thead><tr><th scope="col">날짜</th>%(머리)s</tr></thead>
               <tbody>%(줄)s</tbody>
             </table>
-          </div>
+          </div>%(분석칸)s%(분석표)s
           <script type="application/json" id="growth-data">%(json)s</script>
         </div>
-      </section>""" % dict(제목=e(cfg['제목']), 칸='\n'.join(칸), 빠진말=빠진말, 머리=머리, 줄=줄,
+      </section>""" % dict(제목=e(cfg['제목']), 칸='\n'.join(칸), 빠진말=빠진말, 시작줄=시작줄, soon=soon, 분석칸=분석칸, 분석표=분석표, 머리=머리, 줄=줄,
                             첫=짧은날(날짜[0]), 끝=짧은날(날짜[-1]), json=실을것,
                             첫영=datetime.date.fromisoformat(날짜[0]).strftime('%b %-d'))
 

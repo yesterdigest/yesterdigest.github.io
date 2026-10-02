@@ -459,6 +459,8 @@
       if (fig._w === W) return; fig._w = W;
       var old = fig.querySelector('svg'); if (old) old.remove();
       var tipOld = fig.querySelector('.gr-tip'); if (tipOld) tipOld.remove();
+      var D = S.날짜 || G.날짜;                         /* 유튜브 분석 그래프는 자기 날짜 칸을 싣는다(2026-10-02) */
+      if (S.모양 === '증감') return drawDiv(fig, S, D, W, H);
       var vals = S.값, n = vals.length, have = vals.filter(function (v) { return v != null; });
       var ticks = 눈금(Math.max.apply(null, have)), top = ticks[ticks.length - 1];
       var svg = el('svg', { width: W, height: H, viewBox: '0 0 ' + W + ' ' + H, 'aria-hidden': 'true', focusable: 'false' });
@@ -481,7 +483,7 @@
       var every = Math.max(1, Math.ceil(n / Math.max(2, Math.floor(pw / 38))));
       var show = []; for (var q = 0; q < n; q += every) show.push(q);
       if (show[show.length - 1] !== n - 1) { if (n - 1 - show[show.length - 1] < every) show.pop(); show.push(n - 1); }
-      G.날짜.forEach(function (d, i) {
+      D.forEach(function (d, i) {
         if (show.indexOf(i) < 0) return;
         var tx = el('text', { x: X(i), y: H - 6, 'text-anchor': i === 0 ? 'start' : (i === n - 1 ? 'end' : 'middle') }, svg);
         tx.textContent = 날(d);
@@ -506,7 +508,7 @@
         if (v != null) { hot.setAttribute('cx', X(i)); hot.setAttribute('cy', Y(v)); hot.setAttribute('visibility', 'visible'); }
         else hot.setAttribute('visibility', 'hidden');
         tip.innerHTML = '';
-        tip.appendChild(document.createTextNode(날(G.날짜[i]) + '  '));
+        tip.appendChild(document.createTextNode(날(D[i]) + '  '));
         var b = document.createElement('b'); b.textContent = v == null ? '기록 없음' : 수(v) + S.단위; tip.appendChild(b);
         tip.hidden = false;
         var tw = tip.offsetWidth, x = X(i) - tw / 2; x = Math.max(0, Math.min(W - tw, x));
@@ -518,6 +520,64 @@
         var r = svg.getBoundingClientRect(), x = ev.clientX - r.left;
         return Math.max(0, Math.min(n - 1, Math.round((x - L) / (n > 1 ? pw / (n - 1) : 1))));
       }
+      svg.addEventListener('pointermove', function (ev) { pick(near(ev)); });
+      svg.addEventListener('pointerdown', function (ev) { pick(near(ev)); });
+      svg.addEventListener('pointerleave', function (ev) { if (ev.pointerType === 'mouse') clear(); });
+      fig._key = function (ev) {
+        var k = { ArrowRight: cur + 1, ArrowLeft: cur < 0 ? n - 1 : cur - 1, Home: 0, End: n - 1 }[ev.key];
+        if (k === undefined) return; ev.preventDefault(); pick(Math.max(0, Math.min(n - 1, k)));
+      };
+      fig._clear = clear;
+    }
+    /* 구독자 증감 — 얻음은 위로(머스터드), 잃음은 아래로(회색) 막대. 한 축(0 이 가운데) · 지어낸 값 0. */
+    function drawDiv(fig, S, D, W, H) {
+      var up = S.얻음, dn = S.잃음, n = D.length;
+      function 정수눈금(m) {                       /* 사람 수는 정수 — 2.5명 같은 눈금을 안 쓴다 */
+        var t = 눈금(m); if (t.every(function (v) { return v === Math.round(v); })) return t;
+        var st = Math.max(1, Math.ceil(t[1])), r = []; for (var v = 0; r.length < 2 || r[r.length - 1] < m; v += st) r.push(v); return r;
+      }
+      var tu = 정수눈금(Math.max.apply(null, up)), td = 정수눈금(Math.max.apply(null, dn));
+      var topU = tu[tu.length - 1], topD = td[td.length - 1];
+      var svg = el('svg', { width: W, height: H, viewBox: '0 0 ' + W + ' ' + H, 'aria-hidden': 'true', focusable: 'false' });
+      fig.insertBefore(svg, fig.firstChild);
+      var labs = tu.map(function (t) { return t ? '+' + 수(t) : '0'; }).concat(td.filter(function (t) { return t; }).map(function (t) { return '−' + 수(t); }));
+      var yl = Math.max.apply(null, labs.map(function (t) { var m = el('text', {}, svg); m.textContent = t; var w = m.getComputedTextLength(); m.remove(); return w; })) + 10;
+      var L = Math.ceil(yl) + 2, R = 14, T = 10, B = 24, pw = W - L - R, ph = H - T - B;
+      var hU = ph * topU / (topU + topD), Z = T + hU;
+      var Y = function (v) { return Z - (ph * v / (topU + topD)); };
+      tu.forEach(function (t) {
+        el('line', { x1: L, x2: W - R, y1: Y(t), y2: Y(t), 'class': t === 0 ? 'gr-axis' : 'gr-gridline' }, svg);
+        var tx = el('text', { x: L - 8, y: Y(t) + 4, 'text-anchor': 'end' }, svg); tx.textContent = t ? '+' + 수(t) : '0';
+      });
+      td.forEach(function (t) {
+        if (!t) return;
+        el('line', { x1: L, x2: W - R, y1: Y(-t), y2: Y(-t), 'class': 'gr-gridline' }, svg);
+        var tx = el('text', { x: L - 8, y: Y(-t) + 4, 'text-anchor': 'end' }, svg); tx.textContent = '−' + 수(t);
+      });
+      var step = pw / n, bw = Math.max(2, Math.min(18, step * .62));
+      var X = function (i) { return L + step * (i + .5); };
+      var colhot = el('rect', { y: T, height: ph, width: step, 'class': 'gr-colhot', visibility: 'hidden' }, svg);
+      for (var i = 0; i < n; i++) {
+        if (up[i]) el('rect', { x: X(i) - bw / 2, y: Y(up[i]), width: bw, height: Z - Y(up[i]), 'class': 'gr-bar-up' }, svg);
+        if (dn[i]) el('rect', { x: X(i) - bw / 2, y: Z, width: bw, height: Y(-dn[i]) - Z, 'class': 'gr-bar-down' }, svg);
+      }
+      el('line', { x1: L, x2: W - R, y1: Z, y2: Z, 'class': 'gr-axis' }, svg);
+      var every = Math.max(1, Math.ceil(n / Math.max(2, Math.floor(pw / 38))));
+      var show = []; for (var q = 0; q < n; q += every) show.push(q);
+      if (show[show.length - 1] !== n - 1) { if (n - 1 - show[show.length - 1] < every) show.pop(); show.push(n - 1); }
+      show.forEach(function (i) { var tx = el('text', { x: X(i), y: H - 6, 'text-anchor': 'middle' }, svg); tx.textContent = 날(D[i]); });
+      var tip = document.createElement('div'); tip.className = 'gr-tip'; tip.hidden = true; fig.appendChild(tip);
+      var cur = -1;
+      function pick(i) {
+        cur = i; colhot.setAttribute('x', X(i) - step / 2); colhot.setAttribute('visibility', 'visible');
+        tip.innerHTML = ''; tip.appendChild(document.createTextNode(날(D[i]) + '  '));
+        var b = document.createElement('b'); b.textContent = '+' + up[i] + ' / −' + dn[i] + S.단위; tip.appendChild(b);
+        tip.hidden = false;
+        var tw = tip.offsetWidth, x = Math.max(0, Math.min(W - tw, X(i) - tw / 2));
+        tip.style.left = x + 'px'; tip.style.top = Math.max(0, Y(up[i]) - 44) + 'px';
+      }
+      function clear() { cur = -1; colhot.setAttribute('visibility', 'hidden'); tip.hidden = true; }
+      function near(ev) { var r = svg.getBoundingClientRect(); return Math.max(0, Math.min(n - 1, Math.floor((ev.clientX - r.left - L) / step))); }
       svg.addEventListener('pointermove', function (ev) { pick(near(ev)); });
       svg.addEventListener('pointerdown', function (ev) { pick(near(ev)); });
       svg.addEventListener('pointerleave', function (ev) { if (ev.pointerType === 'mouse') clear(); });
