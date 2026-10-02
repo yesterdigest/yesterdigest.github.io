@@ -3,6 +3,31 @@
   "_출처": "docs/records/publish-log.jsonl (결과.상태=올림)",
   "편": [
     {
+      "날짜": "2026-10-02",
+      "편별": {
+        "종합": {
+          "유튜브": "https://youtube.com/watch?v=A5RgeeiT5i4",
+          "인스타_릴스": "https://www.instagram.com/reel/DeAZl-9jrgI/"
+        },
+        "경제세계": {
+          "유튜브": "https://youtube.com/watch?v=NDrJ9hOYuVk",
+          "인스타_릴스": "https://www.instagram.com/reel/DeAnltkjomI/"
+        },
+        "연예스포츠": {
+          "유튜브": "https://youtube.com/watch?v=Jo7jpZxCq-g",
+          "인스타_릴스": "https://www.instagram.com/reel/DeAnuhVjbww/"
+        },
+        "정치사회": {
+          "유튜브": "https://youtube.com/watch?v=W0HWDSW81ko",
+          "인스타_릴스": "https://www.instagram.com/reel/DeAnd1tD6qp/"
+        }
+      },
+      "유튜브": "https://youtube.com/watch?v=A5RgeeiT5i4",
+      "인스타_릴스": "https://www.instagram.com/reel/DeAZl-9jrgI/",
+      "인스타_카드": "https://www.instagram.com/p/DeAZyX2gQHV/",
+      "표지": "/assets/cover/2026-10-02.jpg"
+    },
+    {
       "날짜": "2026-10-01",
       "편별": {
         "종합": {
