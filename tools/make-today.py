@@ -63,6 +63,8 @@ def main():
         주소 = 편주소.get((날짜, 키), {})
         cuts = os.path.join(WORK, 'docs/reports', '%s-cuts.json' % 날짜 if 키 == '종합'
                             else '%s-%s-cuts.json' % (날짜, 키))
+        if 키 != '종합' and not os.path.exists(cuts):
+            continue   # 묶음 셋 중지(2026-10-03 id 4980) — 그날 없는 편은 1면에서 뺀다
         c = json.load(open(cuts, encoding='utf-8'))
         표지원본 = os.path.join(WORK, 'renders', 'thumb-%s-%s.jpg' % (날짜, 키))
         표지 = 'assets/front/%s-%s.jpg' % (날짜, slug)
