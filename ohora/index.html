@@ -7,7 +7,7 @@
 <meta name="description" content="오호라!(@ohorashorts)는 원작자에게 허락받은 짧은 영상에 한국어 해설을 붙여 올리는 쇼츠 채널입니다.">
 <meta name="theme-color" content="#0e0e0e">
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;700&family=Space+Grotesk:wght@500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Gamja+Flower&family=Noto+Sans+KR:wght@400;700&family=Space+Grotesk:wght@500;600&display=swap" rel="stylesheet">
 <style>
 :root{--bg:#0e0e0e;--fg:#f2f2f2;--mut:#8a8a8a;--y:#F5D90A}
 *{box-sizing:border-box}
@@ -17,10 +17,20 @@ a{color:inherit}
 nav{display:flex;gap:20px;justify-content:center;font-size:13px;margin-bottom:56px}
 nav a{text-decoration:none;opacity:.45;padding-bottom:3px}
 nav a.on{opacity:1;font-weight:700;border-bottom:2px solid var(--y)}
-.mascot{margin:0 auto 28px}
-.mascot img{width:148px;height:148px;max-width:44vw;max-height:44vw;border-radius:50%;object-fit:cover;object-position:50% 40%;display:block;margin:0 auto;border:3px solid var(--y);box-shadow:0 0 0 6px #F5D90A1f}
-.mascot figcaption{margin-top:10px;font-size:12px;color:var(--mut);line-height:1.5}
+.mascot{margin:0 auto 26px}
+.mascot img{width:176px;height:176px;max-width:48vw;max-height:48vw;border-radius:50%;display:block;margin:0 auto;border:3px solid var(--y);box-shadow:0 0 0 7px #F5D90A1a,0 10px 30px #000}
+.mascot figcaption{margin-top:12px;font-size:12px;color:var(--mut);line-height:1.5}
 .mascot figcaption b{color:var(--fg);font-weight:700}
+.cats{margin:0 0 64px;overflow-x:clip}
+.cats ul{list-style:none;margin:0;padding:6px 4px 0;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:26px 18px}
+.pol{background:#f4f1ea;color:#1a1a1a;padding:8px 8px 10px;border-radius:3px;box-shadow:0 8px 22px #000a;position:relative;transform:rotate(var(--r,-2deg));transition:transform .25s ease}
+.pol:nth-child(2){--r:2.5deg;margin-top:14px}.pol:nth-child(3){--r:1.5deg}.pol:nth-child(4){--r:-3deg;margin-top:14px}
+.pol::before{content:"";position:absolute;top:-9px;left:50%;width:58px;height:18px;margin-left:-29px;background:#F5D90Ab3;transform:rotate(-4deg)}
+.pol:nth-child(even)::before{transform:rotate(5deg)}
+.pol:hover{transform:rotate(0) scale(1.03)}
+.pol img{width:100%;height:auto;aspect-ratio:1;object-fit:cover;display:block}
+.pol p{margin:8px 2px 0;font:20px/1.25 "Gamja Flower","Noto Sans KR",cursive;word-break:keep-all}
+@media (prefers-reduced-motion:reduce){.pol{transition:none}.pol:hover{transform:rotate(var(--r,-2deg))}}
 .logo{width:220px;max-width:62%;height:auto;display:block;margin:0 auto 12px}
 h1{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
 .tag{font-size:15px;margin:0 0 24px;opacity:.75}
@@ -43,11 +53,20 @@ a:focus-visible{outline:2px solid var(--y);outline-offset:3px}
 <nav aria-label="주요 메뉴"><a href="/">어제한입</a><a href="/#editions">지난 편</a><a class="on" href="/ohora/" aria-current="page">오호라</a></nav>
 <header>
 <h1>오호라!</h1>
-<figure class="mascot"><img src="/ohora/mascot.jpg" alt="턱에 앞발을 괴고 고민하는 주황·흰색 고양이 — 오호라 대표 동물" width="640" height="640" loading="eager"><figcaption><b>오호라 대표 동물</b><br>오늘도 턱 괴고 고민 중. 「오호라…?」</figcaption></figure>
+<figure class="mascot"><img src="/ohora/cat/hero.jpg" alt="턱에 앞발을 괸 주황·흰색 고양이 얼굴 위에 오호라의 「오!」 손글씨 마크" width="480" height="480" loading="eager"><figcaption><b>오호라 대표 동물</b><br>오늘도 턱 괴고 고민 중. 「오호라…?」</figcaption></figure>
 <img class="logo" src="/ohora/logo.png" alt="오호라!" width="560" height="203">
 <p class="tag">웃긴 해외 영상에 무심한 한마디.</p>
 <div class="btns"><a class="p" href="https://www.youtube.com/@ohorashorts">WATCH</a><a class="s" href="https://www.instagram.com/ohorashorts">FOLLOW</a></div>
 </header>
+<section class="cats" aria-labelledby="cat">
+<h2 id="cat">MEET THE CAT</h2>
+<ul>
+<li class="pol"><img src="/ohora/cat/1.jpg" alt="꼬리를 세우고 뒤돌아보는 고양이 뒤태" width="440" height="440" loading="lazy"><p>빵댕이 먼저 인사드립니다.</p></li>
+<li class="pol"><img src="/ohora/cat/2.jpg" alt="길바닥에 누워 앞발을 괸 고양이" width="440" height="440" loading="lazy"><p>쇼츠는 누워서 봐야 제맛.</p></li>
+<li class="pol"><img src="/ohora/cat/3.jpg" alt="턱에 앞발을 괴고 가까이서 쳐다보는 고양이" width="440" height="440" loading="lazy"><p>잠깐… 이거 진짜야?</p></li>
+<li class="pol"><img src="/ohora/cat/4.jpg" alt="위에서 내려다본 턱 괸 고양이" width="440" height="440" loading="lazy"><p>위에서 봐도 고민 중.</p></li>
+</ul>
+</section>
 <section aria-labelledby="latest">
 <h2 id="latest">LATEST</h2>
 <!-- 첫 영상이 공개되면 여기에 최근 3편(표지·한 줄·길이)을 넣는다. 공개 전 시험 영상은 넣지 않는다. -->
