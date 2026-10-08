@@ -3,6 +3,27 @@
   "_출처": "docs/records/publish-log.jsonl (결과.상태=올림)",
   "편": [
     {
+      "날짜": "2026-10-08",
+      "편별": {
+        "종합": {
+          "유튜브": "https://youtube.com/watch?v=_KkwWQhUIWE",
+          "인스타_릴스": "https://www.instagram.com/reel/DeP2XNVgeHb/"
+        }
+      },
+      "유튜브": "https://youtube.com/watch?v=_KkwWQhUIWE",
+      "인스타_릴스": "https://www.instagram.com/reel/DeP2XNVgeHb/",
+      "인스타_카드": "https://www.instagram.com/p/DeP2hmDkiku/",
+      "이슈": [
+        "삼성전자 분기 영업이익 107조 4천억",
+        "유승호·임세주 6년 교제, 이미 결별",
+        "극초음속 활공비행체 첫 시험발사 성공",
+        "허위 종결 경찰관, 파면 의결"
+      ],
+      "카드수": 6,
+      "요일색": "#FDB426",
+      "표지": "/assets/cover/2026-10-08.jpg"
+    },
+    {
       "날짜": "2026-10-07",
       "편별": {
         "종합": {
