@@ -3,6 +3,27 @@
   "_출처": "docs/records/publish-log.jsonl (결과.상태=올림)",
   "편": [
     {
+      "날짜": "2026-10-10",
+      "편별": {
+        "종합": {
+          "유튜브": "https://youtube.com/watch?v=n8IzrQNkKwc",
+          "인스타_릴스": "https://www.instagram.com/reel/DeU_9V0gmtn/"
+        }
+      },
+      "유튜브": "https://youtube.com/watch?v=n8IzrQNkKwc",
+      "인스타_릴스": "https://www.instagram.com/reel/DeU_9V0gmtn/",
+      "인스타_카드": "https://www.instagram.com/p/DeVAJ1XEzzC/",
+      "이슈": [
+        "트럼프·푸틴, 경유 공급 합의",
+        "장동윤·김승윤, 비공개 결혼",
+        "남창희, 내년 2월 아빠 된다",
+        "대구 천장 사고, 수사 전담팀 편성"
+      ],
+      "카드수": 6,
+      "요일색": "#FDB426",
+      "표지": "/assets/cover/2026-10-10.jpg"
+    },
+    {
       "날짜": "2026-10-09",
       "편별": {
         "종합": {
