@@ -3,6 +3,27 @@
   "_출처": "docs/records/publish-log.jsonl (결과.상태=올림)",
   "편": [
     {
+      "날짜": "2026-10-11",
+      "편별": {
+        "종합": {
+          "유튜브": "https://youtube.com/watch?v=4E-qe7pR_pw",
+          "인스타_릴스": "https://www.instagram.com/reel/DeXkyKfAleW/"
+        }
+      },
+      "유튜브": "https://youtube.com/watch?v=4E-qe7pR_pw",
+      "인스타_릴스": "https://www.instagram.com/reel/DeXkyKfAleW/",
+      "인스타_카드": "https://www.instagram.com/p/DeXk8C_E37S/",
+      "이슈": [
+        "스타벅스, 카드 결제액 1위 탈환",
+        "장모 살해·아내 납치 20대 검거",
+        "유도 이현지, 세계선수권 우승",
+        "찰리 푸스, 고양 스타디움 공연"
+      ],
+      "카드수": 6,
+      "요일색": "#FDB426",
+      "표지": "/assets/cover/2026-10-11.jpg"
+    },
+    {
       "날짜": "2026-10-10",
       "편별": {
         "종합": {
