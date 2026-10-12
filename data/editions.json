@@ -3,6 +3,27 @@
   "_출처": "docs/records/publish-log.jsonl (결과.상태=올림)",
   "편": [
     {
+      "날짜": "2026-10-12",
+      "편별": {
+        "종합": {
+          "유튜브": "https://youtube.com/watch?v=S9sSQRY63qM",
+          "인스타_릴스": "https://www.instagram.com/reel/DeaJnuCFSj0/"
+        }
+      },
+      "유튜브": "https://youtube.com/watch?v=S9sSQRY63qM",
+      "인스타_릴스": "https://www.instagram.com/reel/DeaJnuCFSj0/",
+      "인스타_카드": "https://www.instagram.com/p/DeaJx-fAbns/",
+      "이슈": [
+        "서울 30.1도, 10월 1위",
+        "코스피 3.65% 급락, 코스닥 4.83%↓",
+        "노벨경제학상, 홀·우드퍼드 수상",
+        "르세라핌 핫, 2억 스트리밍"
+      ],
+      "카드수": 6,
+      "요일색": "#FDB426",
+      "표지": "/assets/cover/2026-10-12.jpg"
+    },
+    {
       "날짜": "2026-10-11",
       "편별": {
         "종합": {
