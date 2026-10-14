@@ -3,6 +3,27 @@
   "_출처": "docs/records/publish-log.jsonl (결과.상태=올림)",
   "편": [
     {
+      "날짜": "2026-10-14",
+      "편별": {
+        "종합": {
+          "유튜브": "https://youtube.com/watch?v=9Otavos7aR8",
+          "인스타_릴스": "https://www.instagram.com/reel/DefdktbCvAD/"
+        }
+      },
+      "유튜브": "https://youtube.com/watch?v=9Otavos7aR8",
+      "인스타_릴스": "https://www.instagram.com/reel/DefdktbCvAD/",
+      "인스타_카드": "https://www.instagram.com/p/DefdvqRj7b-/",
+      "이슈": [
+        "하정우·차정원, 12월 13일 결혼",
+        "아람코 본사 단지 미사일 피격",
+        "교황 레오 14세 폐 수술",
+        "에버랜드 아기 카피바라 세쌍둥이"
+      ],
+      "카드수": 6,
+      "요일색": "#FDB426",
+      "표지": "/assets/cover/2026-10-14.jpg"
+    },
+    {
       "날짜": "2026-10-13",
       "편별": {
         "종합": {
