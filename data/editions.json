@@ -3,6 +3,27 @@
   "_출처": "docs/records/publish-log.jsonl (결과.상태=올림)",
   "편": [
     {
+      "날짜": "2026-10-15",
+      "편별": {
+        "종합": {
+          "유튜브": "https://youtube.com/watch?v=BOiAICkW-Bs",
+          "인스타_릴스": "https://www.instagram.com/reel/Deh37K-AlSS/"
+        }
+      },
+      "유튜브": "https://youtube.com/watch?v=BOiAICkW-Bs",
+      "인스타_릴스": "https://www.instagram.com/reel/Deh37K-AlSS/",
+      "인스타_카드": "https://www.instagram.com/p/Deh4F4zEwW6/",
+      "이슈": [
+        "이규한·솔비, 내년 4월 결혼",
+        "한일 통화스와프 3년 연장",
+        "신압록강대교 12년 만에 개통",
+        "신진서, 란커배 우승"
+      ],
+      "카드수": 6,
+      "요일색": "#FDB426",
+      "표지": "/assets/cover/2026-10-15.jpg"
+    },
+    {
       "날짜": "2026-10-14",
       "편별": {
         "종합": {
