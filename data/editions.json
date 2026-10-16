@@ -6,13 +6,21 @@
       "날짜": "2026-10-16",
       "편별": {
         "종합": {
-          "유튜브": "https://youtube.com/watch?v=LGi8fztJeYk",
-          "인스타_릴스": "https://www.instagram.com/reel/DejOmZ5kmcA/"
+          "유튜브": "https://youtube.com/watch?v=sst5jHk5zZk",
+          "인스타_릴스": "https://www.instagram.com/reel/DejiBhWD2QA/"
         }
       },
-      "유튜브": "https://youtube.com/watch?v=LGi8fztJeYk",
-      "인스타_릴스": "https://www.instagram.com/reel/DejOmZ5kmcA/",
-      "인스타_카드": "https://www.instagram.com/p/DejOt4LD6M6/",
+      "유튜브": "https://youtube.com/watch?v=sst5jHk5zZk",
+      "인스타_릴스": "https://www.instagram.com/reel/DejiBhWD2QA/",
+      "인스타_카드": "https://www.instagram.com/p/DejiI1mj3zq/",
+      "이슈": [
+        "테슬라 로드스터, 5대 뛰어넘다",
+        "BTS, 스포티파이 100억 회 돌파",
+        "부천 공장 화재, 소방관 등 7명 부상",
+        "송민호, 재복무 절차 진행"
+      ],
+      "카드수": 6,
+      "요일색": "#FDB426",
       "표지": "/assets/cover/2026-10-16.jpg"
     },
     {
