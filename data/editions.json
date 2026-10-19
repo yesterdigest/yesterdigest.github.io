@@ -3,6 +3,28 @@
   "_출처": "docs/records/publish-log.jsonl (결과.상태=올림)",
   "편": [
     {
+      "날짜": "2026-10-19",
+      "편별": {
+        "종합": {
+          "유튜브": "https://youtube.com/watch?v=IfVG0p_rNJQ",
+          "인스타_릴스": "https://www.instagram.com/reel/Deq8Bs-AG4y/"
+        }
+      },
+      "유튜브": "https://youtube.com/watch?v=IfVG0p_rNJQ",
+      "인스타_릴스": "https://www.instagram.com/reel/Deq8Bs-AG4y/",
+      "인스타_카드": "https://www.instagram.com/p/Deq8L91gUT7/",
+      "이슈": [
+        "안세영, 단식 역대 최다 47승",
+        "이강철 KT 감독, 3년 34억 재계약",
+        "김한민 감독, 11월 결혼 보도",
+        "정명석 총재, 1심 징역 33년",
+        "송파 장모 살해 피의자 신상공개"
+      ],
+      "카드수": 7,
+      "요일색": "#FDB426",
+      "표지": "/assets/cover/2026-10-19.jpg"
+    },
+    {
       "날짜": "2026-10-18",
       "편별": {
         "종합": {
