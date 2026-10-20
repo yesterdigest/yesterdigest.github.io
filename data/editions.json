@@ -3,6 +3,27 @@
   "_출처": "docs/records/publish-log.jsonl (결과.상태=올림)",
   "편": [
     {
+      "날짜": "2026-10-20",
+      "편별": {
+        "종합": {
+          "유튜브": "https://youtube.com/watch?v=jvvRulOSAqM",
+          "인스타_릴스": "https://www.instagram.com/reel/Deuv5mBDcXR/"
+        }
+      },
+      "유튜브": "https://youtube.com/watch?v=jvvRulOSAqM",
+      "인스타_릴스": "https://www.instagram.com/reel/Deuv5mBDcXR/",
+      "인스타_카드": "https://www.instagram.com/p/DeuwE8AAT1j/",
+      "이슈": [
+        "케데헌 이재, 샘 킴과 결혼",
+        "역삼동 연쇄 방화, 19명 부상",
+        "프랑스 시위, 55만 명 참가",
+        "서울 월세 비중 51%"
+      ],
+      "카드수": 6,
+      "요일색": "#FDB426",
+      "표지": "/assets/cover/2026-10-20.jpg"
+    },
+    {
       "날짜": "2026-10-19",
       "편별": {
         "종합": {
