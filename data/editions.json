@@ -3,6 +3,27 @@
   "_출처": "docs/records/publish-log.jsonl (결과.상태=올림)",
   "편": [
     {
+      "날짜": "2026-10-21",
+      "편별": {
+        "종합": {
+          "유튜브": "https://youtube.com/watch?v=fnU3ndifj4c",
+          "인스타_릴스": "https://www.instagram.com/reel/DexUsPFl3ht/"
+        }
+      },
+      "유튜브": "https://youtube.com/watch?v=fnU3ndifj4c",
+      "인스타_릴스": "https://www.instagram.com/reel/DexUsPFl3ht/",
+      "인스타_카드": "https://www.instagram.com/p/DexU4GUAVLT/",
+      "이슈": [
+        "흑상어 부캉이, 수로 밖으로",
+        "음문석, 내년 1월 결혼",
+        "코스피 3.29% 상승 마감",
+        "박성재 전 장관, 2심 징역 9년"
+      ],
+      "카드수": 6,
+      "요일색": "#FDB426",
+      "표지": "/assets/cover/2026-10-21.jpg"
+    },
+    {
       "날짜": "2026-10-20",
       "편별": {
         "종합": {
