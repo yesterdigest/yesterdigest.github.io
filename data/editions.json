@@ -3,6 +3,27 @@
   "_출처": "docs/records/publish-log.jsonl (결과.상태=올림)",
   "편": [
     {
+      "날짜": "2026-10-24",
+      "편별": {
+        "종합": {
+          "유튜브": "https://youtube.com/watch?v=62Nq4nqRemM",
+          "인스타_릴스": "https://www.instagram.com/reel/De28aKuuDnb/"
+        }
+      },
+      "유튜브": "https://youtube.com/watch?v=62Nq4nqRemM",
+      "인스타_릴스": "https://www.instagram.com/reel/De28aKuuDnb/",
+      "인스타_카드": "https://www.instagram.com/p/De28jO0gchi/",
+      "이슈": [
+        "넷플릭스 한국 10주년, 넷플잔치 개최",
+        "FC서울, 10년 만의 K리그1 우승",
+        "김정은 방중, 단둥서 왕후닝 회담",
+        "태풍 참피, 위기경보 주의로 상향"
+      ],
+      "카드수": 6,
+      "요일색": "#FDB426",
+      "표지": "/assets/cover/2026-10-24.jpg"
+    },
+    {
       "날짜": "2026-10-23",
       "편별": {
         "종합": {
