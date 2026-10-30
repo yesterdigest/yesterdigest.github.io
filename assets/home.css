@@ -1783,3 +1783,25 @@ html:not(.js) .ed-nav { display: none; }
 .gr-bars--demo li { grid-template-columns: 3.4em 1fr; }
 .gr-bar2 { display: grid; grid-template-columns: 1fr 4.6em; align-items: center; gap: 4px 10px; }
 .gr-bar--f i { background: var(--muted); }
+
+/* ── 2차 시안 (2026-10-30 · 유진님 id 2366 「캐릭터가 자연스럽게 붙지 않고 딱 나눠있는게 좀그래」) ──
+   캐릭터를 «종이 칸»(.plate 의 바탕·테두리·안쪽 여백)에서 꺼내 지면에 바로 세운다. 그림 파일은 그대로. */
+.plate { padding: 0; background: none; box-shadow: none; position: relative; }
+/* 첫 화면 — 발밑에 머리카락 괘선 한 줄(목록 사이 선과 같은 결) */
+.fp-ch::after, .sp-ch::after { content: ""; position: absolute; left: -35%; right: -35%; bottom: 0; border-bottom: 1px solid var(--rule-2); }
+/* 소개 — 절 밑 굵은 괘선 위에 발을 딛는다(.section-heading padding-bottom 만큼 내린다) */
+.about-figure { align-self: end; margin-bottom: calc(-1 * clamp(20px, 2.4vw, 32px)); }
+/* 어두운 판 — 칸이 없으면 먹 옷이 먹 바탕에 묻힌다 → 크림 윤곽선 1px(오려낸 선) */
+:root[data-theme="dark"] .plate img {
+  filter: drop-shadow(1px 0 0 var(--ink)) drop-shadow(-1px 0 0 var(--ink)) drop-shadow(0 1px 0 var(--ink)) drop-shadow(0 -1px 0 var(--ink));
+}
+/* 귀 — 영어 줄은 영문 글꼴(규칙 §3 Inter) */
+.np-ear [lang="en"] { font-family: var(--en); }
+.np-ear-t[lang="en"] { letter-spacing: -.005em; }
+.np-ear-t[lang="en"] { text-wrap: balance; }
+.np-nw { white-space: nowrap; }
+
+/* 3차 (10-30) — 귀 «큰 줄»을 줄인다: 제호(어제한입)가 더 돋보이게. 꼬리표 11px · 작은 줄 12.5px 사이 위계 */
+.np-ear-t { font-size: clamp(.875rem, .78vw, .95rem); }
+@media (max-width: 640px) { .np-ear-t { font-size: .84rem; } }
+@media (min-width: 2000px) and (min-height: 1100px) { .np-ear-t { font-size: 1.1rem; } }

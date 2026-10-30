@@ -56,7 +56,7 @@ KST = datetime.timezone(datetime.timedelta(hours=9))
     'YT_OTHER_PAGE': '유튜브 다른 화면', 'SUBSCRIBER': '구독 피드', 'EXT_URL': '외부 링크',
     'NO_LINK_OTHER': '직접·알 수 없음', 'NOTIFICATION': '알림', 'SOUND_PAGE': '사운드 페이지',
     'PLAYLIST': '재생목록', 'RELATED_VIDEO': '추천 영상', 'HASHTAGS': '해시태그', 'YT_PLAYLIST_PAGE': '재생목록 페이지',
-    'END_SCREEN': '최종 화면', 'ANNOTATION': '카드', 'CAMPAIGN_CARD': '캠페인 카드', 'ADVERTISING': '광고',
+    'END_SCREEN': '최종 화면', 'SHORTS_CONTENT_LINKS': '쇼츠 속 링크', 'ANNOTATION': '카드', 'CAMPAIGN_CARD': '캠페인 카드', 'ADVERTISING': '광고',
 }
 연령이름 = {'age13-17': '13–17', 'age18-24': '18–24', 'age25-34': '25–34', 'age35-44': '35–44',
           'age45-54': '45–54', 'age55-64': '55–64', 'age65-': '65+'}

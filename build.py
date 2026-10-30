@@ -220,7 +220,8 @@ def nameplate(editions, sc, 날짜=None):
     🔴 제호 기본값은 규칙 §3 대로 «주아 활자» h1 이다. D4 v2 레터링 제호는 «제안»이라
        주소에 ?masthead=lettering 을 붙였을 때만 보인다(기억하지 않는다 · <html data-masthead="lettering">).
        그 판에서도 h1 글자는 남는다(sr-only) — 읽는 기계에는 늘 「어제한입」이다.
-    🔴 글은 전부 «있던 말»이다: 모토 두 줄 = data/showcase.json 장 main(유진님 2026-09-06 「"시간은 금이다" 이게 내 모토야」),
+    🔴 글은 전부 «있던 말»이다: 모토 두 줄 = 2026-10-30 부터 «Time, above all. / Concise. Considered. Verified.»(아래 모토 줄 주석 ·
+       옛 값 data/showcase.json 장 main «시간은 금이다» — 유진님 2026-09-06 「"시간은 금이다" 이게 내 모토야」),
        태그라인 = 배너 안 글자, 호수 = data/editions.json 의 편 수, 날짜 = 최신 편 «뉴스 날짜». 지어낸 말 없음.
     🔴 게시 시각은 여기(날짜줄) · 소개 문단 · 메타 설명 «세 곳»에만 적는다 (5차 8번).
     """
@@ -229,21 +230,22 @@ def nameplate(editions, sc, 날짜=None):
     d = 날짜 or 최신.get('날짜') or datetime.date.today().isoformat()
     y, m, day = [int(x) for x in d.split('-')]
     요일 = EN_WD[datetime.date(y, m, day).weekday()]
-    main = next((c for c in sc['장'] if c['id'] == 'main'), {})
-    모토 = (main.get('제목줄') or ['시간은 금이다'])[0]
-    받침 = main.get('받침', '')
+    # 🔴 2026-10-30 — 귀 모토를 영어 두 줄로 바꿨다(유진님 총괄봇 id 2392 16:41 「B, 반영」 · id 2394 16:42 「너가 알아서」
+    #    → 총괄이 모토 «Time, above all.» 로 정함). 그래서 data/showcase.json 장 main 의 제목줄·받침은 이제 읽지 않는다.
+    모토 = 'Time, above all.'
+    받침 = 'Concise. Considered. Verified.'
     return """      <section class="nameplate" aria-labelledby="np-title">
         <div class="np-inner">
           <p class="np-dateline">
             <span>No. %(호)d</span>
-            <span class="np-date">News of <time datetime="%(d)s">%(점날짜)s</time> %(요일)s</span>
-            <span>06:00 Daily &#183; 08:00 By section</span>
+            <span class="np-date">Edition of <time datetime="%(d)s">%(점날짜)s</time> %(요일)s</span>
+            <span>06:00 Daily &#183; Same-day news</span>
           </p>
           <div class="np-head">
             <div class="np-ear np-ear-l">
               <p class="np-ear-k">Motto</p>
-              <p class="np-ear-t">%(모토)s</p>
-              <p class="np-ear-s">%(받침)s</p>
+              <p class="np-ear-t" lang="en">%(모토)s</p>
+              <p class="np-ear-s" lang="en">%(받침)s</p>
             </div>
             <div class="np-mast">
               <h1 id="np-title" class="np-title"><span class="np-title-t">어제한입</span>%(글자판)s%(두줄판)s</h1>
@@ -254,8 +256,8 @@ def nameplate(editions, sc, 날짜=None):
               </p>
             </div>
             <div class="np-ear np-ear-r">
-              <p class="np-ear-k">Four editions</p>
-              <p class="np-ear-t">종합 하나, 분야별 셋</p>
+              <p class="np-ear-k">Every day</p>
+              <p class="np-ear-t" lang="en">Morning digest, <span class="np-nw">the day&#8217;s big stories.</span></p>
               <p class="np-ear-s">Instagram &#183; YouTube</p>
             </div>
           </div>
@@ -423,6 +425,17 @@ def front_page(today):
                              목록=목록(p, 'sp-list'), 단추=단추(p),
                              캐릭터=편집자(p['slug'], cls='sp-ch')))
 
+    # 🔴 2026-10-30 — 분야별 편이 없는 날(묶음 셋 중지 · 2026-10-03 id 4980)엔 «By section» 제목과 빈 칸만 남았다 → 칸째 뺀다
+    분야칸 = ("""      <section class="sections" aria-labelledby="sec-title">
+        <div class="fp-inner">
+          <p class="sec-k"><span id="sec-title">By section</span><span>08:00 Daily</span></p>
+          <div class="tabs" role="tablist" aria-label="분야별 편">
+            %s
+          </div>
+%s
+        </div>
+      </section>
+""" % ('\n            '.join(탭), '\n'.join(판))) if 탭 else ''
     return """      <section class="front" aria-labelledby="fp-title">
         <div class="fp-inner">
           <p class="sec-k"><span>Front page &#183; %(점날짜)s</span><span class="sec-links"><a href="#editions" data-view="editions">지난 편 <span aria-hidden="true">&#8594;</span></a><a href="#growth" data-view="growth">채널 성장 <span aria-hidden="true">&#8594;</span></a></span></p>
@@ -438,18 +451,9 @@ def front_page(today):
           </article>
         </div>
       </section>
-      <section class="sections" aria-labelledby="sec-title">
-        <div class="fp-inner">
-          <p class="sec-k"><span id="sec-title">By section</span><span>08:00 Daily</span></p>
-          <div class="tabs" role="tablist" aria-label="분야별 편">
-            %(탭)s
-          </div>
-%(판)s
-        </div>
-      </section>
-""" % dict(점날짜=점날짜, 폰=폰, 칩=칩(종합), 헤드=e(종합['헤드라인']), 목록=목록(종합, 'fp-list'),
+%(분야칸)s""" % dict(점날짜=점날짜, 폰=폰, 칩=칩(종합), 헤드=e(종합['이슈'][0]['제목'] if 종합['이슈'] else 종합['헤드라인']), 목록=목록(종합, 'fp-list'),
            단추=단추(종합, today.get('인스타_카드')), 캐릭터=편집자('jonghap', cls='fp-ch', 자세='-point'),
-           탭='\n            '.join(탭), 판='\n'.join(판))
+           분야칸=분야칸)
 
 
 # ── 화면(칸) ───────────────────────────────────────────────────────
@@ -468,8 +472,8 @@ def view_yesterdigest(cfg, data):
             <!-- 🔴 여기 있던 구글 OAuth 두 문장은 «맨 아래» oauth_note() 로 옮겼다
                  (유진님 2026-09-12 08:53 · 09:48). 지운 것이 아니라 «옮긴» 것이다 — 되돌리지 마라. -->
             <div class="about-side">
-              <p>어제 하루를 한입 크기로 잘라, 아침 6시 종합, 8시 분야별로 놓아둡니다.
-                 무엇을 골랐는지와 어떻게 확인했는지를 먼저 챙기고요.</p>
+              <p>어제 하루를 한입 크기로 잘라 아침 6시에 놓아두고, 낮과 저녁에는 그날의 큰 소식을 한 편씩 더합니다.
+                 빠르기보다 무엇을 골랐고 어떻게 확인했는지를 먼저 챙깁니다.</p>
             </div>
             <figure class="about-figure">""" + 편집자('jonghap', '신문을 든 어제한입 캐릭터 «편집자»', 'about-ch') + """</figure>
           </div>
@@ -477,17 +481,17 @@ def view_yesterdigest(cfg, data):
             <article class="card">
               <span class="step-number" aria-hidden="true">01 &#8212;</span>
               <h3>주요 이슈 선별</h3>
-              <p>공식 자료와 복수의 보도를 바탕으로 전날의 핵심 이슈를 선별하고 사실관계를 확인합니다.</p>
+              <p>공식 발표, 또는 서로 다른 두 언론의 보도로 확인한 이슈만 고릅니다.</p>
             </article>
             <article class="card">
               <span class="step-number" aria-hidden="true">02 &#8212;</span>
               <h3>콘텐츠 제작</h3>
-              <p>선별한 이슈를 세로형 영상과 카드뉴스에 맞춰 간결하고 이해하기 쉬운 형식으로 제작합니다.</p>
+              <p>고른 이슈를 세로 영상과 카드뉴스로, 짧고 알아듣기 쉽게 만듭니다.</p>
             </article>
             <article class="card">
               <span class="step-number" aria-hidden="true">03 &#8212;</span>
               <h3>검토 후 게시</h3>
-              <p>정확성·저작권·표현 검사를 통과한 편만 공식 API로 게시하고, 오류가 확인되면 정정·삭제하고 기록을 남깁니다.</p>
+              <p>사실·저작권·표현 검사를 통과한 편만 올립니다. 틀린 곳이 나오면 바로잡거나 내리고, 그 기록을 남깁니다.</p>
             </article>
           </div>
         </div>
@@ -519,7 +523,7 @@ def view_editions(cfg, data):
         ig = ed.get('인스타_카드') or ed.get('인스타_릴스') or IG_ACCOUNT
         yt = ed.get('유튜브') or YT_CHANNEL
         # 🔴 5차 — 편 수·장 수를 적지 않는다(날마다 달라 틀리기 쉽고, 세는 말이 «유치함»의 한 몫이었다)
-        더보기 = '카드와 영상 전체는 계정에서 봅니다.'
+        더보기 = '카드와 영상 전체는 아래 계정에서 보세요.'
 
         panels.append("""            <article class="ed">
               <a class="ed-cover" href="%(ig)s" target="_blank" rel="noopener"
@@ -551,7 +555,7 @@ def view_editions(cfg, data):
           <p class="sec-k"><span>Past editions</span><span>Newest first</span></p>
           <div class="section-heading reveal">
             <h2>%(제목)s</h2>
-            <p>어제를 카드뉴스와 세로 영상으로 정리합니다. 전체는 Instagram과 YouTube에서.</p>
+            <p>지난 날들의 카드뉴스 표지를 모았습니다. 카드와 영상 전체는 Instagram과 YouTube에서 보실 수 있습니다.</p>
           </div>
         </div>
         <div class="ed-rail" style="--n: %(n)d">
@@ -631,7 +635,7 @@ def view_growth(cfg, data):
                 % (d, 짧은날(d), ''.join('<td>%s</td>' % 수(c['값'][k]) for c in g['그래프']))
                 for k, d in enumerate(날짜))
     빠진 = ', '.join(짧은날(d) for d in g['빠진날'])
-    빠진말 = ('<p class="gr-gap">%s 은 기록이 없어 점을 찍지 않고 앞뒤 선만 이었습니다.</p>' % e(빠진)) if 빠진 else ''
+    빠진말 = ('<p class="gr-gap">%s에는 기록이 없어 점 없이 앞뒤만 선으로 이었습니다.</p>' % e(빠진)) if 빠진 else ''
     실을그래프 = [{'이름': c['이름'], '단위': c['단위'], '값': c['값']} for c in g['그래프']]
     a = g.get('분석') or {}
     분석칸, 시작줄, 분석표 = '', '', ''
@@ -685,9 +689,11 @@ def view_growth(cfg, data):
             </article>""" % dict(k=k, 얻=sb['기간얻음'], 잃=sb['기간잃음'], 첫=짧은날(a['날짜'][0]),
                                  끝=짧은날(a['날짜'][-1]), 기준=e(a기준)))
         # 유입 경로 — 기간 합계의 막대(HTML 만 · 스크립트 없이 보인다)
+        # 2026-10-30 — make-growth.py 유입이름에 없던 코드가 data/growth.json 에 영어 그대로 남은 경우를 받친다
+        유입보정 = {'SHORTS_CONTENT_LINKS': '쇼츠 속 링크'}
         유입줄 = ''.join('<li><span class="gr-bar-k">%s</span><span class="gr-bar"><i style="width:%.1f%%"></i></span>'
                        '<span class="gr-bar-v">%s%%<small>%s회</small></span></li>'
-                       % (e(r['이름']), r['비율'], ('%.1f' % r['비율']) if r['비율'] >= 0.1 else '<0.1', '{:,}'.format(r['조회']))
+                       % (e(유입보정.get(r['이름'], r['이름'])), r['비율'], ('%.1f' % r['비율']) if r['비율'] >= 0.1 else '<0.1', '{:,}'.format(r['조회']))
                        for r in a['유입'])
         카드.append("""            <article class="gr-card" aria-labelledby="gr-h-src">
               <p class="gr-k"><span>YouTube Analytics</span><span>%(첫)s–%(끝)s</span></p>
@@ -714,12 +720,12 @@ def view_growth(cfg, data):
         카드.append("""            <article class="gr-card gr-card--soon" aria-labelledby="gr-h-na">
               <p class="gr-k"><span>YouTube Analytics</span><span class="gr-tag">N/A</span></p>
               <h3 id="gr-h-na">노출수 · 노출 클릭률 · Shorts 본 비율</h3>
-              <p class="gr-soon">유튜브 분석 API 가 이 값들을 주지 않습니다(API 미제공). 유튜브 스튜디오에서만 볼 수 있어 여기에는 싣지 않습니다.</p>
+              <p class="gr-soon">이 세 값은 유튜브 스튜디오에서만 볼 수 있어 여기에는 싣지 않습니다.</p>
             </article>""")
         분석칸 = """
           <div class="gr-sub">
             <p class="sec-k"><span>YouTube Analytics</span><span>%(기준)s</span></p>
-            <p class="gr-sub-lead">유튜브 분석에서 가져온 채널 전체 수치입니다. 유튜브는 하루 이틀 늦게 집계해, 마지막 집계일까지만 보입니다. 날짜는 유튜브 분석 기준(미국 태평양 시간)입니다.</p>
+            <p class="gr-sub-lead">유튜브 분석의 채널 전체 수치입니다. 유튜브가 하루 이틀 늦게 집계하므로 마지막 집계일까지만 보입니다. 날짜는 미국 태평양 시간 기준입니다.</p>
           </div>
           <div class="gr-grid">
 %(카드)s
@@ -746,7 +752,7 @@ def view_growth(cfg, data):
           <div class="section-heading">
             <h2 id="growth-title">%(제목)s</h2>
             <div class="about-side">
-              <p>유튜브와 인스타그램이 날마다 얼마나 자랐는지 그대로 보여 드립니다. 하루 한 번 잰 공개 수치이고, 빠진 날은 비워 둡니다.</p>
+              <p>유튜브와 인스타그램이 하루하루 얼마나 자랐는지 꾸밈없이 보여 드립니다. 하루 한 번 잰 공개 수치이며, 재지 못한 날은 비워 둡니다.</p>
             </div>
           </div>
           %(시작줄)s
@@ -1032,7 +1038,7 @@ PAGE = """<!doctype html>
           근거: 유진님 16:09 「A안, 스레드 프로필 내가 바꿀게 그 외는 너가 전부 추천하는대로 바꿔」 → 팀장 추천 ① 레터링. 제목 글씨는 주아 그대로(②). -->
   <script>(function(){var d=document.documentElement,t='light';try{if(localStorage.getItem('yd-theme')==='dark')t='dark';}catch(e){}d.setAttribute('data-theme',t);if(t==='dark'){var m=document.querySelector('meta[name="theme-color"]');if(m)m.setAttribute('content','#14171C');}try{if(/[?&]masthead=lettering(&|$)/.test(location.search))d.setAttribute('data-masthead','lettering');}catch(e){}})();</script>
   <title>%(CH)s | YesterDigest</title>
-  <meta name="description" content="어제의 뉴스를 한입 크기로. 매일 아침 6시 종합, 8시 분야별로 Instagram과 YouTube에 올라갑니다.">
+  <meta name="description" content="어제의 뉴스를 한입 크기로. 매일 아침 6시 종합편, 낮과 저녁에는 그날의 큰 소식을 Instagram과 YouTube에 올립니다.">
   <link rel="canonical" href="https://yesterdigest.com/">
 
   <!-- 카톡·트위터·페북에 «주소를 붙였을 때» 뜨는 것.
