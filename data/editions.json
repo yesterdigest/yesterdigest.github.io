@@ -3,6 +3,27 @@
   "_출처": "docs/records/publish-log.jsonl (결과.상태=올림)",
   "편": [
     {
+      "날짜": "2026-11-01",
+      "편별": {
+        "종합": {
+          "유튜브": "https://youtube.com/watch?v=bzGPD5-_vp8",
+          "인스타_릴스": "https://www.instagram.com/reel/DfMWatuJwrI/"
+        }
+      },
+      "유튜브": "https://youtube.com/watch?v=bzGPD5-_vp8",
+      "인스타_릴스": "https://www.instagram.com/reel/DfMWatuJwrI/",
+      "인스타_카드": "https://www.instagram.com/p/DfMWj3Fktau/",
+      "이슈": [
+        "삼성, 2년 만에 한국시리즈",
+        "누적 수출 첫 9천억 달러",
+        "내기 골프 약물 일당 송치",
+        "윤종훈 한은서 결혼"
+      ],
+      "카드수": 6,
+      "요일색": "#FDB426",
+      "표지": "/assets/cover/2026-11-01.jpg"
+    },
+    {
       "날짜": "2026-10-31",
       "편별": {
         "종합": {
