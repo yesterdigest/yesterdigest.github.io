@@ -3,6 +3,27 @@
   "_출처": "docs/records/publish-log.jsonl (결과.상태=올림)",
   "편": [
     {
+      "날짜": "2026-11-02",
+      "편별": {
+        "종합": {
+          "유튜브": "https://youtube.com/watch?v=mrC8JSQmhG8",
+          "인스타_릴스": "https://www.instagram.com/reel/DfQOO8_O0qm/"
+        }
+      },
+      "유튜브": "https://youtube.com/watch?v=mrC8JSQmhG8",
+      "인스타_릴스": "https://www.instagram.com/reel/DfQOO8_O0qm/",
+      "인스타_카드": "https://www.instagram.com/p/DfQOZZeD3d5/",
+      "이슈": [
+        "박항서 감독, 관중 조롱에 맞대응",
+        "수능 스마트안경 전담요원",
+        "신세경 악플러 항소심 징역 8개월",
+        "격투기 방송 출연자 폭행 송치"
+      ],
+      "카드수": 6,
+      "요일색": "#FDB426",
+      "표지": "/assets/cover/2026-11-02.jpg"
+    },
+    {
       "날짜": "2026-11-01",
       "편별": {
         "종합": {
