@@ -3,6 +3,27 @@
   "_출처": "docs/records/publish-log.jsonl (결과.상태=올림)",
   "편": [
     {
+      "날짜": "2026-11-05",
+      "편별": {
+        "종합": {
+          "유튜브": "https://youtube.com/watch?v=U5YWLgnYyiY",
+          "인스타_릴스": "https://www.instagram.com/reel/DfX8nUvPey9/"
+        }
+      },
+      "유튜브": "https://youtube.com/watch?v=U5YWLgnYyiY",
+      "인스타_릴스": "https://www.instagram.com/reel/DfX8nUvPey9/",
+      "인스타_카드": "https://www.instagram.com/p/DfX8x9VAUEI/",
+      "이슈": [
+        "정부, 가상자산 과세 2년 유예 추진",
+        "코스피 5.28% 급락, 매도 사이드카",
+        "혁오, 6년 만의 정규 앨범 발표",
+        "브라질 청소년 경기, 구단 2차전 포기"
+      ],
+      "카드수": 6,
+      "요일색": "#FDB426",
+      "표지": "/assets/cover/2026-11-05.jpg"
+    },
+    {
       "날짜": "2026-11-04",
       "편별": {
         "종합": {
