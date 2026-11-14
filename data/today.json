@@ -1,35 +1,35 @@
 {
  "_만든이": "tools/make-today.py — 손으로 고치지 않는다",
- "날짜": "2026-11-13",
+ "날짜": "2026-11-14",
  "편": [
   {
    "키": "종합",
    "이름": "종합",
    "slug": "jonghap",
    "시각": "06:00",
-   "헤드라인": "박수홍 1심 패소, 황정리 별세 x",
+   "헤드라인": "미국 이륙 중단, 노란우산 개인정보 x",
    "이슈": [
     {
-     "제목": "박수홍, 친형 부부 상대 1심 패소",
-     "분야": "연예"
+     "제목": "미국 전역 이륙 중단, 4시간 넘게",
+     "분야": "세계"
     },
     {
-     "제목": "황정리 별세, 취권 악역 염철심",
+     "제목": "노란우산·조폐공사 개인정보 소식",
+     "분야": "생활"
+    },
+    {
+     "제목": "2027 롤드컵 결승, 서울아레나",
      "분야": "문화"
     },
     {
-     "제목": "민희진 소송 양쪽 청구 모두 기각",
-     "분야": "연예"
-    },
-    {
-     "제목": "AI 보컬 곡 멜론 톱100 1위",
+     "제목": "주진모, 쉰두 살에 아빠 된다",
      "분야": "연예"
     }
    ],
-   "유튜브": "https://youtube.com/watch?v=bMAmoXboEqA",
-   "인스타": "https://www.instagram.com/reel/DfsipzWB_DX/",
-   "표지": "/assets/front/2026-11-13-jonghap.jpg"
+   "유튜브": "https://youtube.com/watch?v=9NqZzjjcmx0",
+   "인스타": "https://www.instagram.com/reel/DfvHysSg9ZX/",
+   "표지": "/assets/front/2026-11-14-jonghap.jpg"
   }
  ],
- "인스타_카드": "https://www.instagram.com/p/Dfsi1JHE7Aa/"
+ "인스타_카드": "https://www.instagram.com/p/DfvH_36EgeX/"
 }
