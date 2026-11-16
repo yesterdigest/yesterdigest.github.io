@@ -1,35 +1,35 @@
 {
  "_만든이": "tools/make-today.py — 손으로 고치지 않는다",
- "날짜": "2026-11-15",
+ "날짜": "2026-11-16",
  "편": [
   {
    "키": "종합",
    "이름": "종합",
    "slug": "jonghap",
    "시각": "06:00",
-   "헤드라인": "청와대 자격시험 전수조사, 코인원 정보 유출 x",
+   "헤드라인": "수능 스마트기기 반납, 블랙핑크 YG 명단 제외 x",
    "이슈": [
     {
-     "제목": "청와대, 국가자격시험 전수조사",
+     "제목": "수능 AI 부정행위, 정부 대책",
      "분야": "사회"
     },
     {
-     "제목": "코인원 외주업체 해킹, 정보 유출",
+     "제목": "블랙핑크, YG 전속계약 명단서 빠져",
+     "분야": "연예"
+    },
+    {
+     "제목": "코스피 3.59% 하락 마감",
      "분야": "경제"
     },
     {
-     "제목": "고경표 사과, 활동 중단",
-     "분야": "연예"
-    },
-    {
-     "제목": "BTS 아리랑, 멜론 첫날 3관왕",
-     "분야": "연예"
+     "제목": "시진핑·트럼프·푸틴 선전 회담",
+     "분야": "세계"
     }
    ],
-   "유튜브": "https://youtube.com/watch?v=ycwXu1xXJM8",
-   "인스타": "https://www.instagram.com/reel/DfxsmNPTPKr/",
-   "표지": "/assets/front/2026-11-15-jonghap.jpg"
+   "유튜브": "https://youtube.com/watch?v=YKmM001ccg0",
+   "인스타": "https://www.instagram.com/reel/Df0RgniueYD/",
+   "표지": "/assets/front/2026-11-16-jonghap.jpg"
   }
  ],
- "인스타_카드": "https://www.instagram.com/p/DfxszyDE_2Y/"
+ "인스타_카드": "https://www.instagram.com/p/Df0Rq-EEtmg/"
 }
