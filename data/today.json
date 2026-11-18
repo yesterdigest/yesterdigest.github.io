@@ -1,35 +1,35 @@
 {
  "_만든이": "tools/make-today.py — 손으로 고치지 않는다",
- "날짜": "2026-11-17",
+ "날짜": "2026-11-18",
  "편": [
   {
    "키": "종합",
    "이름": "종합",
    "slug": "jonghap",
    "시각": "06:00",
-   "헤드라인": "수능 날 아침 휴대전화에 재난문자 x",
+   "헤드라인": "붉은사막 게임대상 8관왕 x",
    "이슈": [
     {
-     "제목": "수능 날 아침 위급재난문자",
+     "제목": "붉은사막, 게임대상 8관왕",
+     "분야": "문화"
+    },
+    {
+     "제목": "수능 연기 신청 기각",
      "분야": "사회"
     },
     {
-     "제목": "패틴슨, 새 제임스 본드",
-     "분야": "연예"
+     "제목": "한중 FTA 서비스·투자 실질타결",
+     "분야": "세계"
     },
     {
-     "제목": "코스피 2.59% 하락 마감",
+     "제목": "코스피 하루 만에 5천 회복",
      "분야": "경제"
-    },
-    {
-     "제목": "제니 ‘드라큘라’ 핫100 3위",
-     "분야": "연예"
     }
    ],
-   "유튜브": "https://youtube.com/watch?v=8bpEFRcgrpw",
-   "인스타": "https://www.instagram.com/reel/Df22FZlCIXw/",
-   "표지": "/assets/front/2026-11-17-jonghap.jpg"
+   "유튜브": "https://youtube.com/watch?v=0x3yCyeXkiE",
+   "인스타": "https://www.instagram.com/reel/Df5a8_NuQCk/",
+   "표지": "/assets/front/2026-11-18-jonghap.jpg"
   }
  ],
- "인스타_카드": "https://www.instagram.com/p/Df22SriEv-6/"
+ "인스타_카드": "https://www.instagram.com/p/Df5bHRGH6eu/"
 }
