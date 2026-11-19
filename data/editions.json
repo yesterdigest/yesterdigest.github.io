@@ -6,13 +6,21 @@
       "날짜": "2026-11-19",
       "편별": {
         "종합": {
-          "유튜브": "https://youtube.com/watch?v=cGVtgPGrawA",
-          "인스타_릴스": "https://www.instagram.com/reel/Df7B7-JhD6T/"
+          "유튜브": "https://youtube.com/watch?v=HOTfwVNRbQE",
+          "인스타_릴스": "https://www.instagram.com/reel/Df7_rqFqXjl/"
         }
       },
-      "유튜브": "https://youtube.com/watch?v=cGVtgPGrawA",
-      "인스타_릴스": "https://www.instagram.com/reel/Df7B7-JhD6T/",
-      "인스타_카드": "https://www.instagram.com/p/Df7ByZlD4V-/",
+      "유튜브": "https://youtube.com/watch?v=HOTfwVNRbQE",
+      "인스타_릴스": "https://www.instagram.com/reel/Df7_rqFqXjl/",
+      "인스타_카드": "https://www.instagram.com/p/Df7_3i-ElUn/",
+      "이슈": [
+        "GTA 6, 메타크리틱 99점",
+        "미중러 3자 회담, 평화선언",
+        "대법원 한덕수·김건희 판결",
+        "남태현 2심도 실형, 법정구속"
+      ],
+      "카드수": 6,
+      "요일색": "#FDB426",
       "표지": "/assets/cover/2026-11-19.jpg"
     },
     {

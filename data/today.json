@@ -1,35 +1,35 @@
 {
  "_만든이": "tools/make-today.py — 손으로 고치지 않는다",
- "날짜": "2026-11-18",
+ "날짜": "2026-11-19",
  "편": [
   {
    "키": "종합",
    "이름": "종합",
    "slug": "jonghap",
    "시각": "06:00",
-   "헤드라인": "붉은사막 게임대상 8관왕 x",
+   "헤드라인": "GTA 6 메타크리틱 99점 x",
    "이슈": [
     {
-     "제목": "붉은사막, 게임대상 8관왕",
+     "제목": "GTA 6, 메타크리틱 99점",
      "분야": "문화"
     },
     {
-     "제목": "수능 연기 신청 기각",
-     "분야": "사회"
-    },
-    {
-     "제목": "한중 FTA 서비스·투자 실질타결",
+     "제목": "미중러 3자 회담, 평화선언",
      "분야": "세계"
     },
     {
-     "제목": "코스피 하루 만에 5천 회복",
-     "분야": "경제"
+     "제목": "대법원 한덕수·김건희 판결",
+     "분야": "사회"
+    },
+    {
+     "제목": "남태현 2심도 실형, 법정구속",
+     "분야": "연예"
     }
    ],
-   "유튜브": "https://youtube.com/watch?v=0x3yCyeXkiE",
-   "인스타": "https://www.instagram.com/reel/Df5a8_NuQCk/",
-   "표지": "/assets/front/2026-11-18-jonghap.jpg"
+   "유튜브": "https://youtube.com/watch?v=HOTfwVNRbQE",
+   "인스타": "https://www.instagram.com/reel/Df7_rqFqXjl/",
+   "표지": "/assets/front/2026-11-19-jonghap.jpg"
   }
  ],
- "인스타_카드": "https://www.instagram.com/p/Df5bHRGH6eu/"
+ "인스타_카드": "https://www.instagram.com/p/Df7_3i-ElUn/"
 }
