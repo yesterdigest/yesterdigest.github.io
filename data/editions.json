@@ -3,6 +3,19 @@
   "_출처": "docs/records/publish-log.jsonl (결과.상태=올림)",
   "편": [
     {
+      "날짜": "2026-11-20",
+      "편별": {
+        "종합": {
+          "유튜브": "https://youtube.com/watch?v=IEZLAg2t0nQ",
+          "인스타_릴스": "https://www.instagram.com/reel/Df9dCz9x4gJ/"
+        }
+      },
+      "유튜브": "https://youtube.com/watch?v=IEZLAg2t0nQ",
+      "인스타_릴스": "https://www.instagram.com/reel/Df9dCz9x4gJ/",
+      "인스타_카드": "https://www.instagram.com/p/Df9dMccElks/",
+      "표지": "/assets/cover/2026-11-20.jpg"
+    },
+    {
       "날짜": "2026-11-19",
       "편별": {
         "종합": {
