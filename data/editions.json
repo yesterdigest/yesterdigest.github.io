@@ -3,6 +3,27 @@
   "_출처": "docs/records/publish-log.jsonl (결과.상태=올림)",
   "편": [
     {
+      "날짜": "2026-11-22",
+      "편별": {
+        "종합": {
+          "유튜브": "https://youtube.com/watch?v=7PtKqQxkEZQ",
+          "인스타_릴스": "https://www.instagram.com/reel/DgDuMUuSNXo/"
+        }
+      },
+      "유튜브": "https://youtube.com/watch?v=7PtKqQxkEZQ",
+      "인스타_릴스": "https://www.instagram.com/reel/DgDuMUuSNXo/",
+      "인스타_카드": "https://www.instagram.com/p/DgDuYZ8H70B/",
+      "이슈": [
+        "성균관대 수리논술, 시험 중 문항 정정",
+        "고경표, 핑계고 인기상 후보서 삭제",
+        "한전 개인정보 152만여 건 유출",
+        "WSJ 보도, 앨리스 황은 얼굴 역할"
+      ],
+      "카드수": 6,
+      "요일색": "#FDB426",
+      "표지": "/assets/cover/2026-11-22.jpg"
+    },
+    {
       "날짜": "2026-11-21",
       "편별": {
         "종합": {
