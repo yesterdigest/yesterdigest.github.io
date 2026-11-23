@@ -3,6 +3,27 @@
   "_출처": "docs/records/publish-log.jsonl (결과.상태=올림)",
   "편": [
     {
+      "날짜": "2026-11-23",
+      "편별": {
+        "종합": {
+          "유튜브": "https://youtube.com/watch?v=DTfnzh2ud6Q",
+          "인스타_릴스": "https://www.instagram.com/reel/DgGS7mwqxUb/"
+        }
+      },
+      "유튜브": "https://youtube.com/watch?v=DTfnzh2ud6Q",
+      "인스타_릴스": "https://www.instagram.com/reel/DgGS7mwqxUb/",
+      "인스타_카드": "https://www.instagram.com/p/DgGTGrNkzml/",
+      "이슈": [
+        "코스피 이틀째 하락, 매도 사이드카 발동",
+        "최태원, 9,440억 전액 화해권고 신청",
+        "故 이진우 유족 경찰 출석, 수사 계속",
+        "에이티즈, 빌보드 200 네 번째 1위"
+      ],
+      "카드수": 6,
+      "요일색": "#FDB426",
+      "표지": "/assets/cover/2026-11-23.jpg"
+    },
+    {
       "날짜": "2026-11-22",
       "편별": {
         "종합": {
