@@ -3,6 +3,27 @@
   "_출처": "docs/records/publish-log.jsonl (결과.상태=올림)",
   "편": [
     {
+      "날짜": "2026-11-26",
+      "편별": {
+        "종합": {
+          "유튜브": "https://youtube.com/watch?v=wCzglXwAUSo",
+          "인스타_릴스": "https://www.instagram.com/reel/DgOBNrChssZ/"
+        }
+      },
+      "유튜브": "https://youtube.com/watch?v=wCzglXwAUSo",
+      "인스타_릴스": "https://www.instagram.com/reel/DgOBNrChssZ/",
+      "인스타_카드": "https://www.instagram.com/p/DgOBZNYj9CU/",
+      "이슈": [
+        "기준금리 3.25%, 올해 세 번째 인상",
+        "텀블러 처분은 학급교체, 피해 학생은 자퇴",
+        "세무사 수석, 구속영장 신청",
+        "머스크, 계좌에 스페이스X 두 주"
+      ],
+      "카드수": 6,
+      "요일색": "#FDB426",
+      "표지": "/assets/cover/2026-11-26.jpg"
+    },
+    {
       "날짜": "2026-11-25",
       "편별": {
         "종합": {
