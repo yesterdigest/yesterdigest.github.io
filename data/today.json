@@ -1,35 +1,35 @@
 {
  "_만든이": "tools/make-today.py — 손으로 고치지 않는다",
- "날짜": "2026-11-26",
+ "날짜": "2026-11-27",
  "편": [
   {
    "키": "종합",
    "이름": "종합",
    "slug": "jonghap",
    "시각": "06:00",
-   "헤드라인": "기준금리 3.25%, 올해 세 번째 인상 x",
+   "헤드라인": "광역전철 445대 지연, 준법투쟁 이틀째 x",
    "이슈": [
     {
-     "제목": "기준금리 3.25%, 올해 세 번째 인상",
+     "제목": "준법투쟁 이틀째, 445대 지연",
+     "분야": "사회"
+    },
+    {
+     "제목": "손연재 부부, 30억 후원 약속",
+     "분야": "연예"
+    },
+    {
+     "제목": "코스닥 8% 급등, 사이드카",
      "분야": "경제"
     },
     {
-     "제목": "텀블러 처분, 피해 학생 자퇴",
-     "분야": "사회"
-    },
-    {
-     "제목": "세무사 수석, 구속영장 신청",
-     "분야": "사회"
-    },
-    {
-     "제목": "머스크, 계좌에 스페이스X 두 주",
-     "분야": "세계"
+     "제목": "OTT 상담 53건→417건",
+     "분야": "생활"
     }
    ],
-   "유튜브": "https://youtube.com/watch?v=wCzglXwAUSo",
-   "인스타": "https://www.instagram.com/reel/DgOBNrChssZ/",
-   "표지": "/assets/front/2026-11-26-jonghap.jpg"
+   "유튜브": "https://youtube.com/watch?v=iBtVxyH2wng",
+   "인스타": "https://www.instagram.com/reel/DgQmMuyM3NK/",
+   "표지": "/assets/front/2026-11-27-jonghap.jpg"
   }
  ],
- "인스타_카드": "https://www.instagram.com/p/DgOBZNYj9CU/"
+ "인스타_카드": "https://www.instagram.com/p/DgQmXGMj7zM/"
 }
